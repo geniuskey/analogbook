@@ -525,7 +525,9 @@
   const loopT0 = (c, op) => { const e = c.el("EA"); const d = op.dev.MP; return Math.abs(e.lin || 0) * BETA * d.gm * rout(d, c.p); };
 
   /* LDO 회로도: box 안에 그리고 소자 위치(hit)를 돌려준다 */
+  const ldoNarrow = (bw) => bw < 508;
   function drawLDO(ctx, box, st) {
+    if (ldoNarrow(box.w)) return drawLDOv(ctx, box, st);
     const P = AB.palette();
     const u = Math.max(7.5, Math.min(16, box.w / 33, box.h / 20.5));
     const S = AN.sch(ctx, { u });
@@ -584,6 +586,71 @@
       S.tag(X(14), yF + 1.2 * u, `V_FB ${(op.v.fb * 1e3).toFixed(1)} mV`, { color: P.accent2, align: "center" });
       S.tag(X(5.8), Y(16.1), "1.2 V", { color: P.dim });
       S.label(X(16.6), yG + 1.7 * u, tri ? "선형!" : regName(d.region), { size: Math.max(10, u * 0.75), color: tri ? P.bad : P.dim });
+    }
+    return { hits, u };
+  }
+  /* 좁은 화면용 세로 배치: 위에 기준·오차 증폭기·패스 소자, 아래에 분배기·C_out·부하 */
+  function drawLDOv(ctx, box, st) {
+    const P = AB.palette();
+    const u = Math.max(9, Math.min(14, box.w / 23, box.h / 29.5));
+    const S = AN.sch(ctx, { u });
+    const ox = box.x + (box.w - 23 * u) / 2, oy = box.y + 1.6 * u;
+    const X = (a) => ox + a * u, Y = (b) => oy + b * u;
+    const hits = [];
+    const hot = AB.color("sch-hot");
+    const op = st.op, d = op && op.dev ? op.dev.MP : null;
+    const tri = d && d.region === "triode";
+    const yR = Y(0), yG = Y(4.4), yO = Y(14.9), yF = Y(19.4), yGnd = Y(23.9), yVg = Y(8.4);
+    const xRef = X(1.8), xFb = X(4.3), xR = X(5.5), xC = X(10.5), xL = X(17.5), xV = X(20.5);
+    // 패스 소자와 V_IN
+    const mp = S.pmos(X(13), yG, { label: "M_P", color: tri ? P.bad : st.sel === "MP" ? P.accent : undefined });
+    S.wire([mp.s, [mp.s[0], yR], [xV, yR]]);
+    S.vsrc(xV, yR, xV, yVg, {}); S.gnd(xV, yVg);
+    S.label(xV - 1.3 * u, Y(2.4), "V_IN", { align: "right", size: Math.max(10.5, u * 0.85), color: P.dim });
+    hits.push({ k: "MP", x: X(11), y: yG - 2.2 * u, w: 4.8 * u, h: 4.4 * u });
+    // 오차 증폭기
+    const ea = S.opamp(X(7.8), yG, { w: 5 * u, h: 5 * u, label: "EA", color: st.sel === "EA" ? P.accent : undefined });
+    S.wire([ea.out, mp.g], { color: P.accent2 });
+    hits.push({ k: "EA", x: X(5.3), y: yG - 2.5 * u, w: 5 * u, h: 5 * u });
+    // VREF
+    const yRt = Y(7.2), yRb = Y(10.8);
+    S.wire([ea.inn, [xRef, ea.inn[1]], [xRef, yRt]]);
+    S.vsrc(xRef, yRt, xRef, yRb, {}); S.gnd(xRef, yRb);
+    S.label(xRef, Y(12.6), "V_REF", { align: "center", size: Math.max(10.5, u * 0.85) });
+    hits.push({ k: "REF", x: X(0.5), y: yRt - 0.3 * u, w: 2.6 * u, h: yRb - yRt + 1.6 * u });
+    // 출력 마디
+    S.wire([mp.d, [mp.d[0], yO]]); S.dot(mp.d[0], yO);
+    S.wire([[xR, yO], [X(21.6), yO]]);
+    S.open(X(21.6), yO); S.label(X(21.6), yO - 1.2 * u, "V_OUT", { align: "right", bold: true, color: AB.trace(3) });
+    // 분배기
+    S.res(xR, yO, xR, yF, { label: "R1", color: st.sel === "R" ? P.accent : undefined });
+    S.res(xR, yF, xR, yGnd, { label: "R2", color: st.sel === "R" ? P.accent : undefined }); S.gnd(xR, yGnd);
+    S.dot(xR, yF);
+    S.wire([[xR, yF], [xFb, yF], [xFb, ea.inp[1]], ea.inp], { color: P.accent2 });
+    hits.push({ k: "R", x: xR - u, y: yO, w: 3.4 * u, h: yGnd - yO });
+    // 출력 커패시터
+    S.dot(xC, yO);
+    S.cap(xC, yO, xC, Y(18.9), { label: "C_out" });
+    S.res(xC, Y(18.9), xC, yGnd, { label: "ESR" }); S.gnd(xC, yGnd);
+    hits.push({ k: "C", x: xC - u, y: yO, w: 4.2 * u, h: yGnd - yO });
+    // 부하
+    S.dot(xL, yO);
+    S.isrc(xL, yO, xL, yGnd, { label: "I_LOAD", dir: 1, color: st.sel === "IL" ? P.accent : undefined }); S.gnd(xL, yGnd);
+    hits.push({ k: "IL", x: xL - u, y: yO, w: 4.6 * u, h: yGnd - yO });
+    // 전류 흐름
+    if (st.phase != null && op) {
+      const pathL = [[xV, yVg - 1.2 * u], [xV, yR], [mp.s[0], yR], mp.s, mp.d, [mp.d[0], yO], [xL, yO], [xL, yGnd]];
+      S.flow(pathL, st.phase.main, { color: hot, gap: 1.6 * u });
+      S.flow([[xR, yO], [xR, yGnd]], st.phase.div, { color: hot, gap: 1.6 * u, alpha: 0.6 });
+    }
+    // 태그
+    if (op) {
+      S.tag(X(17.2), yR - 1.1 * u, `V_IN ${st.vin.toFixed(2)} V`, { color: AB.trace(1), align: "center" });
+      S.tag(X(8.6), yR - 1.1 * u, `V_G ${op.v.g.toFixed(2)} V`, { color: P.accent2, align: "center" });
+      S.tag(X(13.6), yO - 1.3 * u, `${op.v.out.toFixed(3)} V`, { color: tri ? P.bad : P.ok, align: "right" });
+      S.tag(X(0.3), yGnd + 2.4 * u, `V_FB ${(op.v.fb * 1e3).toFixed(1)} mV`, { color: P.accent2 });
+      S.tag(xRef, Y(13.9), "1.2 V", { color: P.dim, align: "center" });
+      S.label(X(14.6), yG + 1.7 * u, tri ? "선형!" : regName(d.region), { size: Math.max(10.5, u * 0.75), color: tri ? P.bad : P.dim });
     }
     return { hits, u };
   }
@@ -687,7 +754,7 @@
     function draw(ctx, w, h) {
       lay = drawLDO(ctx, { x: 6, y: 6, w: w - 12, h: h - 12 }, { op, vin: gv(), phase, sel });
     }
-    cv = AB.canvas("#ldo-cv", draw, H("ldo-cv", (w) => Math.round(Math.max(260, Math.min(400, (w - 12) / 33 * 20.5 + 30)))));
+    cv = AB.canvas("#ldo-cv", draw, H("ldo-cv", (w) => (ldoNarrow(w - 12) ? Math.round(Math.max(9, Math.min(14, (w - 12) / 23)) * 29.5 + 14) : Math.round(Math.max(260, Math.min(400, (w - 12) / 33 * 20.5 + 30))))));
     AB.drag(cv.canvas, {
       start(x, y) { if (!lay) return; const hit = lay.hits.find((b) => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h); if (hit) { sel = hit.k; showInfo(); cv.redraw(); } },
     });
