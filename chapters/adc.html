@@ -33,6 +33,8 @@
 <style>
   .stat .v small { font-family: var(--font); font-size: 12px; }
   .bits-mono { font-family: var(--mono); letter-spacing: 0.04em; }
+  @media (max-width: 560px) { figure.diagram { overflow-x: auto; padding: 14px; } figure.diagram svg { min-width: 560px; } }
+  .sim-view .hint { position: static; display: block; width: fit-content; margin: -4px 10px 6px auto; }
 </style>
 </head>
 <body data-chapter="adc">
@@ -275,7 +277,7 @@
     <div class="sim" id="sim-dyn" data-desc="12비트 ADC 모델(양자화 + 비교기 잡음 + INL + 표본화 지터)을 FFT로 풀어 스펙트럼과 SNDR·SFDR·ENOB의 입력 주파수 스윕을 그린다. 지터를 키우면 높은 주파수부터 −20log(2πfσt) 선을 따라 무너진다">
       <div class="sim-head"><span class="sim-tag">SIMULATOR</span><h3>입력 주파수가 오르면 무엇이 무너지나</h3></div>
       <div class="sim-body side">
-        <div class="sim-view"><canvas id="dyn-cv"></canvas><span class="hint">아래 스윕 그래프를 누르면 그 주파수로</span></div>
+        <div class="sim-view"><canvas id="dyn-cv"></canvas><span class="hint">스윕 그래프를 누르면 그 주파수로</span></div>
         <div class="sim-controls">
           <label class="ctrl"><span>입력 주파수 <output id="dyn-f-out"></output></span><input type="range" id="dyn-f" min="3" max="5.69" step="0.01" value="4.7"></label>
           <label class="ctrl"><span>지터 σt <output id="dyn-j-out"></output></span><input type="range" id="dyn-j" min="-12" max="-8" step="0.05" value="-10"></label>
@@ -332,7 +334,7 @@
       <svg viewBox="0 0 720 280" role="img" aria-label="전하 재분배 SAR ADC: 이진 가중 커패시터 배열의 위판이 비교기 입력에 모이고, 바닥판은 스위치로 Vin, VREF, GND 중 하나에 연결된다. SAR 논리가 비교 결과로 스위치를 정한다">
         <defs><marker id="sar-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
         <line class="w w-acc" x1="70" y1="60" x2="520" y2="60"/>
-        <text class="lbl lbl-acc" x="72" y="48">위판 Vx (공통 마디)</text>
+        <text class="lbl lbl-acc" x="250" y="50">위판 Vx (공통 마디)</text>
         <line class="w" x1="80" y1="60" x2="80" y2="36"/>
         <line class="w" x1="74" y1="36" x2="86" y2="36"/>
         <text class="lbl-dim" x="94" y="34">S0(표본화 때 Vcm)</text>
@@ -395,7 +397,7 @@
         <div class="stat"><span class="k">남은 오차</span><span class="v" id="sar-res">—</span></div>
         <div class="stat"><span class="k">변환 시간(16 MHz)</span><span class="v" id="sar-t">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 12비트에서 "한 단계"를 열두 번 누르며 위 그래프의 VDAC 계단이 입력을 중심으로 좁아지고, 오른쪽 로그 그래프의 남은 오차가 단계마다 절반(직선)으로 줄어 마지막에 1 LSB 아래로 들어가는 것을 본다. ② 비교기 잡음을 1 LSB로 올리고 입력을 바꿔 가며 여러 번 돌리면, 초반 비트는 대개 맞지만 오차가 LSB 근처인 마지막 비트들이 흔들린다. 드물게 큰 비트에서 틀리면 이후 단계로는 되돌릴 수 없다(중복 없는 SAR). ③ DAC 부정합을 2%로 올리면 결정은 모두 "옳은데" 최종 코드 오차가 1 LSB를 넘게 남는다. DAC 기준 자체가 틀렸기 때문이다. (이상적 표본화, VREF = 1.2 V, 단위 커패시터 독립 가우시안 오차, 비교기 잡음은 결정마다 독립, DAC 정착·킥백·기생 무시, 타이밍은 표본화 3 + 비트 12 + 출력 1 = 16사이클)</div>
+      <div class="sim-note">해볼 것: ① 12비트에서 "한 단계"를 열두 번 누르며 위 그래프의 VDAC 계단이 입력을 중심으로 좁아지고, 아래 로그 그래프의 남은 오차가 단계마다 절반(직선)으로 줄어 마지막에 1 LSB 아래로 들어가는 것을 본다. ② 비교기 잡음을 1 LSB로 올리고 입력을 바꿔 가며 여러 번 돌리면, 초반 비트는 대개 맞지만 오차가 LSB 근처인 마지막 비트들이 흔들린다. 드물게 큰 비트에서 틀리면 이후 단계로는 되돌릴 수 없다(중복 없는 SAR). ③ DAC 부정합을 2%로 올리면 결정은 모두 "옳은데" 최종 코드 오차가 1 LSB를 넘게 남는다. DAC 기준 자체가 틀렸기 때문이다. (이상적 표본화, VREF = 1.2 V, 단위 커패시터 독립 가우시안 오차, 비교기 잡음은 결정마다 독립, DAC 정착·킥백·기생 무시, 타이밍은 표본화 3 + 비트 12 + 출력 1 = 16사이클)</div>
     </div>
 
     <p>SAR는 비교기 하나로 끝나는 대신 시간을 쓴다. N비트에 비교 N번이 필요하고, 그 앞에 표본화 시간이 있다. 표본화는 커패시터 배열 전체(입력 쪽에서 보면 \(C_{\mathrm{tot}}\))를 12비트 정확도까지 충전해야 하므로 비트 한 번보다 길게 잡는다. AB-1은 1 µs를 16사이클로 나눠 표본화 3, 비트 결정 12, 출력·리셋 1로 쓴다. 클록은 16 MHz, 한 사이클 62.5 ns다.</p>
@@ -509,7 +511,7 @@
     const aa = AB.range("quant-a", (v) => v + " dBFS", upd);
     const dz = $("quant-d");
     dz.addEventListener("change", upd);
-    const cv = AB.canvas("#quant-cv", draw, { get height() { return pw("quant-cv") < 620 ? 640 : 380; } });
+    const cv = AB.canvas("#quant-cv", draw, { get height() { return pw("quant-cv") < 620 ? 660 : 380; } });
     const tip = AB.tip(cv.canvas);
     cv.canvas.addEventListener("pointerleave", tip.hide);
     AB.drag(cv.canvas, {
@@ -547,11 +549,11 @@
       if (!narrow) {
         const lw = Math.floor(w * 0.47);
         tb = { x: 56, y: 26, w: lw - 70, h: 170 };
-        eb = { x: 56, y: tb.y + tb.h + 52, w: lw - 70, h: h - tb.y - tb.h - 52 - 46 };
+        eb = { x: 56, y: tb.y + tb.h + 66, w: lw - 70, h: h - tb.y - tb.h - 66 - 46 };
         sb = { x: lw + 60, y: 26, w: w - lw - 60 - 16, h: h - 26 - 46 };
       } else {
         tb = { x: 52, y: 26, w: w - 52 - 14, h: 170 };
-        eb = { x: 52, y: 26 + 170 + 50, w: w - 52 - 14, h: 110 };
+        eb = { x: 52, y: 26 + 170 + 66, w: w - 52 - 14, h: 110 };
         sb = { x: 52, y: eb.y + eb.h + 74, w: w - 52 - 14, h: h - eb.y - eb.h - 74 - 46 };
       }
       lay = { sp: sb };
@@ -593,7 +595,7 @@
 
   /* ---------------------------------------------------------- 2. DAC 부정합 */
   (function simDac() {
-    let seed = 3, V = null, eps = null, hov = null, lay = {};
+    let seed = 7, V = null, eps = null, hov = null, lay = {};
     const arch = AB.seg("dac-arch", upd), nb = AB.seg("dac-n", upd);
     const ss = AB.range("dac-s", (v) => v.toFixed(2) + " %", upd);
     $("dac-re").addEventListener("click", () => { seed++; upd(); });
@@ -653,8 +655,8 @@
         if (c < L - 1) { dnl[c] = (v[c + 1] - v[c]) / lsb - 1; if (Math.abs(dnl[c]) > md) { md = Math.abs(dnl[c]); mdc = c; } if (dnl[c] <= -1) nonmono++; }
       }
       V = { N, L, a, s, v, dnl, inl, md, mdc, mi, mic, nonmono };
-      AB.stat("dac-dnl", md.toFixed(3) + ` LSB <small>(코드 ${mdc}→${mdc + 1})</small>`);
-      AB.stat("dac-inl", mi.toFixed(3) + ` LSB <small>(코드 ${mic})</small>`);
+      AB.stat("dac-dnl", md.toFixed(3) + (md > 0 ? ` LSB <small>(코드 ${mdc}→${mdc + 1})</small>` : " LSB"));
+      AB.stat("dac-inl", mi.toFixed(3) + (mi > 0 ? ` LSB <small>(코드 ${mic})</small>` : " LSB"));
       const thv = a === "bin" ? Math.sqrt(L) * s : a === "therm" ? Math.sqrt(2) * s : Math.sqrt(2 * Math.pow(2, B)) * s;
       AB.stat("dac-th", thv.toFixed(3) + " LSB");
       AB.stat("dac-mono", nonmono ? `<span class="bad-t">비단조 ${nonmono}곳</span>` : `<span class="ok-t">단조</span>`);
@@ -756,9 +758,9 @@
       const st = stats.get(dv.toPrecision(3));
       AB.stat("cmp-p1", st ? ((100 * st.n1) / st.n).toFixed(0) + `% <small>(${st.n}회)</small>` : "—");
       const win = (VTH / A) * Math.exp(-TD / ta);
-      AB.stat("cmp-win", "±" + si(win, "V"));
+      AB.stat("cmp-win", win < 1e-15 ? "< 1 fV" : "±" + si(win, "V"));
       const pm = Math.min(1, (2 * win) / LSB12);
-      AB.stat("cmp-pm", pm < 1e-30 ? "≈ 0" : pm.toExponential(1));
+      AB.stat("cmp-pm", pm < 1e-30 ? "≈ 0" : pm >= 1 ? '<span class="bad-t">≈ 1</span>' : pm.toExponential(1));
       cv.redraw();
     }
     upd();
@@ -839,7 +841,7 @@
         vlines: Math.abs(dv) <= xr ? [{ x: dv * 1e6, color: P.text }] : [],
       });
       txt(ctx, s > 0 ? "확률 곡선: ½(1 + erf(Δv/σ√2)), σ = " + (s * 1e6).toFixed(0) + " µV" : "잡음 0: 계단(완벽한 결정)", pb.x, pb.y - 13, { size: 11.5, weight: 600 });
-      if (Math.abs(dv) > xr) txt(ctx, "현재 Δv는 이 범위 밖", pb.x + pb.w - 4, pb.y + 12, { size: 11, color: P.dim, align: "right" });
+      if (Math.abs(dv) > xr) txt(ctx, "현재 Δv는 이 범위 밖", pb.x + pb.w - 4, pb.y + pb.h - 12, { size: 11, color: P.dim, align: "right" });
     }
   })();
 
@@ -998,7 +1000,7 @@
       AB.stat("pipe-max", smax <= 1 ? `<span class="ok-t">${smax} LSB</span>` : `<span class="bad-t">${smax} LSB</span>`);
     }
     let cv = null;
-    cv = AB.canvas("#pipe-cv", draw, { get height() { return pw("pipe-cv") < 620 ? 620 : 420; } });
+    cv = AB.canvas("#pipe-cv", draw, { get height() { return pw("pipe-cv") < 620 ? 660 : 420; } });
     recalc();
     AB.drag(cv.canvas, {
       move(x, y) { const b = lay.s0; if (!b || x < b.x - 10 || x > b.x + b.w + 10 || y < b.y - 10 || y > b.y + b.h + 30) return; vin = clamp(((x - b.x) / b.w) * 2 - 1, -0.999, 0.999); stat(); cv.redraw(); },
@@ -1007,11 +1009,11 @@
       const P = AB.palette(), narrow = w < 620, c = conv(vin);
       const boxes = [];
       if (!narrow) {
-        const gap = 46, bw = (w - 50 - 16 - gap * (K - 1)) / K;
-        for (let i = 0; i < K; i++) boxes.push({ x: 50 + i * (bw + gap), y: 34, w: bw, h: 180 });
+        const gap = 46, bw = (w - 58 - 16 - gap * (K - 1)) / K;
+        for (let i = 0; i < K; i++) boxes.push({ x: 58 + i * (bw + gap), y: 34, w: bw, h: 180 });
       } else {
-        const bw = (w - 46 - 16 - 46) / 2;
-        for (let i = 0; i < K; i++) boxes.push({ x: 46 + (i % 2) * (bw + 46), y: 34 + Math.floor(i / 2) * 200, w: bw, h: 140 });
+        const bw = (w - 54 - 12 - 46) / 2;
+        for (let i = 0; i < K; i++) boxes.push({ x: 54 + (i % 2) * (bw + 46), y: 34 + Math.floor(i / 2) * 200, w: bw, h: 140 });
       }
       lay.s0 = boxes[0];
       boxes.forEach((b, i) => {
@@ -1036,15 +1038,15 @@
         if (!narrow && i < K - 1) S0arrow(ctx, b.x + b.w + 8, b.y + b.h / 2, b.x + b.w + 38, b.y + b.h / 2, P);
       });
       // 오차 스윕
-      const eb = narrow ? { x: 52, y: 34 + 2 * 200 + 10, w: w - 52 - 16, h: h - (34 + 400 + 10) - 46 } : { x: 56, y: 34 + 180 + 80, w: w - 56 - 16, h: h - (34 + 180 + 80) - 46 };
+      const eb = narrow ? { x: 54, y: 34 + 2 * 200 + 40, w: w - 54 - 12, h: h - (34 + 400 + 40) - 46 } : { x: 56, y: 34 + 180 + 80, w: w - 56 - 16, h: h - (34 + 180 + 80) - 46 };
       const em = Math.max(2, Math.min(80, smax * 1.15));
       AB.chart(ctx, eb, {
         x: [-1, 1], y: [-em, em], xLabel: "Vin / VREF", yLabel: "오차 (LSB)", yTicks: 4,
         series: [{ data: sweep, color: smax > 1 ? P.bad : P.ok, width: 1.4 }], vlines: [{ x: vin, color: P.accent2 }],
         hlines: [{ y: 1, color: P.dim }, { y: -1, color: P.dim }],
       });
-      txt(ctx, "8비트 출력 오차 (전 범위 스윕, 점선 ±1 LSB)", eb.x, eb.y - 14, { size: 11.5, weight: 600 });
-      txt(ctx, (mm() === "1" ? "1비트/단" : "1.5비트/단 + 디지털 보정") + " · 최대 " + smax + " LSB", eb.x + eb.w, eb.y - 14, { size: 11.5, align: "right", weight: 700, color: smax > 1 ? P.bad : P.ok });
+      txt(ctx, "8비트 출력 오차 (전 범위 스윕, 점선 ±1 LSB)", eb.x, eb.y - (narrow ? 30 : 14), { size: 11.5, weight: 600 });
+      txt(ctx, (mm() === "1" ? "1비트/단" : "1.5비트/단 + 디지털 보정") + " · 최대 " + smax + " LSB", narrow ? eb.x : eb.x + eb.w, eb.y - 14, { size: 11.5, align: narrow ? "left" : "right", weight: 700, color: smax > 1 ? P.bad : P.ok });
     }
     function S0arrow(ctx, x1, y1, x2, y2, P) {
       ctx.save(); ctx.strokeStyle = P.dim; ctx.fillStyle = P.dim; ctx.lineWidth = 1.5;
@@ -1058,7 +1060,7 @@
   /* ---------------------------------------------------------- 6. 코드 밀도 시험 */
   (function simHist() {
     const N = 8, L = 256;
-    let seed = 2, dacV = null, trueDnl = null, trueInl = null, H = new Float64Array(L), nTot = 0, running = false, meas = null, hov = null, lay = {};
+    let seed = 4, dacV = null, trueDnl = null, trueInl = null, H = new Float64Array(L), nTot = 0, running = false, meas = null, hov = null, lay = {};
     const mode = AB.seg("hist-in", () => { clear(); });
     const ss = AB.range("hist-s", (v) => v.toFixed(1) + " %", () => { build(); clear(); });
     $("hist-go").addEventListener("click", (e) => { running = !running; e.target.textContent = running ? "멈춤" : "쌓기 시작"; });
@@ -1143,13 +1145,13 @@
       const P = AB.palette(), x0 = w < 620 ? 52 : 60, cw = w - x0 - 16, gap = 62, ch = (h - 26 - 46 - 2 * gap) / 3;
       const hb = { x: x0, y: 26, w: cw, h: ch }, db = { x: x0, y: hb.y + ch + gap, w: cw, h: ch }, ib = { x: x0, y: db.y + ch + gap, w: cw, h: ch };
       lay = { h: hb, d: db, i: ib };
-      let hm = 1; for (let c = 0; c < L; c++) hm = Math.max(hm, H[c]);
+      let hm = 8; for (let c = 1; c < L - 1; c++) hm = Math.max(hm, H[c]);
       const HC = AB.chart(ctx, hb, { x: [0, L - 1], y: [0, hm * 1.1], xLabel: "", yLabel: "횟수", yTicks: 3, xTicks: [0, 64, 128, 192, 255], yFmt: (v) => (v >= 1000 ? (v / 1000).toFixed(v >= 1e4 ? 0 : 1) + "k" : String(Math.round(v))) });
       const bw = Math.max(1, cw / L - 0.4);
       for (let c = 0; c < L; c++) {
         const miss = c > 0 && c < L - 1 && trueDnl[c] <= -0.999;
         ctx.fillStyle = miss ? P.bad : c === hov ? P.text : AB.alpha(P.accent, 0.75);
-        const y = HC.Y(H[c]); ctx.fillRect(HC.X(c) - bw / 2, y, bw, hb.y + hb.h - y);
+        const y = Math.max(hb.y, HC.Y(H[c])); ctx.fillRect(HC.X(c) - bw / 2, y, bw, hb.y + hb.h - y);
         if (miss) { ctx.fillRect(HC.X(c) - 1, hb.y + hb.h - 8, 2.5, 8); }
       }
       txt(ctx, "코드별 횟수 (" + (mode() === "sine" ? "사인: 양 끝이 높은 그릇 모양" : "램프: 평평해야 정상") + ")", hb.x, hb.y - 13, { size: 11.5, weight: 600 });
@@ -1235,10 +1237,11 @@
           { data: sw.map((q) => [q.f, q.sndr]), color: P.accent, width: 2.4 },
         ],
         points: sw.map((q) => ({ x: q.f, y: q.sndr, color: P.accent, r: 3 })),
-        hlines: [{ y: 74, color: P.dim, label: "이상 12비트 74 dB" }, { y: 64.97, color: P.ok, label: "ENOB 10.5" }],
+        hlines: [{ y: 74, color: P.dim, label: "이상 12비트 74 dB" }, { y: 64.97, color: P.ok }],
         vlines: [{ x: cur.f, color: P.text }, { x: 5e5, color: P.faint, label: "fs/2" }],
       });
       txt(ctx, "주파수 스윕: SNDR(굵게), SFDR, 지터 한계(점선)", wb.x, wb.y - 13, { size: 11.5, weight: 600 });
+      txt(ctx, "ENOB 10.5", wb.x + 6, wb.y + wb.h * (1 - (64.97 - 30) / 70) + 9, { size: 11, color: P.ok, weight: 600 });
     }
   })();
 
@@ -1266,7 +1269,7 @@
     function upd() {
       const P = Math.pow(10, pp()), fs = Math.pow(10, pt.lf), fw = P / (Math.pow(2, pt.e) * fs), fsch = 6.02 * pt.e + 1.76 + 10 * Math.log10(fs / 2 / P);
       AB.stat("map-pt", si(fs, "S/s") + ` · ENOB ${pt.e.toFixed(1)}`);
-      AB.stat("map-fw", si(fw, "J") + "/step");
+      AB.stat("map-fw", (fw < 1e-15 ? Number((fw * 1e15).toPrecision(3)) + " fJ" : si(fw, "J")) + "/step");
       AB.stat("map-fs", fsch.toFixed(1) + " dB");
       const a = REG.filter((r) => inside(r.p, pt.lf, pt.e)).map((r) => r.n);
       AB.stat("map-arch", a.length ? a.join(", ") : '<span class="warn-t">어려운 자리</span>');
@@ -1274,7 +1277,7 @@
       cv.redraw();
     }
     function draw(ctx, w, h) {
-      const P = AB.palette(), b = { x: 52, y: 20, w: w - 52 - 16, h: h - 20 - 50 };
+      const P = AB.palette(), b = { x: 52, y: 34, w: w - 52 - 16, h: h - 34 - 50 };
       lay.b = b;
       const X = (lf) => b.x + ((lf - 3) / 7) * b.w, Y = (e) => b.y + b.h - ((e - 4) / 18) * b.h;
       AB.chart(ctx, b, { x: [1e3, 1e10], y: [4, 22], logX: true, xLabel: "표본화 속도 (S/s)", yLabel: "ENOB (비트)", yTicks: 6,
@@ -1297,16 +1300,16 @@
         if (e(lfL) > 4 && e(lfL) < 22) txt(ctx, lb, X(lfL) + 4, Y(e(lfL)) - 8, { size: 10.5, color: P.dim, mono: true });
       });
       ctx.restore();
-      txt(ctx, "점선 사선: 현재 전력 " + si(Pw, "W") + "에서 같은 Walden FoM", b.x + b.w - 4, b.y + 12, { size: 11, color: P.dim, align: "right" });
+      txt(ctx, "점선 사선: 현재 전력 " + si(Pw, "W") + "에서 같은 Walden FoM", b.x + b.w, b.y - 14, { size: 11, color: P.dim, align: "right" });
       // AB-1 목표
       const ax = X(6), ay = Y(10.5);
       ctx.strokeStyle = P.ok; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(ax, ay, 9, 0, 7); ctx.stroke();
-      txt(ctx, "AB-1 목표", ax + 12, ay + 14, { size: 11, color: P.ok, weight: 700 });
+      txt(ctx, "AB-1 목표", ax - 12, ay + 14, { size: 11, color: P.ok, weight: 700, align: "right" });
       // 설계점
       const px = X(pt.lf), py = Y(pt.e); lay.px = px; lay.py = py;
       ctx.fillStyle = P.text; ctx.beginPath(); ctx.moveTo(px, py - 8); ctx.lineTo(px + 8, py); ctx.lineTo(px, py + 8); ctx.lineTo(px - 8, py); ctx.closePath(); ctx.fill();
       const fw = Pw / (Math.pow(2, pt.e) * Math.pow(10, pt.lf));
-      AN.sch(ctx, { u: 12 }).tag(px + 12 > b.x + b.w - 120 ? px - 12 : px + 12, py - 16, si(fw, "J") + "/step", { color: P.accent, align: px + 12 > b.x + b.w - 120 ? "right" : "left" });
+      AN.sch(ctx, { u: 12 }).tag(px + 12 > b.x + b.w - 120 ? px - 12 : px + 12, py - 16, (fw < 1e-15 ? Number((fw * 1e15).toPrecision(3)) + " fJ" : si(fw, "J")) + "/step", { color: P.accent, align: px + 12 > b.x + b.w - 120 ? "right" : "left" });
     }
     upd();
   })();
@@ -1355,7 +1358,7 @@
     }
     build();
     let cv = null;
-    cv = AB.canvas("#sar-cv", draw, { get height() { return pw("sar-cv") < 620 ? 900 : 620; } });
+    cv = AB.canvas("#sar-cv", draw, { get height() { return pw("sar-cv") < 620 ? (pw("sar-cv") < 460 ? 930 : 880) : 620; } });
     reset();
     $("sar-step").addEventListener("click", () => { if (k >= N()) reset(); step(); });
     $("sar-run").addEventListener("click", (e) => { if (k >= N()) reset(); auto = !auto; e.target.textContent = auto ? "멈춤" : "끝까지"; });
@@ -1395,9 +1398,10 @@
         S.wire([[cx, capY + 40], [cx + Math.min(dx * 0.35, 10), ry]], { color: st === "ref" ? P.accent2 : P.dim, width: hot ? 3 : 2 });
         S.dot(cx + Math.min(dx * 0.35, 10), ry, { color: st === "ref" ? P.accent2 : P.dim });
         const lbl = b >= 0 ? String(1 << b) : "더미";
-        ctx.save(); ctx.translate(cx - u * 1.2, capY + u * 0.25); if (narrow || dx < 34) ctx.rotate(-Math.PI / 2);
-        ctx.font = F(narrow || dx < 34 ? 9.5 : 10.5, true, 600); ctx.fillStyle = hot ? P.warn : P.dim; ctx.textAlign = narrow || dx < 34 ? "center" : "right"; ctx.textBaseline = "middle";
-        ctx.fillText(lbl, 0, narrow || dx < 34 ? -2 : 0); ctx.restore();
+        const below = dx < 22, rot = narrow || dx < 34;
+        ctx.save(); ctx.translate(below ? cx : cx - u * 1.2, below ? rail2 + 8 : capY + u * 0.25); if (rot) ctx.rotate(-Math.PI / 2);
+        ctx.font = F(rot ? 9.5 : 10.5, true, 600); ctx.fillStyle = hot ? P.warn : P.dim; ctx.textAlign = below ? "right" : rot ? "center" : "right"; ctx.textBaseline = "middle";
+        ctx.fillText(lbl, 0, rot && !below ? -2 : 0); ctx.restore();
       }
       S.wire([[x0 - 10, rail1], [cmpX - 40, rail1]], { color: P.accent2 });
       S.wire([[x0 - 10, rail2], [cmpX - 40, rail2]], { color: P.dim });
@@ -1416,7 +1420,7 @@
       if (k) { const d = hist[k - 1].keep; txt(ctx, "b" + hist[k - 1].b + " = " + (d ? 1 : 0), lx + lw / 2, ly + 32, { size: 12, align: "center", mono: true, weight: 700, color: d ? P.ok : P.bad }); }
       S.wire([cmp.out, [cmp.out[0] + 6, cmp.out[1]], [cmp.out[0] + 6, ly]]);
       // ---- 2) 탐색 그래프
-      const gy = rail2 + 56;
+      const gy = rail2 + (dx < 22 ? 86 : 56);
       let sb, rb;
       if (!narrow) { sb = { x: 100, y: gy, w: w * 0.52 - 100, h: 230 }; rb = { x: w * 0.52 + 60, y: gy, w: w * 0.48 - 60 - 16, h: 230 }; }
       else { sb = { x: 90, y: gy, w: w - 90 - 14, h: 210 }; rb = { x: 52, y: gy + 210 + 70, w: w - 52 - 14, h: 170 }; }
@@ -1440,7 +1444,7 @@
       ctx.strokeStyle = P.accent2; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(sb.x, G.Y(vin)); ctx.lineTo(sb.x + sb.w, G.Y(vin)); ctx.stroke();
       ctx.strokeStyle = P.accent; ctx.lineWidth = 2; ctx.beginPath();
       let vd = 0; ctx.moveTo(G.X(0), G.Y(0));
-      hist.forEach((hh, i) => { ctx.lineTo(G.X(i + 0.5), G.Y(vd)); ctx.lineTo(G.X(i + 0.5), G.Y(hh.vt)); ctx.lineTo(G.X(i + 1), G.Y(hh.vt)); vd = hh.keep ? hh.vt : vd; });
+      hist.forEach((hh, i) => { ctx.lineTo(G.X(i + 0.5), G.Y(vd)); ctx.lineTo(G.X(i + 0.5), G.Y(hh.vt)); ctx.lineTo(G.X(i + 1), G.Y(hh.vt)); if (hh.keep) vd = hh.vt; else ctx.lineTo(G.X(i + 1), G.Y(vd)); });
       ctx.stroke();
       hist.forEach((hh, i) => { ctx.fillStyle = hh.keep ? P.ok : P.bad; ctx.beginPath(); ctx.arc(G.X(i + 0.5), G.Y(hh.vt), 4, 0, 7); ctx.fill(); });
       ctx.restore();
@@ -1458,10 +1462,10 @@
         hlines: [{ y: 1, color: P.warn, label: "1 LSB" }],
       });
       txt(ctx, "남은 거리: 단계마다 절반(점선 2ᴺ⁻ᵏ)", rb.x, rb.y - 13, { size: 11.5, weight: 600 });
-      if (fin != null) txt(ctx, "지금 " + fin.toFixed(2) + " LSB", rb.x + rb.w - 4, rb.y + rb.h - 12, { size: 11.5, align: "right", mono: true, weight: 700, color: P.accent });
+      if (fin != null) txt(ctx, "지금 " + fin.toFixed(2) + " LSB", rb.x + rb.w - 4, rb.y + 12, { size: 11.5, align: "right", mono: true, weight: 700, color: P.accent });
       // ---- 3) 타이밍도
       const ty = (narrow ? rb.y + rb.h + 66 : sb.y + sb.h + 74), tx = narrow ? 52 : 100, tw = w - tx - 16, cwid = tw / 16;
-      txt(ctx, "타이밍: 16 MHz × 16사이클 = 1 µs/변환 (62.5 ns/사이클)", tx, ty - 14, { size: 11.5, weight: 600 });
+      txt(ctx, "타이밍: 16 MHz × 16사이클 = 1 µs/변환" + (w < 460 ? "" : " (62.5 ns/사이클)"), tx, ty - 14, { size: 11.5, weight: 600 });
       txt(ctx, "CLK", tx - 8, ty + 12, { size: 10.5, align: "right", color: P.dim });
       txt(ctx, "단계", tx - 8, ty + 44, { size: 10.5, align: "right", color: P.dim });
       ctx.strokeStyle = P.text; ctx.lineWidth = 1.4; ctx.beginPath();

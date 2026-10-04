@@ -429,13 +429,13 @@ wire 8 12 14 12
     <div class="casefile">
       <div class="tag"><b>TARGET AB-1</b><span>타깃 파일 · 19장</span></div>
       <h4>최종 성적표: OTA 사양 전부 통과, 사슬 ENOB는 초핑과 필터로 통과</h4>
-      <p>AB-1 OTA(<code>AN.ota2Open()</code>)는 개루프 이득 <b id="cf-a0">71.8 dB</b>, GBW <b id="cf-gbw">23.5 MHz</b>, 위상 여유 <b id="cf-pm">67.6°</b>, 전력 <b id="cf-pw">약 218 µW</b>로 OTA 사양을 모두 넘는다. 편집기의 버퍼 프리셋으로 잰 입력 잡음은 1 MHz에서 약 14 nV/√Hz다. 남아 있던 두 문제 중 오프셋 3σ 6.2 mV는 입력 쌍과 부하 면적을 키우면(과제 3) PM 60°를 지키면서 약 4.4 mV로 사양 안에 들어온다. 신호 사슬은 나이퀴스트 대역 그대로면 ENOB <b id="cf-e1">약 8.4</b>로 사양 10.5에 못 미치고, 10 kHz 디지털 필터만으로는 1/f 때문에 <b id="cf-e2">약 10.4</b>로 아슬아슬하게 모자라고, 초핑을 더하면 <b id="cf-e3">약 11.3</b>으로 통과한다.</p>
+      <p>AB-1 OTA(<code>AN.ota2Open()</code>)는 개루프 이득 <b id="cf-a0">71.8 dB</b>, GBW <b id="cf-gbw">23.5 MHz</b>, 위상 여유 <b id="cf-pm">67.5°</b>, 전력 <b id="cf-pw">약 218 µW</b>로 OTA 사양을 모두 넘는다. 편집기의 버퍼 프리셋으로 잰 입력 잡음은 1 MHz에서 약 14 nV/√Hz다. 남아 있던 두 문제 중 오프셋 3σ 6.2 mV는 입력 쌍과 부하 면적을 키우면(과제 3) PM 60°를 지키면서 약 4.4 mV로 사양 안에 들어온다. 신호 사슬은 나이퀴스트 대역 그대로면 ENOB <b id="cf-e1">약 8.4</b>로 사양 10.5에 못 미치고, 10 kHz 디지털 필터만으로는 1/f 때문에 <b id="cf-e2">약 10.4</b>로 아슬아슬하게 모자라고, 초핑을 더하면 <b id="cf-e3">약 11.3</b>으로 통과한다.</p>
       <div class="table-wrap"><table>
         <thead><tr><th>항목</th><th>사양</th><th>결과</th><th>판정</th><th>장</th></tr></thead>
         <tbody>
           <tr><td>OTA 개루프 이득</td><td class="num">≥ 70 dB</td><td class="num" id="cf-t1">71.8 dB</td><td class="ok-t">통과</td><td>9</td></tr>
           <tr><td>OTA GBW (C<sub>L</sub> 2 pF)</td><td class="num">≥ 20 MHz</td><td class="num" id="cf-t2">23.5 MHz</td><td class="ok-t">통과</td><td>9</td></tr>
-          <tr><td>OTA 위상 여유 (R<sub>z</sub> 2 kΩ)</td><td class="num">≥ 60°</td><td class="num" id="cf-t3">67.6°</td><td class="ok-t">통과</td><td>10</td></tr>
+          <tr><td>OTA 위상 여유 (R<sub>z</sub> 2 kΩ)</td><td class="num">≥ 60°</td><td class="num" id="cf-t3">67.5°</td><td class="ok-t">통과</td><td>10</td></tr>
           <tr><td>OTA 전력</td><td class="num">≤ 300 µW</td><td class="num" id="cf-t4">218 µW</td><td class="ok-t">통과</td><td>9</td></tr>
           <tr><td>OTA 입력 잡음 @1 MHz</td><td class="num">≤ 30 nV/√Hz</td><td class="num" id="cf-t5">14 nV/√Hz</td><td class="ok-t">통과</td><td>11</td></tr>
           <tr><td>OTA 오프셋 3σ</td><td class="num">&lt; 5 mV</td><td class="num">6.2 → 약 4.4 mV</td><td class="ok-t">면적 확대 후 통과</td><td>12·19</td></tr>

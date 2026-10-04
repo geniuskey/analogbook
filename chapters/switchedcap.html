@@ -92,7 +92,7 @@
         <line class="s-dash" x1="570" y1="40" x2="570" y2="225"/>
         <text class="lbl-dim" x="455" y="222">표본 순간</text>
       </svg>
-      <figcaption><b>샘플-앤-홀드.</b> 클록 φ가 높으면 NMOS M1이 켜져 Cs가 입력(파랑 계열)을 따라가고, φ가 떨어지는 순간(점선) 값이 Cs에 얼어붙어 다음 추적까지 계단(두꺼운 선)으로 남는다. ADC는 유지 구간 동안 이 일정한 값을 변환한다.</figcaption>
+      <figcaption><b>샘플-앤-홀드.</b> 클록 φ가 높으면 NMOS M1이 켜져 Cs가 입력(가는 선)을 따라가고, φ가 떨어지는 순간(점선) 값이 Cs에 얼어붙어 다음 추적까지 계단(두꺼운 선)으로 남는다. ADC는 유지 구간 동안 이 일정한 값을 변환한다.</figcaption>
     </figure>
 
     <p>아래 오실로스코프는 엔진(<code>AN.circuit</code>)이 스위치·커패시터 회로를 과도 해석으로 푼 결과다. 커서가 시간축을 따라 움직이면 왼쪽 회로도의 스위치가 그 순간 상태로 여닫히고, 마디 전압 상자가 바뀐다. 클록 주파수와 입력 주파수를 바꾸고, 이상 스위치를 실제 NMOS로 바꿔 본다.</p>
@@ -144,7 +144,7 @@
         <div class="stat"><span class="k">엔진 1 LSB 도달</span><span class="v" id="trk-eng">—</span></div>
         <div class="stat"><span class="k">추적 끝 오차</span><span class="v" id="trk-end">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 기본값(500 Ω, 1 pF)에서 오차 직선이 약 4 ns 만에 1 LSB 선을 지난다. 반 주기 500 ns보다 100배 넘게 빠르다. ② Ron을 끝(100 kΩ)까지 올리면 직선이 눕고 추적 끝에서 오차가 수백 LSB 남는다. 비트가 틀린다. ③ fs를 30 MS/s로 올리면 추적 구간이 17 ns로 줄어 같은 Ron도 모자라게 된다. Cs를 줄이면 빨라지지만 kT/C 잡음(4절)이 커진다. (엔진 과도 해석: 이상 스위치 Ron, Cs, 0.3 → 1.5 V 계단, 추적 구간 Ts/2를 600스텝으로, 12비트 1.2 V 풀스케일 LSB 293 µV)</div>
+      <div class="sim-note">해볼 것: ① 기본값(500 Ω, 1 pF)에서 오차 직선이 약 4 ns 만에 1 LSB 선을 지난다. 반 주기 500 ns보다 100배 넘게 빠르다. ② Ron을 끝(100 kΩ)까지 올리면 τ = 100 ns로 직선이 눕고, 추적 끝(5τ)에서 오차가 약 28 LSB 남는다. 비트가 틀린다. ③ fs를 30 MS/s로 올리면 추적 구간이 약 17 ns로 줄어, Ron 2 kΩ(8.3τ ≈ 17 ns)만 되어도 1 LSB에 닿지 못한다. Cs를 줄이면 빨라지지만 kT/C 잡음(4절)이 커진다. (엔진 과도 해석: 이상 스위치 Ron, Cs, 0.3 → 1.5 V 계단, 추적 구간 Ts/2를 600스텝으로, 12비트 1.2 V 풀스케일 LSB 293 µV)</div>
     </div>
 
     <p>손 계산과 엔진이 잘 맞는다. 단순한 RC라서다. 실제 스위치의 \(R_{on}\)은 입력 전압에 따라 바뀌므로(5절) 가장 나쁜 입력의 \(R_{on}\)으로 계산해야 한다. 추적 대역 \(1/(2\pi R_{on}C_s)\)는 입력 신호 주파수보다 훨씬 높아야 한다. 대역이 높아도 정착이 모자라면 표본이 지난 값에 끌려가는 <span class="term">기억 효과</span><span class="en">(Memory effect)</span>가 생긴다.</p>
@@ -231,7 +231,7 @@
         <div class="stat"><span class="k">SNDR(왜곡만)</span><span class="v" id="ron-sndr">—</span></div>
         <div class="stat"><span class="k">ENOB 한계</span><span class="v" id="ron-enob">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① NMOS(W 5 µm)는 1.2 V 위에서 Ron이 치솟아 표본이 봉우리를 놓치고, 스펙트럼이 고조파로 덮인다(SNDR 수십 dB 이하). ② 전송 게이트로 바꾸면 전 범위에서 켜져 왜곡이 크게 준다. W를 키우면 더 준다. ③ 부트스트랩은 Ron이 약 100~120 Ω으로 거의 평평해 고조파가 12비트 양자화 바닥(점선) 아래로 내려간다. fin을 낮추면 모든 스위치의 왜곡이 준다(지연 차이 × 기울기). (Ron = 엔진 AN.mos의 VDS ≈ 0 출력 컨덕턴스의 역수, PMOS W는 NMOS의 3배, 부트스트랩은 VGS = 1.8 V·바디 접지, 추적 Ts/2 = 500 ns 동안 Cs 1 pF의 RC를 1 ns 후진 오일러로 적분, 입력 0.9 ± 0.6 V, 일관 표본화 128점, 직사각형 창)</div>
+      <div class="sim-note">해볼 것: ① NMOS(W 5 µm)는 1.2 V 위에서 Ron이 치솟아 표본이 봉우리를 놓치고, 스펙트럼이 고조파로 덮인다(SNDR 수십 dB 이하). ② 전송 게이트로 바꾸면 전 범위에서 켜져 왜곡이 크게 준다. W를 키우면 더 준다. ③ 부트스트랩은 Ron이 약 100~120 Ω으로 거의 평평해 고조파가 12비트 양자화 바닥(점선) 아래로 내려간다. fin을 낮추면 켜져 있는 스위치(전송 게이트·부트스트랩)의 왜곡이 준다(지연 차이 × 기울기). NMOS·PMOS는 한쪽에서 아예 꺼지므로 fin을 낮춰도 왜곡이 남는다. (Ron = 엔진 AN.mos의 VDS ≈ 0 출력 컨덕턴스의 역수, PMOS W는 NMOS의 3배, 부트스트랩은 VGS = 1.8 V·바디 접지, 추적 Ts/2 = 500 ns 동안 Cs 1 pF의 RC를 1 ns 후진 오일러로 적분, 입력 0.9 ± 0.6 V, 일관 표본화 128점, 직사각형 창)</div>
     </div>
 
     <p>부트스트랩 스위치에서도 \(R_{on}\)이 조금 변하는 것은 바디 효과 때문이다. 소스(입력)가 오르면 \(V_{SB}\)가 커져 \(V_{th}\)가 오른다. 고속·고해상도 ADC는 바디도 소스에 붙여 이마저 없애기도 한다. 왜곡은 \(\omega\,\Delta\tau\)에 비례하므로 입력 주파수가 낮으면 웬만한 스위치도 괜찮지만, 나이퀴스트 근처 입력에서는 부트스트랩의 차이가 결정적이다.</p>
@@ -282,8 +282,9 @@
         <line class="w" x1="620" y1="90" x2="620" y2="120"/>
         <line class="dv" x1="606" y1="120" x2="606" y2="170"/><line class="dv" x1="614" y1="120" x2="614" y2="170"/>
         <line class="w" x1="620" y1="170" x2="620" y2="205"/>
-        <text class="lbl" x="632" y="140">M2 (하단)</text>
-        <text class="lbl lbl-acc2" x="632" y="158">φ1e (먼저 열림)</text>
+        <text class="lbl" x="626" y="134">M2 (하단)</text>
+        <text class="lbl lbl-acc2" x="626" y="154">φ1e</text>
+        <text class="lbl lbl-acc2" x="626" y="172">(먼저 열림)</text>
         <line class="w" x1="606" y1="205" x2="634" y2="205"/><line class="w" x1="611" y1="211" x2="629" y2="211"/>
         <text class="lbl-dim" x="545" y="236" text-anchor="middle">M2 전하는 Vin과 무관한 상수, M1 전하는 갈 곳이 없다</text>
         <defs><marker id="sc-ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
@@ -309,10 +310,10 @@
         <div class="stat"><span class="k">0.3~1.0 V에서 변동</span><span class="v" id="inj-var">—</span></div>
         <div class="stat"><span class="k">Ron / 8.3τ</span><span class="v" id="inj-ts">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 기본(W 5 µm, 1 pF)에서 꺼지는 순간 Vout이 약 3.7 mV(13 LSB) 내려앉는다. ② W를 키우면 오른쪽 아래 점이 곡선을 따라 왼쪽 위로(빠르지만 부정확), 줄이면 오른쪽 아래로(정확하지만 느림) 움직인다. Cs를 바꿔도 같은 곡선 묶음 위에서만 움직인다. ③ 더미 스위치는 오차를 수 분의 일로, 하단판 샘플링은 신호 의존 변동을 거의 0으로 만든다(남은 상수는 차동에서 상쇄). (행동 모델: 채널 전하 WLCox(VDD − Vin − Vth)의 절반이 Cs로, Vth는 엔진 AN.mos의 바디 효과 포함 값, 피드스루는 W·Cov의 용량 분배, 더미는 분배 불균형으로 주입의 20%·피드스루의 5%가 남는다고 가정, 하단판 스위치는 W/2를 접지 전위에서 연다고 가정, 꺼짐 0.3 ns의 램프)</div>
+      <div class="sim-note">해볼 것: ① 기본(W 5 µm, 1 pF)에서 꺼지는 순간 Vout이 약 3.7 mV(13 LSB) 내려앉는다. ② W를 키우면 아래 그래프의 점이 곡선을 따라 왼쪽 위로(빠르지만 부정확), 줄이면 오른쪽 아래로(정확하지만 느림) 움직인다. Cs를 바꿔도 같은 곡선 묶음 위에서만 움직인다. ③ 더미 스위치는 오차를 약 1/10로, 하단판 샘플링은 신호 의존 변동을 거의 0으로 만든다(남은 상수는 차동에서 상쇄). (행동 모델: 채널 전하 WLCox(VDD − Vin − Vth)의 절반이 Cs로, Vth는 엔진 AN.mos의 바디 효과 포함 값, 피드스루는 W·Cov의 용량 분배, 더미는 분배 불균형으로 주입의 20%·피드스루의 5%가 남는다고 가정, 하단판 스위치는 W/2를 접지 전위에서 연다고 가정, 꺼짐 0.3 ns의 램프)</div>
     </div>
 
-    <p>오른쪽 아래 그래프의 곡선들이 서로 겹쳐 하나의 띠를 이루는 것이 핵심이다. W와 Cs는 속도와 오차 사이에서 자리만 옮길 뿐, 둘의 곱을 바꾸지 못한다. 그래서 구조로 해결한다. 더미 스위치는 전하가 반반 나뉜다는 가정에 기대므로 클록 경사와 임피던스에 따라 효과가 들쭉날쭉하다. <span class="term">하단판 샘플링</span><span class="en">(Bottom-plate sampling)</span>은 전하가 갈 곳 자체를 없애므로 훨씬 확실하다. 실제 SC 회로는 하단판 샘플링과 완전 차동 구조를 함께 써서 남은 상수 오프셋까지 공통 모드로 돌려 버린다.</p>
+    <p>아래 그래프의 곡선들이 서로 겹쳐 하나의 띠를 이루는 것이 핵심이다. W와 Cs는 속도와 오차 사이에서 자리만 옮길 뿐, 둘의 곱을 바꾸지 못한다. 그래서 구조로 해결한다. 더미 스위치는 전하가 반반 나뉜다는 가정에 기대므로 클록 경사와 임피던스에 따라 효과가 들쭉날쭉하다. <span class="term">하단판 샘플링</span><span class="en">(Bottom-plate sampling)</span>은 전하가 갈 곳 자체를 없애므로 훨씬 확실하다. 실제 SC 회로는 하단판 샘플링과 완전 차동 구조를 함께 써서 남은 상수 오프셋까지 공통 모드로 돌려 버린다.</p>
   </section>
 
   <section id="scr">
@@ -424,7 +425,7 @@
         <div class="stat"><span class="k">입력 등가 저항 1/(fs·C1)</span><span class="v" id="int-req">—</span></div>
         <div class="stat"><span class="k">fu 또는 fc</span><span class="v" id="int-fc">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 적분기에서 C1/C2 = 0.5, Vin 0.1 V면 출력이 주기마다 50 mV씩 오르다 1.75 V에서 OTA가 포화해 멈춘다. Vin을 음수로 하면 내려간다. ② 저역 필터로 바꾸면 계단이 지수적으로 줄어 0.9 V + Vin(직류 이득 C1/C3 = 1)에 머문다. ③ fs를 4배로 올리면 오른쪽 응답의 차단 주파수(점선)가 4배 오른쪽으로 옮겨 가고, 응답은 fs/2에서 거울처럼 접힌다. (엔진 과도 해석: 이상 스위치 Ron 1 kΩ, C2 = 1 pF, C3 = C1, OTA는 이득 3000의 tanh 포화 전압원(0.05~1.75 V), 기준 전압 0.9 V, 동작점용 1 GΩ을 C2에 병렬, 주기당 80스텝, 비중첩 틈 각 2 %; 오른쪽은 z 영역 식)</div>
+      <div class="sim-note">해볼 것: ① 적분기에서 C1/C2 = 0.5, Vin 0.1 V면 출력이 주기마다 50 mV씩 오르다 1.75 V에서 OTA가 포화해 멈춘다. Vin을 음수로 하면 내려간다. ② 저역 필터로 바꾸면 계단이 지수적으로 줄어 0.9 V + Vin(직류 이득 C1/C3 = 1)에 머문다. ③ fs를 4배로 올리면 오른쪽 응답의 차단 주파수(점선)가 4배 오른쪽으로 옮겨 가고, 응답은 fs/2에서 거울처럼 접힌다. (엔진 과도 해석: 이상 스위치(Ron·C1 = 시간 스텝의 1/10로 두어 계산을 안정화), C2 = 1 pF, C3 = C1, OTA는 이득 3000의 tanh 포화 전압원(0.05~1.75 V), 기준 전압 0.9 V, 동작점용 1 GΩ을 C2에 병렬, 주기당 80스텝, 비중첩 틈 각 2 %; 오른쪽은 z 영역 식)</div>
     </div>
 
     <p>엔진의 계단 크기는 손 계산 \((C_1/C_2)V_{in}\)과 거의 같다. 작은 차이는 OTA 이득이 유한해서 가상 접지가 완전히 0이 아닌 탓이다. 저역 필터의 차단 주파수는 커패시터 비와 클록만으로 정해진다. 칩마다 RC 곱이 ±20~30 % 흩어지는 연속 시간 필터와 달리, 커패시터 비는 0.1 % 수준으로 맞출 수 있고 클록은 수정 발진기만큼 정확하다. SC 필터가 수십 년 동안 오디오 코덱과 센서 칩의 주력이었던 이유다. 대가는 표본화가 따라온다는 점이다. 클록 근처의 입력은 접혀 들어오므로(3절) 앞에 간단한 연속 시간 안티에일리어싱 필터가 여전히 필요하다.</p>
@@ -433,7 +434,7 @@
   <section id="settle">
     <h2>OTA의 정착: 반 주기 안에 12비트</h2>
     <p>SC 회로의 OTA는 매 φ2마다 커패시터의 전하를 옮기고, 다음 클록 전에 끝내야 한다. AB-1 샘플러는 1 MS/s이므로 반 주기 500 ns 안에 출력이 최종값의 1 LSB 이내로 들어와야 한다. 정착은 두 단계로 일어난다. 큰 계단이 들어오면 OTA 입력 쌍의 꼬리 전류가 전부 한쪽으로 쏠려 출력이 일정한 기울기(<span class="term">슬루율</span><span class="en">(Slew rate)</span>)로 움직이고, 오차가 작아지면 선형 영역으로 돌아와 시정수 τ로 지수 정착한다.</p>
-    <div class="formula">$$\tau = \frac{1}{2\pi\,\beta\,\mathrm{GBW}},\qquad t_{slew} = \frac{\Delta V - SR\cdot\tau}{SR},\qquad t_{settle} \approx t_{slew} + \tau\ln\!\frac{SR\cdot\tau}{\mathrm{LSB}}$$<div class="where">\(\beta\)는 피드백 계수(단위 이득 버퍼 β = 1). \(\mathrm{GBW} \approx g_{m1}/(2\pi C_c)\), \(SR \approx I_{tail}/C_c\). AB-1 OTA: GBW 23.5 MHz → τ ≈ 6.8 ns, SR ≈ 18~20 V/µs. 0.6 V 계단이면 슬루 약 25 ns + 선형 약 7τ. 1차 모델의 손 계산이고, 실제 2단 OTA는 두 번째 극점(위상 여유) 때문에 이보다 느리거나 울린다</div></div>
+    <div class="formula">$$\tau = \frac{1}{2\pi\,\beta\,\mathrm{GBW}},\qquad t_{slew} = \frac{\Delta V - SR\cdot\tau}{SR},\qquad t_{settle} \approx t_{slew} + \tau\ln\!\frac{SR\cdot\tau}{\mathrm{LSB}}$$<div class="where">\(\beta\)는 피드백 계수(단위 이득 버퍼 β = 1). \(\mathrm{GBW} \approx g_{m1}/(2\pi C_c)\), \(SR \approx I_{tail}/C_c\). AB-1 OTA: GBW 23.5 MHz → τ ≈ 6.8 ns, SR ≈ 18~20 V/µs. 0.6 V 계단이면 슬루 약 23 ns + 선형 약 6τ. 1차 모델의 손 계산이고, 실제 2단 OTA는 두 번째 극점(위상 여유) 때문에 이보다 느리거나 울린다</div></div>
     <p>이 장 마지막 시뮬레이터는 AB-1 OTA(<a href="opamp.html">9장</a>) 자체를 엔진으로 풀어 단위 이득 버퍼로 0.6 → 1.2 V 계단을 따라가게 한다. 오차를 LSB 로그 눈금으로 그리고, 1차 모델(슬루 + 단일 극점) 손 계산을 점선으로 겹친다. Cc와 꼬리 전류, 표본화 속도를 바꿔 GBW와 위상 여유, 정착 시간과 전력이 어떻게 맞물리는지 본다.</p>
 
     <div class="sim" id="sim-set" data-big data-desc="AB-1 2단 OTA를 엔진으로 풀어 단위 이득 버퍼의 계단 정착 오차를 LSB 로그 눈금으로 보고, Cc·꼬리 전류·표본화 속도를 바꾸며 GBW, 위상 여유, 슬루와 반 주기 안 12비트 정착 여부, 전력을 손 계산(슬루 + 1차)과 비교한다">
@@ -446,7 +447,7 @@
           <label class="ctrl"><span>표본화 fs <output id="set-fs-out"></output></span><input type="range" id="set-fs" min="5.5" max="7.3" step="0.02" value="6"></label>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--accent)"></i>엔진(AB-1 OTA 트랜지스터 수준)</span><span><i style="background:var(--accent2)"></i>손 계산(슬루 + 1차)</span></div>
+      <div class="map-legend"><span><i style="background:var(--accent)"></i>엔진(AB-1 OTA 트랜지스터 수준)</span><span><i style="background:var(--accent-2)"></i>손 계산(슬루 + 1차)</span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">GBW / 위상 여유(엔진)</span><span class="v" id="set-gbw">—</span></div>
         <div class="stat"><span class="k">SR 손 계산 Itail/Cc</span><span class="v" id="set-sr">—</span></div>
@@ -455,7 +456,7 @@
         <div class="stat"><span class="k">반 주기 Ts/2와 판정</span><span class="v" id="set-ok">—</span></div>
         <div class="stat"><span class="k">OTA 전력</span><span class="v" id="set-pw">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 기본값(Cc 1 pF, 20 µA)에서 엔진 오차가 약 70 ns 만에 1 LSB 아래로 들어온다. 1 MS/s의 500 ns에 여유가 크다. ② fs를 20 MS/s로 올리면 반 주기 25 ns가 슬루 구간만으로 다 쓰여 정착하지 못한다. 꼬리 전류를 올리면 SR과 GBW가 함께 오르지만 전력이 비례해 는다. ③ Cc를 0.3 pF로 줄이면 GBW는 오르는데 위상 여유가 무너져 엔진 오차 곡선이 출렁이며(울림) 1차 손 계산보다 늦게 정착한다. Cc를 3 pF로 키우면 안정하지만 슬루가 느려진다. (엔진: AN.ota2 단위 이득 버퍼, CL 2 pF, Rz 2 kΩ, 2단 전류 = 꼬리 ×4, 계단 0.6 → 1.2 V(입력 쌍 공통 모드 범위 안), GBW·PM은 AN.ota2Open 개루프 측정, 손 계산 τ = 1/(2π·gm1/(2πCc))와 SR = Itail/Cc, 1 LSB = 293 µV, 전력 = 1.8 V × 엔진 전원 전류)</div>
+      <div class="sim-note">해볼 것: ① 기본값(Cc 1 pF, 20 µA)에서 엔진 오차가 약 57 ns 만에 1 LSB 아래로 들어온다(손 계산 약 60 ns). 1 MS/s의 500 ns에 여유가 9배쯤 된다. ② fs를 20 MS/s로 올리면 반 주기 25 ns가 슬루 구간만으로 다 쓰여 정착하지 못한다. 꼬리 전류를 올리면 SR과 GBW가 함께 오르지만 전력이 비례해 는다. ③ Cc를 0.3 pF로 줄이면 GBW는 오르는데 위상 여유가 무너져 엔진 오차 곡선이 출렁이며(울림) 1차 손 계산보다 늦게 정착한다. Cc를 3 pF로 키우면 안정하지만 슬루가 느려진다. (엔진: AN.ota2 단위 이득 버퍼, CL 2 pF, Rz 2 kΩ, 2단 전류 = 꼬리 ×4, 계단 0.6 → 1.2 V(입력 쌍 공통 모드 범위 안), GBW·PM은 AN.ota2Open 개루프 측정, 손 계산 τ = 1/(2π·gm1/(2πCc))와 SR = Itail/Cc, 1 LSB = 293 µV, 전력 = 1.8 V × 엔진 전원 전류)</div>
     </div>
 
     <p>기본 AB-1 OTA는 1 MS/s 샘플러를 넉넉하게 구동한다. 손 계산과 엔진이 1~2할 안에서 맞고, 차이는 2단 OTA의 두 번째 극점과 슬루 동안의 비선형성에서 온다. Cc를 줄여 GBW만 쫓으면 위상 여유가 떨어져 울림이 정착을 오히려 늦춘다. <a href="stability.html">10장</a>에서 위상 여유 60~70°를 고집한 이유가 여기서 다시 드러난다. 정착에는 GBW, 위상 여유, 슬루율이 함께 필요하고, 셋 모두 전류로 산다.</p>
@@ -463,8 +464,8 @@
 
     <div class="casefile">
       <div class="tag"><b>TARGET AB-1</b><span>타깃 파일 · 15장</span></div>
-      <h4>Cs 1 pF(kT/C 64 µV), 부트스트랩 스위치, 하단판 차동 샘플링, OTA는 약 70 ns에 12비트 정착</h4>
-      <p>PGA 출력을 12비트 1 MS/s로 표본화하는 AB-1 샘플러를 이 장의 시뮬레이터로 정했다. 샘플링 커패시터는 1 pF로 kT/C 잡음 64 µV rms(LSB 293 µV의 0.22배, 양자화 잡음 85 µV보다 작다)다. NMOS 스위치(5/0.18 µm)는 입력 0.3~1.05 V에서 \(R_{on}\) 130 Ω~1.5 kΩ이고 1.2 V 위에서 꺼져 풀스케일 1.2 V를 다룰 수 없다. 부트스트랩 스위치는 \(R_{on}\) 약 100~120 Ω으로 평평해 τ ≈ 0.12 ns, 12비트 추적 정착 8.3τ ≈ 1 ns로 반 주기 500 ns에 비해 아주 빠르고, 나이퀴스트 근처 입력에서도 왜곡이 12비트 양자화 바닥 아래다. 기본 스위치의 전하 주입과 피드스루는 약 3.7 mV(13 LSB)라 하단판 샘플링과 완전 차동 구조로 신호 의존 성분을 없앤다. 구동 OTA는 AB-1 OTA(GBW 23.5 MHz, PM 약 68°, SR 약 18 V/µs)로, 엔진에서 0.6 V 계단을 약 70 ns 만에 1 LSB 이내로 정착해 500 ns 안에 여유가 7배쯤 된다.</p>
+      <h4>Cs 1 pF(kT/C 64 µV), 부트스트랩 스위치, 하단판 차동 샘플링, OTA는 약 57 ns에 12비트 정착</h4>
+      <p>PGA 출력을 12비트 1 MS/s로 표본화하는 AB-1 샘플러를 이 장의 시뮬레이터로 정했다. 샘플링 커패시터는 1 pF로 kT/C 잡음 64 µV rms(LSB 293 µV의 0.22배, 양자화 잡음 85 µV보다 작다)다. NMOS 스위치(5/0.18 µm)는 입력 0.3~1.05 V에서 \(R_{on}\) 130 Ω~1.5 kΩ이고 1.2 V 위에서 꺼져 풀스케일 1.2 V를 다룰 수 없다. 부트스트랩 스위치는 \(R_{on}\) 약 100~120 Ω으로 평평해 τ ≈ 0.12 ns, 12비트 추적 정착 8.3τ ≈ 1 ns로 반 주기 500 ns에 비해 아주 빠르고, 나이퀴스트 근처 입력에서도 왜곡이 12비트 양자화 바닥 아래다. 기본 스위치의 전하 주입과 피드스루는 약 3.7 mV(13 LSB)라 하단판 샘플링과 완전 차동 구조로 신호 의존 성분을 없앤다. 구동 OTA는 AB-1 OTA(GBW 23.5 MHz, PM 약 68°, SR 약 18 V/µs)로, 엔진에서 0.6 V 계단을 약 57 ns 만에 1 LSB 이내로 정착해 500 ns 안에 여유가 9배쯤 된다.</p>
       <div class="clue">
         <div><b>이 장에서 정한 것</b>Cs = 1 pF(차동이면 한쪽 1 pF), 부트스트랩 NMOS 스위치, 하단판 샘플링 + 완전 차동, 비중첩 2상 클록, 구동 OTA는 AB-1 OTA 그대로(Cc 1 pF, 꼬리 20 µA). 안티에일리어싱은 PGA 뒤 1차 RC로 충분(신호 10 kHz ≪ 500 kHz).</div>
         <div><b>아직 남은 문제</b>붙잡은 전압을 12개의 비트로 바꾸는 일은 아직 하지 않았다. 커패시터 DAC의 부정합, 비교기의 잡음과 속도, 클록 몇 사이클이 필요한지가 ENOB 10.5 목표를 정한다.</div>
@@ -483,7 +484,7 @@
       <li>NMOS 스위치는 높은 입력에서, PMOS는 낮은 입력에서 꺼진다. 전송 게이트는 전 범위에서 켜지고, 부트스트랩은 \(V_{GS} = V_{DD}\)를 유지해 \(R_{on}\)을 평평하게 만들어 왜곡을 없앤다.</li>
       <li>전하 주입 \(\approx WLC_{ox}V_{ov}/(2C_s)\)와 클록 피드스루 \(V_{DD}WC_{ov}/C_s\)는 속도와 맞바뀐다(\(\tau\Delta V \propto L^2/\mu\)). 더미 스위치와 하단판 샘플링, 완전 차동 구조가 대책이다.</li>
       <li>스위치드 커패시터는 저항 \(R_{eq} = 1/(f_sC)\)이다. 비중첩 클록이 필요하고, SC 적분기·필터의 시정수와 차단 주파수는 커패시터 비와 \(f_s\)로만 정해진다.</li>
-      <li>SC 회로의 OTA는 반 주기 안에 슬루 + 선형 정착을 끝내야 한다. GBW, 위상 여유, 슬루율이 함께 필요하다. AB-1 OTA는 1 MS/s 샘플러를 약 70 ns에 12비트 정착시킨다.</li>
+      <li>SC 회로의 OTA는 반 주기 안에 슬루 + 선형 정착을 끝내야 한다. GBW, 위상 여유, 슬루율이 함께 필요하다. AB-1 OTA는 1 MS/s 샘플러를 약 57 ns에 12비트 정착시킨다.</li>
     </ol>
   </section>
 
@@ -554,6 +555,10 @@
     ctx.save(); ctx.font = F(o.size || 12, o.mono, o.weight || 500); ctx.fillStyle = o.color || AB.palette().text;
     ctx.textAlign = o.align || "left"; ctx.textBaseline = o.base || "middle"; ctx.fillText(s, x, y); ctx.restore();
   }
+  function btxt(ctx, s, x, y, o = {}) {
+    ctx.save(); ctx.font = F(o.size || 12, o.mono, o.weight || 500); const tw = ctx.measureText(s).width, x0 = o.align === "right" ? x - tw : o.align === "center" ? x - tw / 2 : x;
+    ctx.fillStyle = AB.alpha(AB.palette().bg, 0.85); ctx.fillRect(x0 - 3, y - 8, tw + 6, 16); ctx.restore(); txt(ctx, s, x, y, o);
+  }
   function panel(ctx, x, y, w, h) {
     const P = AB.palette();
     ctx.save(); ctx.fillStyle = P.bg; ctx.strokeStyle = P.border; ctx.lineWidth = 1;
@@ -600,7 +605,7 @@
       AB.stat("sh-ped", mode === "ideal" ? "≈ 0" : si(res.ped, "V") + ` <small>(${lsbFmt(Math.abs(res.ped) / LSB)})</small>`);
       cv.redraw();
     }
-    const cv = AB.canvas("#sh-cv", draw, { get height() { return pw("sh-cv") < 620 ? 450 : 330; } });
+    const cv = AB.canvas("#sh-cv", draw, { get height() { return pw("sh-cv") < 620 ? 470 : 330; } });
     run();
     AB.loop(cv.canvas, (dt) => { cur = (cur + dt * 1.25e-6) % 10e-6; ph += dt; cv.redraw(); });
     function draw(ctx, w, h) {
@@ -608,7 +613,7 @@
       if (!res) return;
       let sp, sc;
       if (!narrow) { const sw = Math.min(240, w * 0.33); sp = { x: 8, y: 8, w: sw, h: h - 16 }; sc = { x: sw + 18, y: 8, w: w - sw - 26, h: h - 16 }; }
-      else { sp = { x: 8, y: 8, w: w - 16, h: 150 }; sc = { x: 8, y: 168, w: w - 16, h: h - 176 }; }
+      else { sp = { x: 8, y: 8, w: w - 16, h: 170 }; sc = { x: 8, y: 188, w: w - 16, h: h - 196 }; }
       const ck = Array.from(res.t, (q) => (res.on(q) ? 0.3 : 0.05));
       const S = AN.scope(ctx, sc, {
         t: [0, 10e-6], y: [0, 2.0], tDiv: "1 µs/div", vDiv: "0.25 V/div",
@@ -628,7 +633,7 @@
       const vi = res.vin[ic], vo = res.vh[ic];
       const u = clamp(sp.w / 19, 8, 12), Sx = AN.sch(ctx, { u });
       const xa = sp.x + u * 2.6, xb = sp.x + sp.w - u * 4.2;
-      const yT = sp.y + (narrow ? 34 : sp.h * 0.3), yB = narrow ? sp.y + sp.h - 22 : sp.y + sp.h * 0.62;
+      const yT = sp.y + (narrow ? 66 : sp.h * 0.3), yB = narrow ? sp.y + sp.h - 24 : sp.y + sp.h * 0.62;
       const xs1 = xa + (xb - xa) * 0.3, xs2 = xa + (xb - xa) * 0.62;
       Sx.vsrc(xa, yT, xa, yB, { ac: true });
       Sx.wire([[xa, yT], [xs1, yT]]);
@@ -636,12 +641,12 @@
       Sx.wire([[xs2, yT], [xb, yT]]); Sx.dot(xb, yT);
       Sx.cap(xb, yT, xb, yB, { label: "Cs" });
       Sx.wire([[xa, yB], [xb, yB]]); Sx.gnd((xa + xb) / 2, yB);
-      Sx.label((xs1 + xs2) / 2, yT - u * 1.9, res.mode === "ideal" ? "S (Ron 200 Ω)" : "NMOS 5/0.18", { align: "center", size: 10.5, color: P.dim });
+      Sx.label((xs1 + xs2) / 2, yT - u * (narrow ? 1.5 : 1.9), res.mode === "ideal" ? "S (Ron 200 Ω)" : "NMOS 5/0.18", { align: "center", size: 10.5, color: P.dim });
       if (on) Sx.flow([[xa, yT], [xs1, yT], [xs2, yT], [xb, yT]], ph * clamp(Math.abs(vi - vo) * 400, 0.3, 6), { color: AB.color("sch-hot") || P.accent });
-      Sx.tag(xa - u * 1.6, yT - u * 1.4, vi.toFixed(3) + " V", { color: AB.trace(1) });
-      Sx.tag(xb - u * 2, yT - u * 3.4, vo.toFixed(3) + " V", { color: P.accent2 });
+      Sx.tag(xa - u * 1.6, yT - u * (narrow ? 1.5 : 1.4), vi.toFixed(3) + " V", { color: AB.trace(1) });
+      Sx.tag(xb - u * 2, yT - u * (narrow ? 1.5 : 3.4), vo.toFixed(3) + " V", { color: P.accent2 });
       const st = on ? "추적(스위치 닫힘)" : "유지(스위치 열림)";
-      txt(ctx, st, sp.x + sp.w / 2, narrow ? sp.y + 14 : sp.y + sp.h * 0.12, { align: "center", size: 12.5, weight: 700, color: on ? P.accent : P.accent2 });
+      txt(ctx, st, sp.x + sp.w / 2, narrow ? sp.y + 18 : sp.y + sp.h * 0.12, { align: "center", size: 12.5, weight: 700, color: on ? P.accent : P.accent2 });
       if (!narrow) {
         txt(ctx, "t = " + (cur * 1e6).toFixed(2) + " µs", sp.x + sp.w / 2, sp.y + sp.h * 0.78, { align: "center", size: 11.5, mono: true, color: P.dim });
         txt(ctx, "오차 Vout − Vin", sp.x + sp.w / 2, sp.y + sp.h * 0.86, { align: "center", size: 11, color: P.dim });
@@ -682,7 +687,7 @@
     function draw(ctx, w, h) {
       const P = AB.palette();
       if (!res) return;
-      const xs = 1e9, xmax = res.tstop * xs;
+      const xs = 1e9, xmax = res.tstop * xs * (res.tstop >= res.Tt * 0.999 ? 1.12 : 1);
       const top = { x: 60, y: 14, w: w - 60 - 16, h: (h - 14) * 0.36 };
       const bot = { x: 60, y: top.y + top.h + 30, w: w - 60 - 16, h: h - (top.y + top.h + 30) - 50 };
       const tv = Array.from(res.t, (q, i) => [q * xs, res.vh[i]]);
@@ -691,7 +696,7 @@
         x: [0, xmax], y: [0.2, 1.6], yLabel: "V", xFmt: () => "",
         series: [{ data: [[0, 1.5], [xmax, 1.5]], color: AB.trace(1), width: 1.6, dash: [6, 4] }, { data: tv, color: P.accent, width: 2.2 }],
       });
-      txt(ctx, "입력 1.5 V (0.3 V에서 계단)", top.x + top.w - 6, top.y + 10, { align: "right", size: 11, color: P.dim });
+      txt(ctx, "입력 1.5 V (0.3 V에서 계단)", top.x + top.w - 6, top.y + top.h * 0.55, { align: "right", size: 11, color: P.dim });
       txt(ctx, "Cs 전압", top.x + 8, top.y + top.h - 12, { size: 11, color: P.accent });
       const hand = [];
       for (let i = 0; i <= 200; i++) { const q = (res.tstop * i) / 200; hand.push([q * xs, (1.2 * Math.exp(-q / res.tau)) / LSB]); }
@@ -703,8 +708,8 @@
         hlines: [{ y: 1, color: P.bad, label: "1 LSB = 293 µV" }],
         vlines: vl,
       });
-      if (res.tstop < res.Tt * 0.999) txt(ctx, "확대: 추적 끝 Ts/2 = " + ns(res.Tt) + "은 화면 오른쪽 밖", bot.x + bot.w - 6, bot.y + bot.h - 12, { align: "right", size: 11, color: P.dim });
-      txt(ctx, "실선 엔진, 점선 손 계산 1.2·e^(−t/τ)", bot.x + 8, bot.y + 12, { size: 11, color: P.dim });
+      if (res.tstop < res.Tt * 0.999) btxt(ctx, (w < 560 ? "Ts/2 = " : "확대: 추적 끝 Ts/2 = ") + ns(res.Tt) + (w < 560 ? "은 오른쪽 밖" : "은 화면 오른쪽 밖"), bot.x + bot.w - 6, bot.y + 28, { align: "right", size: 11, color: P.dim });
+      btxt(ctx, "실선 엔진, 점선 손 계산 1.2·e^(−t/τ)", bot.x + 8, bot.y + bot.h - 12, { size: 11, color: P.dim });
     }
   })();
 
@@ -717,7 +722,7 @@
     aa.addEventListener("change", () => cv.redraw());
     const att = (f) => (aa.checked ? 1 / Math.sqrt(1 + Math.pow(f / 0.4, 4)) : 1);
     const alias = (f) => { const k = Math.round(f / fs); return { fa: Math.abs(f - k * fs), k, sgn: f - k * fs }; };
-    const cv = AB.canvas("#al-cv", draw, { get height() { return pw("al-cv") < 600 ? 640 : 420; } });
+    const cv = AB.canvas("#al-cv", draw, { get height() { return pw("al-cv") < 600 ? 690 : 450; } });
     AB.drag(cv.canvas, {
       move(x, y) { if (!lay) return; const b = lay.sp; if (y < b.y - 20 || y > b.y + b.h + 30) return; fR.set(clamp(((x - b.x) / b.w) * 3, 0.01, 2.99)); auto.checked = false; },
     });
@@ -730,13 +735,13 @@
       const P = AB.palette(), narrow = w < 600, fin = fR(), A = att(fin), { fa, sgn } = alias(fin);
       let tb, sp, zb;
       if (!narrow) {
-        tb = { x: 56, y: 14, w: w - 56 - 16, h: 160 };
-        sp = { x: 56, y: 232, w: (w - 56) * 0.6 - 24, h: h - 232 - 50 };
-        zb = { x: sp.x + sp.w + 70, y: 232, w: w - (sp.x + sp.w + 70) - 16, h: h - 232 - 50 };
+        tb = { x: 56, y: 30, w: w - 56 - 16, h: 160 };
+        sp = { x: 56, y: 248, w: (w - 56) * 0.6 - 24, h: h - 248 - 74 };
+        zb = { x: sp.x + sp.w + 70, y: 248, w: w - (sp.x + sp.w + 70) - 16, h: h - 248 - 74 };
       } else {
-        tb = { x: 50, y: 14, w: w - 50 - 12, h: 170 };
-        sp = { x: 50, y: 240, w: w - 50 - 12, h: 160 };
-        zb = { x: 50, y: 460, w: w - 50 - 12, h: h - 460 - 50 };
+        tb = { x: 50, y: 44, w: w - 50 - 12, h: 170 };
+        sp = { x: 50, y: 270, w: w - 50 - 12, h: 160 };
+        zb = { x: 50, y: 490, w: w - 50 - 12, h: h - 490 - 74 };
       }
       // 시간 파형
       const T = 12, xs = [], vs = [], al = [], pts = [];
@@ -747,7 +752,9 @@
         series: [{ data: xs, color: AB.alpha(AB.trace(1), 0.75), width: 1.2 }, { data: al, color: P.accent2, width: 2, dash: [6, 4] }],
         points: pts,
       });
-      txt(ctx, "가는 선: 입력 " + fin.toFixed(3) + " MHz · 점: 표본 · 점선: 표본이 보여 주는 " + (fa * 1000).toFixed(0) + " kHz", tb.x + 6, tb.y - 2 + 8, { size: 11, color: P.dim });
+      const cap1 = "가는 선: 입력 " + fin.toFixed(3) + " MHz · 점: 표본", cap2 = "점선: 표본이 보여 주는 " + (fa * 1000).toFixed(0) + " kHz";
+      if (narrow) { txt(ctx, cap1, tb.x, 10, { size: 11, color: P.dim }); txt(ctx, cap2, tb.x, 26, { size: 11, color: P.accent2 }); }
+      else txt(ctx, cap1 + " · " + cap2, tb.x, 12, { size: 11, color: P.dim });
       // 스펙트럼
       const bands = [];
       for (let z = 0; z < 6; z++) bands.push({ x0: z * 0.5, x1: (z + 1) * 0.5, color: z === 0 ? AB.alpha(P.ok, 0.12) : z % 2 ? AB.alpha(P.text, 0.04) : AB.alpha(P.text, 0.0) });
@@ -893,7 +900,7 @@
       AB.stat("ron-enob", sd.enob > 20 ? "> 20비트" : sd.enob.toFixed(1) + "비트");
     }
     build();
-    const cv = AB.canvas("#ron-cv", draw, { get height() { return pw("ron-cv") < 600 ? 560 : 340; } });
+    const cv = AB.canvas("#ron-cv", draw, { get height() { return pw("ron-cv") < 600 ? 620 : 380; } });
     simulate(); cv.redraw();
     AB.drag(cv.canvas, {
       start(x, y) {
@@ -907,26 +914,28 @@
       const P = AB.palette(), narrow = w < 600, sel = mS();
       if (!sim) return;
       let a, b;
-      if (!narrow) { a = { x: 62, y: 14, w: w * 0.46 - 62, h: h - 14 - 50 }; b = { x: w * 0.46 + 62, y: 14, w: w - w * 0.46 - 62 - 14, h: h - 14 - 50 }; }
-      else { a = { x: 58, y: 14, w: w - 58 - 12, h: 220 }; b = { x: 58, y: 300, w: w - 58 - 12, h: h - 300 - 50 }; }
-      const cols = { n: AB.trace(1), p: AB.trace(3), tg: P.accent2, bs: P.accent };
+      if (!narrow) { a = { x: 62, y: 34, w: w * 0.46 - 62, h: h - 34 - 74 }; b = { x: w * 0.46 + 62, y: 14, w: w - w * 0.46 - 62 - 14, h: h - 14 - 74 }; }
+      else { a = { x: 58, y: 48, w: w - 58 - 12, h: 220 }; b = { x: 58, y: 334, w: w - 58 - 12, h: h - 334 - 74 }; }
+      const cols = { n: AB.trace(1), p: AB.trace(4), tg: P.accent2, bs: P.accent };
       const ser = KEYS.map((k) => ({ data: tab[k].map((r, i) => [(VDD * i) / (NV - 1), clamp(r, 1, 1e7)]), color: cols[k], width: k === sel ? 3 : 1.2, dash: k === sel ? [] : [5, 4] }));
       const ch = AB.chart(ctx, a, {
         x: [0, VDD], y: [10, 1e6], logY: true, xLabel: "입력 Vin (V)", yLabel: "Ron (Ω)", yFmt: logFmt,
         bands: [{ x0: 0.3, x1: 1.5, color: AB.alpha(P.ok, 0.09) }], series: ser,
       });
       lay = { a, Y: ch.Y };
-      const lab = { n: 1.25, p: 0.45, tg: 0.9, bs: 1.6 };
+      const lw = narrow ? (a.w + 10) / 2 : (a.w + 10) / 4;
       KEYS.forEach((k, i) => {
-        const yy = ch.Y(clamp(ron(tab[k], lab[k]), 12, 6e5));
-        txt(ctx, NAMES[k], ch.X(lab[k]) + (k === "p" ? -4 : 4), yy - 10 - (k === "bs" ? 4 : 0), { size: 11, color: cols[k], weight: k === sel ? 700 : 500, align: k === "p" ? "right" : k === "bs" ? "right" : "left" });
+        const lx = a.x - 10 + (i % (narrow ? 2 : 4)) * lw, ly = narrow ? 10 + Math.floor(i / 2) * 16 : 12;
+        ctx.save(); ctx.strokeStyle = cols[k]; ctx.lineWidth = k === sel ? 3 : 1.4; if (k !== sel) ctx.setLineDash([5, 3]);
+        ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + 16, ly); ctx.stroke(); ctx.restore();
+        txt(ctx, NAMES[k], lx + 21, ly, { size: 11, color: k === sel ? P.text : P.dim, weight: k === sel ? 700 : 500 });
       });
       txt(ctx, "신호 범위 0.3~1.5 V", ch.X(0.9), a.y + 10, { size: 11, color: P.ok, align: "center" });
       // 스펙트럼
       const sp = sim.sp, data = [];
       const ch2 = AB.chart(ctx, b, {
         x: [0, 500], y: [-160, 5], xLabel: "주파수 (kHz), fs = 1 MS/s, 128점", yLabel: "dBFS",
-        hlines: [{ y: -92, color: P.warn, label: "12비트 양자화 바닥(빈당)" }],
+        hlines: [{ y: -92, color: P.warn }],
       });
       ctx.save(); ctx.lineWidth = 2;
       for (let k = 1; k < sp.db.length; k++) {
@@ -935,8 +944,9 @@
         ctx.beginPath(); ctx.moveTo(ch2.X(f), ch2.Y(-160)); ctx.lineTo(ch2.X(f), ch2.Y(d)); ctx.stroke();
       }
       ctx.restore();
-      txt(ctx, NAMES[sel] + " · fin " + si(sim.fin, "Hz"), b.x + 8, b.y + 12, { size: 11.5, color: cols[sel], weight: 700 });
-      txt(ctx, "SNDR " + (sim.sd.sndr > 140 ? "> 140" : sim.sd.sndr.toFixed(1)) + " dB", b.x + 8, b.y + 28, { size: 11, color: P.dim });
+      btxt(ctx, "12비트 양자화 바닥(빈당)", b.x + b.w - 6, ch2.Y(-92) + 11, { size: 11, color: P.warn, align: "right" });
+      btxt(ctx, NAMES[sel] + " · fin " + si(sim.fin, "Hz"), b.x + 8, b.y + 12, { size: 11.5, color: cols[sel], weight: 700 });
+      btxt(ctx, "SNDR " + (sim.sd.sndr > 140 ? "> 140" : sim.sd.sndr.toFixed(1)) + " dB", b.x + 8, b.y + 28, { size: 11, color: P.dim });
     }
   })();
 
@@ -977,18 +987,18 @@
       if (cv) cv.redraw();
     }
     let cv = null;
-    cv = AB.canvas("#inj-cv", draw, { get height() { return pw("inj-cv") < 600 ? 640 : 400; } });
+    cv = AB.canvas("#inj-cv", draw, { get height() { return pw("inj-cv") < 600 ? 680 : 400; } });
     upd();
     function draw(ctx, w, h) {
       const P = AB.palette(), narrow = w < 600, W = Math.pow(10, wR()) * 1e-6, C = Math.pow(10, cR()), vin = vR(), mode = mS();
       const r = model(W, C, vin, mode), tot = r.inj + r.ft;
       let sp, a, b;
       if (!narrow) { const sw = Math.min(220, w * 0.3); sp = { x: 8, y: 8, w: sw, h: h - 16 }; a = { x: sw + 72, y: 14, w: w - sw - 72 - 14, h: (h - 14) * 0.36 }; b = { x: sw + 72, y: a.y + a.h + 46, w: a.w, h: h - (a.y + a.h + 46) - 50 }; }
-      else { sp = { x: 8, y: 8, w: w - 16, h: 150 }; a = { x: 60, y: 176, w: w - 60 - 12, h: 150 }; b = { x: 60, y: 380, w: w - 60 - 12, h: h - 380 - 50 }; }
+      else { sp = { x: 8, y: 8, w: w - 16, h: 190 }; a = { x: 60, y: 216, w: w - 60 - 12, h: 150 }; b = { x: 60, y: 420, w: w - 60 - 12, h: h - 420 - 50 }; }
       // 회로도
       panel(ctx, sp.x, sp.y, sp.w, sp.h);
-      const u = clamp(Math.min(sp.w, sp.h * 1.4) / 18, 7, 11), S = AN.sch(ctx, { u });
-      const cx = narrow ? sp.x + sp.w * 0.32 : sp.x + sp.w * 0.45, top = sp.y + (narrow ? 22 : 40), my = narrow ? sp.y + sp.h * 0.5 : sp.y + sp.h * 0.36;
+      const u = clamp(Math.min(sp.w, narrow ? 210 : sp.h * 1.4) / 18, 7, 11), S = AN.sch(ctx, { u });
+      const cx = narrow ? sp.x + sp.w * 0.32 : sp.x + sp.w * 0.45, top = sp.y + (narrow ? 22 : 40), my = narrow ? sp.y + 75 : sp.y + sp.h * 0.36;
       S.label(cx, top - 8, "Vin " + vin.toFixed(2) + " V", { align: "center", size: 11 });
       S.open(cx, top);
       const m = S.nmos(cx, my, { label: "M1" });
@@ -1019,7 +1029,7 @@
         series: [{ data: ck, color: AB.alpha(P.dim, 0.7), width: 1.2, dash: [3, 3] }, { data: wv, color: P.accent, width: 2.4 }],
         hlines: [{ y: -LSB * 1e3, color: P.bad, label: "−1 LSB" }],
       });
-      txt(ctx, "점선: 클록 φ(축소)", a.x + a.w - 6, a.y + 10, { align: "right", size: 11, color: P.dim });
+      txt(ctx, "점선: 클록 φ(축소)", a.x + a.w - 6, a.y + a.h * (0.4 * ymin - 1) / (ymin - 1), { align: "right", size: 11, color: P.dim });
       // 맞바꿈
       const caps = [0.25e-12, 0.5e-12, 1e-12, 2e-12, 4e-12], ser = [];
       caps.forEach((cc) => {
@@ -1036,7 +1046,8 @@
         series: ser, hlines: [{ y: LSB * 1e3, color: P.bad, label: "1 LSB" }],
         points: [{ x: 12 * Math.LN2 * r.ron * C * 1e9, y: Math.max(tot * 1e3, 0.011), color: P.accent, r: 6 }],
       });
-      txt(ctx, "회색: Cs 0.25·0.5·1·2·4 pF, 곡선 위를 W가 1~40 µm로 움직인다", b.x + 6, b.y + 10, { size: 10.5, color: P.dim });
+      if (narrow) { txt(ctx, "회색: Cs 0.25·0.5·1·2·4 pF", b.x + 6, b.y + b.h - 28, { size: 10.5, color: P.dim }); txt(ctx, "곡선 위를 W가 1~40 µm로 움직인다", b.x + 6, b.y + b.h - 12, { size: 10.5, color: P.dim }); }
+      else txt(ctx, "회색: Cs 0.25·0.5·1·2·4 pF, 곡선 위를 W가 1~40 µm로 움직인다", b.x + 6, b.y + b.h - 12, { size: 10.5, color: P.dim });
     }
   })();
 
@@ -1131,7 +1142,7 @@
     function run() {
       const lpf = mS() === "lpf", k = kR(), fs = Math.pow(10, fR()), T = 1 / fs, vin = vR(), g = 0.02;
       const p1 = (t) => { const u = (t / T) % 1; return u > g && u < 0.5 - g; }, p2 = (t) => { const u = (t / T) % 1; return u > 0.5 + g && u < 1 - g; };
-      const c = AN.circuit(), o = (n) => ({ ron: 1e3, name: n });
+      const ron = T / SPP / (10 * k * 1e-12), c = AN.circuit(), o = (n) => ({ ron, name: n });
       c.V("cm", 0, 0.9, { name: "Vcm" }); c.V("in", 0, 0.9 + vin, { name: "Vin" });
       c.S("in", "a", p1, o("S1")); c.S("b", "cm", p1, o("S3")); c.S("a", "cm", p2, o("S2")); c.S("b", "n", p2, o("S4"));
       c.C("a", "b", k * 1e-12, { name: "C1" }); c.C("n", "out", 1e-12, { name: "C2" }); c.R("n", "out", 1e9, { name: "Rb" });
@@ -1186,13 +1197,14 @@
       const fc = lpf ? fcOf(k, fs) : (k * fs) / (2 * Math.PI);
       const vl = [{ x: fs / 2, color: P.bad, label: "fs/2" }];
       if (isFinite(fc)) vl.push({ x: fc, color: P.accent, label: lpf ? "fc" : "fu" });
-      if (fs < f1) vl.push({ x: fs, color: P.dim, label: "fs" });
+      if (fs < f1) vl.push({ x: fs, color: P.dim, label: narrow ? "" : "fs" });
       AB.chart(ctx, b, {
         x: [f0, f1], y: lpf ? [-50, 10] : [-30, 70], logX: true, xLabel: "주파수 (Hz)", yLabel: "|H| (dB)", xFmt: logFmt,
         series: [{ data: s3, color: P.accent2, width: 1.2, dash: [2, 3] }, { data: s1, color: P.accent, width: 2.4 }, { data: s2, color: P.accent, width: 1.4, dash: [6, 4] }],
         vlines: vl, hlines: [{ y: 0, color: P.faint }],
       });
-      txt(ctx, "실선 z 영역, 점선 연속 시간 RC 등가", b.x + 6, b.y + b.h - 12, { size: 10.5, color: P.dim });
+      btxt(ctx, "실선 z 영역(fs/2 위 파선은 접힌 영상)", b.x + 6, b.y + b.h - 28, { size: 10.5, color: P.dim });
+      btxt(ctx, "점선 연속 시간 RC 등가", b.x + 6, b.y + b.h - 12, { size: 10.5, color: P.accent2 });
     }
   })();
 
@@ -1266,8 +1278,9 @@
         series: [{ data: hand, color: P.accent2, width: 1.8, dash: [6, 4] }, { data: eng, color: P.accent, width: 2.2 }],
         hlines: [{ y: 1, color: P.bad, label: "1 LSB" }], vlines: vl,
       });
-      txt(ctx, "GBW " + si(res.ol.gbw, "Hz") + " · PM " + res.ol.m.pm.toFixed(0) + "° · SR " + (res.sr / 1e6).toFixed(0) + " V/µs", b.x + b.w - 6, b.y + 12, { align: "right", size: 11, color: P.dim });
-      txt(ctx, "기울기 직선 = 슬루, 기울기 꺾임 뒤 = 선형 정착", b.x + b.w - 6, b.y + 28, { align: "right", size: 10.5, color: P.dim });
+      const xr = half * xs <= xmax ? b.x + b.w * (half * xs / xmax) - 8 : b.x + b.w - 6;
+      btxt(ctx, "GBW " + si(res.ol.gbw, "Hz") + " · PM " + res.ol.m.pm.toFixed(0) + "° · SR " + (res.sr / 1e6).toFixed(0) + " V/µs", xr, b.y + 12, { align: "right", size: 11, color: P.dim });
+      btxt(ctx, narrow ? "직선 = 슬루, 꺾인 뒤 = 선형 정착" : "기울기 직선 = 슬루, 기울기 꺾임 뒤 = 선형 정착", xr, b.y + 28, { align: "right", size: 10.5, color: P.dim });
       if (!res.ok) txt(ctx, "일부 스텝 수렴 실패", b.x + 8, b.y + b.h - 12, { color: P.bad, size: 11 });
     }
   })();

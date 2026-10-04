@@ -118,7 +118,7 @@
 - 엔진으로 확인한 값(300 K):
 ```js
 const r = AN.ota2Open();             // AB-1 OTA 기본값: Cc 1 pF, Rz 2 kΩ, CL 2 pF, 꼬리 20 µA, 2단 80 µA
-// r.a0 ≈ 71.8 dB(1단 약 102배 + 2단 약 38배), r.gbw ≈ 23.5 MHz, r.m.pm ≈ 67.6°, 이득 여유 약 52 dB
+// r.a0 ≈ 71.8 dB(1단 약 102배 + 2단 약 38배), r.gbw ≈ 23.5 MHz, r.m.pm ≈ 67.5°, 이득 여유 약 52 dB
 // Rz = 0이면 PM ≈ 51°, Rz = 0 & Cc 0.6 pF면 PM ≈ 40°(GBW 35 MHz), CL 5 pF면 PM ≈ 50°
 // 전원 전류 약 121 µA → 약 218 µW. 슬루율 ≈ 18 V/µs (꼬리 20 µA / Cc 1 pF = 20 V/µs의 근사)
 // 동작점: M1 gm ≈ 169 µS, gm/ID ≈ 17(중간 반전), M6 gm ≈ 761 µS, gm/ID ≈ 9.3. 모든 소자 포화.
@@ -147,7 +147,7 @@ const nm = AN.mos({type: "n", W: 10e-6, L: 1e-6}, 0.65, 0.9);   // id ≈ 62 µA
 | 14 LDO | 배터리 2.5~3.6 V → 1.8 V, 10 mA, 드롭아웃 200 mV. PMOS 패스 소자 크기, 부하 과도, PSRR 40 dB @1 MHz 목표. 오차 증폭기는 AB-1 OTA 변형. |
 | 15 스위치드 커패시터 | ADC 앞 샘플러: Cs 1 pF, kT/C 64 µV rms. 스위치 Ron과 트래킹 대역, 전하 주입, 부트스트랩. OTA의 정착 시간(1 MS/s에서 반 주기 안에 12비트 정착). |
 | 16 ADC | 12비트 1 MS/s SAR: LSB 293 µV, 이상 SNDR 74 dB, 목표 ENOB ≥ 10.5. 커패시터 DAC 부정합, 비교기 잡음, 클록 16+ 사이클. |
-| 17 ΔΣ | 온도 채널: 2차 1비트 변조기, OSR 128 → 이상 SQNR 약 100 dB, 16비트 목표. 데시메이션. |
+| 17 ΔΣ | 온도 채널: 2차 1비트 변조기, OSR 128 → 이상 SQNR 약 100 dB, 실제 변조기(−6 dBFS) 측정 약 84 dB. 16비트 목표와의 차이, 데시메이션. |
 | 18 PLL | 4 MHz → 32 MHz(N = 8). 지터 10 ps rms가 ADC SNR을 얼마나 깎는가(입력 500 kHz에서 약 90 dB 한계). 루프 대역과 위상 여유. |
 | 19 실험실 | 독자가 AB-1 신호 사슬을 직접 조립·조정한다. 회로도 편집기 + AN.circuit. |
 
@@ -198,7 +198,7 @@ const sw = c.dc(AN.linspace(0, 1.8, 61), (c, v) => c.set("Vin", "dc", v));  // s
 ### 선형 시스템
 - `AN.pz({k, poles: [Hz…], zeros: [Hz…], delay})` → `H(f)` = [re, im]. 양수 = 좌반면, **음수 영점 = 우반면 영점**, 복소 극점 쌍 `{f0, q}`. `H.s(σ, ω)` s 평면 값.
 - `AN.pzPoly(o)` → `{num, den}` 오름차순 다항식(rad/s). `AN.tf(num, den)`, `AN.closeLoop(num, den, β)`, `AN.polyMul/polyAdd/polyEval`.
-- `AN.bodeData(H, f0, f1, n)` → `{f, mag, db, ph}`. `AN.margins(bd)` → `{fu, pm, f180, gm}`(위상은 DC 위상 기준 지연으로 잰다). `AN.f3db(bd)`.
+- `AN.bodeData(H, f0, f1, n)` → `{f, mag, db, ph}`. `AN.margins(bd, {ref})` → `{fu, pm, f180, gm, ref}`(적분기 몫을 뺀 DC 위상을 180° 배수로 맞춰 기준으로 삼는다). `AN.f3db(bd)`.
 - `AN.response(num, den, {tstop, n, input: "step"|"impulse"|fn(t)})` → `{t, y}`(쌍선형 이산화). `AN.stepInfo(t, y, tol)` → `{overshoot, ts, tr, final}`.
 - `AN.zetaToPm(ζ)`, `AN.pmToZeta(pm)`, `AN.overshoot(ζ)`.
 - `AN.cx` 복소 연산 `{mul, div, abs, arg, add}`, `AN.unwrap(deg[])`, `AN.logspace(a, b, n)`, `AN.linspace`.
@@ -213,7 +213,7 @@ const sw = c.dc(AN.linspace(0, 1.8, 61), (c, v) => c.set("Vin", "dc", v));  // s
   `S.res/cap/ind/diode/sw/isrc/vsrc(x1, y1, x2, y2, {label, on, dir, ac, color})`(두 점 사이), `S.gnd(x, y)`, `S.vdd(x, y, "VDD")`, `S.wire(pts, {color, width, dash})`, `S.dot`, `S.open`(단자), `S.label(x, y, text, {align, color, size, mono, bold})`, `S.tag(x, y, "0.87 V", {color, align})`(값 상자), `S.arrow(x1, y1, x2, y2, {label})`, `S.flow(pts, phase, {color, gap, r})`(전류 점 애니메이션: phase를 `dt × 전류에 비례하는 속도`로 키운다).
   회로도 크기 단위 u는 캔버스 폭에 맞춰 정한다(`u = Math.min(14, w / 40)`처럼). 모바일 360px에서도 글자가 겹치지 않게.
 - `AN.scope(ctx, box, {t: [t0, t1], y: [lo, hi], traces: [{t, v, label, color, dash}], tDiv: "200 ns/div", vDiv: "0.1 V/div", dark})` → `{X, Y}`. 10 × 8 칸 오실로스코프 화면.
-- `AN.bode(ctx, box, bd | [bd…], {f: [f0, f1], db: [lo, hi], ph: [lo, hi], marks: true, vlines, hlines, xTicks})`(좁으면 눈금을 자동으로 건너뛴다). `AN.margins`는 첫 주파수 점의 위상을 DC 위상으로 보므로 f0를 첫 극점보다 충분히 낮게(예: 10 Hz) 잡는다 → `{X, Ym, Yp}`. `marks: true`면 단위 이득 주파수와 PM을 표시한다.
+- `AN.bode(ctx, box, bd | [bd…], {f: [f0, f1], db: [lo, hi], ph: [lo, hi], marks: true, vlines, hlines, xTicks})`(좁으면 눈금을 자동으로 건너뛴다). `AN.margins(bd, {ref})`는 저주파 기울기로 적분기 개수를 세어 기준 위상(반전의 ±180°)을 스스로 정한다(2형 PLL처럼 원점 극점이 있어도 된다). 결과의 `ref`가 그 기준이다 → `{X, Ym, Yp}`. `marks: true`면 단위 이득 주파수와 PM을 표시한다.
 
 ## 점검
 - `python tools/head.py <slug>` 로 head를 채운다.

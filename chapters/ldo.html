@@ -127,8 +127,8 @@
         <line class="s-line" x1="650" y1="224" x2="650" y2="246" marker-end="url(#ldo-ar)"/>
         <text class="lbl" x="676" y="238">I<tspan baseline-shift="sub" font-size="10">LOAD</tspan></text>
         <line class="w" x1="100" y1="290" x2="680" y2="290"/><text class="lbl-dim" x="600" y="308">접지</text>
-        <path class="s-acc" d="M440,60 C520,70 560,110 470,150" fill="none" stroke-dasharray="5 4" marker-end="url(#ldo-ar)"/>
-        <text class="lbl-acc" x="500" y="72">부하 전류 경로</text>
+        <path class="s-acc" d="M410,52 C620,52 620,150 418,170" fill="none" stroke-dasharray="5 4" marker-end="url(#ldo-ar)"/>
+        <text class="lbl-acc" x="592" y="88">부하 전류 경로</text>
       </svg>
       <figcaption><b>그림 14-1. PMOS 패스 소자를 쓰는 LDO.</b> 오차 증폭기는 \(V_{FB}\)를 + 입력에, \(V_{REF}\)를 − 입력에 받는다(PMOS는 게이트가 올라가면 전류가 줄기 때문에 부호가 뒤집혀 있다). 분배비 \(R_2/(R_1+R_2)\) = 2/3이므로 \(V_{OUT} = 1.2 \times 1.5 = 1.8\) V다. 분배기에는 약 4 µA만 흐르고, 부하 전류는 거의 전부 패스 소자를 지나간다.</figcaption>
     </figure>
@@ -179,7 +179,7 @@
           <div class="seg" id="drop-il"><button data-value="1">1 mA</button><button data-value="5">5 mA</button><button data-value="10" class="on">10 mA</button><button data-value="20">20 mA</button></div>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">V<sub>OUT</sub> (엔진)</em></span><span><i style="background:var(--faint)"></i><em class="nm">V<sub>OUT</sub> = V<sub>IN</sub></em></span><span><i style="background:var(--accent2)"></i><em class="nm">게이트 V<sub>G</sub></em></span><span><i style="background:var(--bad)"></i><em class="nm">패스 소자 선형 영역</em></span></div>
+      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">V<sub>OUT</sub> (엔진)</em></span><span><i style="background:var(--text-faint)"></i><em class="nm">V<sub>OUT</sub> = V<sub>IN</sub></em></span><span><i style="background:var(--accent-2)"></i><em class="nm">게이트 V<sub>G</sub></em></span><span><i style="background:var(--bad)"></i><em class="nm">패스 소자 선형 영역</em></span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">드롭아웃 손 I·R<sub>on</sub> / 엔진(1% 처짐)</span><span class="v" id="drop-o1">—</span></div>
         <div class="stat"><span class="k">커서: V<sub>IN</sub> → V<sub>OUT</sub></span><span class="v" id="drop-o2">—</span></div>
@@ -202,7 +202,7 @@
           <label class="check"><input type="checkbox" id="size-hot"> <em class="nm">고온 125 °C 코너도 보기</em></label>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">I<sub>D</sub>(W) at V<sub>SD</sub> 0.2 V</em></span><span><i style="background:var(--warn)"></i><em class="nm">125 °C</em></span><span><i style="background:var(--accent2)"></i><em class="nm">게이트 C (오른쪽 눈금)</em></span><span><i style="background:var(--bad)"></i><em class="nm">요구 10 mA</em></span></div>
+      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">I<sub>D</sub>(W) at V<sub>SD</sub> 0.2 V</em></span><span><i style="background:var(--warn)"></i><em class="nm">125 °C</em></span><span><i style="background:var(--accent-2)"></i><em class="nm">게이트 C (오른쪽 눈금)</em></span><span><i style="background:var(--bad)"></i><em class="nm">요구 10 mA</em></span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">최소 W (300 K)</span><span class="v" id="size-o1">—</span></div>
         <div class="stat"><span class="k">고른 W → I<sub>D</sub> / R<sub>on</sub></span><span class="v" id="size-o2">—</span></div>
@@ -241,7 +241,7 @@
       <div class="sim-note">해볼 것: ① A를 10배 올리면(40 → 60 dB) 로드·라인 레귤레이션이 모두 약 10배 좋아진다. ② A를 10까지 내리면 부하 10 mA에서 출력이 수십 mV 처진다. ③ α를 0으로 하면(게이트가 접지 기준) 라인 레귤레이션이 몇 배 나빠진다. 입력 변화가 그대로 V<sub>SG</sub> 변화가 되기 때문이다. (엔진: 이 장의 LDO 등가 회로 DC 스윕. 로드 손 계산은 AN.vgsFor로 구한 ΔV<sub>SG</sub>/(Aβ), 라인 손 계산은 V<sub>IN</sub> 3.05 V 동작점의 g<sub>mp</sub>·r<sub>op</sub>로 계산한 소신호 식. 엔진 곡선은 원점 V<sub>OUT</sub>(0 mA 또는 2.5 V) 기준 차이로 그렸다.)</div>
     </div>
 
-    <p>로드 레귤레이션의 손 계산은 엔진과 거의 겹친다. 라인 레귤레이션은 손 계산이 엔진보다 큰 편인데, \(r_{op}\)가 \(V_{SD}\)에 따라 커지는 것(λ 모델의 \(1 + \lambda V_{DS}\))을 한 동작점으로 대표했기 때문이다. 자릿수와 경향을 맞히는 데는 충분하다. 여기서 끌어낼 설계 지침은 두 가지다. 직류 정확도는 오차 증폭기 이득이 사고, 라인 레귤레이션은 게이트가 입력을 얼마나 잘 따라가느냐(오차 증폭기 출력단의 구조)에도 달려 있다.</p>
+    <p>로드·라인 레귤레이션 모두 손 계산이 엔진과 거의 겹친다. 라인 쪽은 \(r_{op}\)를 \(V_{IN}\) 3.05 V 한 동작점으로 대표했는데도 2.5~3.6 V 전체에서 맞는다. 루프 이득 식이 직류 정확도를 잘 설명한다는 뜻이다. 여기서 끌어낼 설계 지침은 두 가지다. 직류 정확도는 오차 증폭기 이득이 사고, 라인 레귤레이션은 게이트가 입력을 얼마나 잘 따라가느냐(오차 증폭기 출력단의 구조)에도 달려 있다.</p>
     <div class="callout warn"><strong>이득을 마냥 올릴 수 없는 이유</strong> 루프 이득을 올리면 레귤레이션은 좋아지지만 단위 이득 주파수도 함께 올라가 6절의 게이트 극점에 다가간다. 위상 여유가 줄어 부하 계단에서 출력이 울린다. 이 장의 등가 모델에서 A를 300으로 올리면 10 mA에서 PM이 약 42°로 떨어진다. 정확도와 안정도의 맞바꿈은 8·10장과 같다.</div>
   </section>
 
@@ -270,7 +270,7 @@
         <div class="stat"><span class="k">전체 하강 (처음 → 최저)</span><span class="v" id="tran-o3">—</span></div>
         <div class="stat"><span class="k">최저점까지 시간</span><span class="v" id="tran-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 기본값(1 µF, 20 kΩ)에서 출력은 정상 상태 처짐(약 8 mV)으로 내려가고, 그 위의 순간 언더슈트는 1 mV 정도다. ② C<sub>out</sub>을 100 nF로 줄이면 언더슈트가 10배 가까이 커지고 출력이 울린다. 커패시터가 작으면 버티는 시간도, 위상 여유도 줄어든다. ③ R<sub>o</sub>를 200 kΩ으로 올리면(오차 증폭기 바이어스가 약하다) 게이트가 늦게 움직여 언더슈트와 울림이 커진다. ④ ESR을 0.5 Ω로 올리면 계단 순간 ΔI·ESR = 5 mV의 수직 낙하가 생기지만 울림은 줄어든다. (AN.circuit 과도 해석 12 µs, 5 ns 간격, 부하 0.1 → 10 mA, 상승 100 ns. 오차 증폭기의 슬루 제한은 넣지 않았다. 실제 회로는 바이어스 전류가 큰 게이트 C를 충전하는 시간 때문에 더 늦다.)</div>
+      <div class="sim-note">해볼 것: ① 기본값(1 µF, 20 kΩ)에서 출력은 정상 상태 처짐(약 6 mV, 0.1 → 10 mA)으로 내려가고, 그 위의 순간 언더슈트는 1 mV 정도다. ② C<sub>out</sub>을 100 nF로 줄이면 언더슈트가 10배 가까이 커지고 출력이 울린다. 커패시터가 작으면 버티는 시간도, 위상 여유도 줄어든다. ③ R<sub>o</sub>를 200 kΩ으로 올리면(오차 증폭기 바이어스가 약하다) 게이트가 늦게 움직여 언더슈트와 울림이 커진다. ④ ESR을 0.5 Ω로 올리면 계단 순간 ΔI·ESR = 5 mV의 수직 낙하가 생기지만 울림은 줄어든다. (AN.circuit 과도 해석 12 µs, 5 ns 간격, 부하 0.1 → 10 mA, 상승 100 ns. 오차 증폭기의 슬루 제한은 넣지 않았다. 실제 회로는 바이어스 전류가 큰 게이트 C를 충전하는 시간 때문에 더 늦다.)</div>
     </div>
 
     <p>손 계산 \(\Delta I\,R_oC_G/C_{out}\)은 언더슈트를 조금 크게 잡는다. 실제 루프는 게이트 시상수 동안 아무것도 안 하는 것이 아니라 그 사이에도 일부 전류를 늘리기 때문이다. 그래도 경향은 정확하다. 언더슈트를 줄이는 방법은 \(C_{out}\)을 키우거나, 게이트를 빨리 움직이는 것(\(R_o\)를 줄이는 버퍼, 큰 바이어스, 순간 전류를 늘리는 적응 바이어스)이다. 두 방법 모두 다음 절의 안정도와 엮여 있다.</p>
@@ -295,14 +295,14 @@
           <div class="seg" id="stab-mode"><button data-value="ext" class="on">외장 1 µF</button><button data-value="cl">캡리스 1 nF</button><button data-value="clm">캡리스 + 밀러</button></div>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">루프 이득 T(jω) (엔진)</em></span><span><i style="background:var(--warn)"></i><em class="nm">극점 ×</em></span><span><i style="background:var(--ok)"></i><em class="nm">ESR 영점 ○</em></span><span><i style="background:var(--accent2)"></i><em class="nm">PM vs 부하 (오른쪽 아래)</em></span></div>
+      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">루프 이득 T(jω) (엔진)</em></span><span><i style="background:var(--warn)"></i><em class="nm">극점 ×</em></span><span><i style="background:var(--ok)"></i><em class="nm">ESR 영점 ○</em></span><span><i style="background:var(--accent-2)"></i><em class="nm">PM vs 부하 (오른쪽 아래)</em></span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">위상 여유 PM</span><span class="v" id="stab-o1">—</span></div>
         <div class="stat"><span class="k">단위 이득 주파수 f<sub>u</sub></span><span class="v" id="stab-o2">—</span></div>
         <div class="stat"><span class="k">p<sub>out</sub> / p<sub>G</sub> (손)</span><span class="v" id="stab-o3">—</span></div>
         <div class="stat"><span class="k">ESR 영점</span><span class="v" id="stab-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 외장 1 µF에서 부하를 0.1 mA → 20 mA로 올리면 출력 극점이 오른쪽으로 이동하고 f<sub>u</sub>가 올라가 PM이 약 98°에서 55° 근처로 준다. ② ESR을 0.1 Ω로 올리면 영점이 f<sub>u</sub> 근처로 와서 PM이 15° 가까이 회복된다. ③ "캡리스 1 nF"는 출력 극점이 게이트 극점 위로 올라가 어느 부하에서도 PM이 거의 없다. ④ "캡리스 + 밀러"(게이트-출력 사이 20 pF, R<sub>o</sub> 1 MΩ)는 극점을 갈라 무거운 부하에서는 안정하지만, 부하를 0.1 mA 아래로 내리면 다시 PM이 무너진다. 캡리스 LDO에 최소 부하 전류가 붙는 이유다. (엔진: 귀환 마디에 직렬 AC 전압원을 넣은 미들브룩 주입, T = −v<sub>FB</sub>/v<sub>주입</sub>. 오른쪽 아래 곡선은 부하 9점에서 같은 측정을 반복한 PM.)</div>
+      <div class="sim-note">해볼 것: ① 외장 1 µF에서 부하를 0.1 mA → 20 mA로 올리면 출력 극점이 오른쪽으로 이동하고 f<sub>u</sub>가 올라가 PM이 약 88°에서 54° 근처로 준다. ② ESR을 0.1 Ω로 올리면 영점이 f<sub>u</sub> 근처로 와서 PM이 15° 가까이 회복된다. ③ "캡리스 1 nF"는 출력 극점이 게이트 극점 위로 올라가 어느 부하에서도 PM이 거의 없다. ④ "캡리스 + 밀러"(게이트-출력 사이 20 pF, R<sub>o</sub> 1 MΩ)는 극점을 갈라 무거운 부하에서는 안정하지만, 부하를 0.1 mA 아래로 내리면 다시 PM이 무너진다. 캡리스 LDO에 최소 부하 전류가 붙는 이유다. (엔진: 귀환 마디에 직렬 AC 전압원을 넣은 미들브룩 주입, T = −v<sub>FB</sub>/v<sub>주입</sub>. 오른쪽 아래 곡선은 부하 9점에서 같은 측정을 반복한 PM.)</div>
     </div>
 
     <p>외장 커패시터 LDO에서 무거운 부하가 위험한 이유는 결국 \(f_u \propto g_{mp}\)이기 때문이다. 부하가 100배 늘면 \(g_{mp}\)는 약반전 근처에서 거의 100배, 강반전에서 약 10배 커진다. \(f_u\)가 게이트 극점에 다가가는 만큼 PM이 깎인다. 설계는 가장 무거운 부하에서 PM을 맞추고, 가장 가벼운 부하에서는 출력 극점이 너무 낮아져 루프가 느려지지 않는지(부하 계단 후 회복 시간)를 본다.</p>
@@ -327,14 +327,14 @@
           <div class="btn-row"><button class="btn" id="psrr-keep">지금 곡선 남기기</button></div>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">PSRR (엔진 AC)</em></span><span><i style="background:var(--faint)"></i><em class="nm">남긴 곡선</em></span><span><i style="background:var(--bad)"></i><em class="nm">목표 40 dB @ 1 MHz</em></span></div>
+      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">PSRR (엔진 AC)</em></span><span><i style="background:var(--text-faint)"></i><em class="nm">남긴 곡선</em></span><span><i style="background:var(--bad)"></i><em class="nm">목표 40 dB @ 1 MHz</em></span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">PSRR @ 1 kHz</span><span class="v" id="psrr-o1">—</span></div>
         <div class="stat"><span class="k">PSRR @ 100 kHz</span><span class="v" id="psrr-o2">—</span></div>
         <div class="stat"><span class="k">PSRR @ 1 MHz (손 / 엔진)</span><span class="v" id="psrr-o3">—</span></div>
         <div class="stat"><span class="k">가장 나쁜 PSRR (주파수)</span><span class="v" id="psrr-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 기본값에서 낮은 주파수 PSRR은 약 51 dB(루프 이득이 정한다), 1 MHz에서는 약 58 dB로 목표 40 dB를 넘는다. ② α를 0으로 하면(게이트가 접지 기준) 저주파 PSRR이 약 36 dB로 떨어지고 1 MHz에서도 목표에 아슬아슬하다. 오차 증폭기 출력단이 VIN 기준이어야 하는 이유다. ③ C<sub>out</sub>을 100 nF로 줄이면 1 MHz에서 약 10 dB, 3 MHz에서 20 dB 넘게 나빠진다. 10 µF로 키우면 100 kHz부터 좋아진다. ④ 부하를 줄이면 패스 소자 g<sub>m</sub>가 작아져 고주파 PSRR이 좋아진다. (AN.circuit AC 해석, V<sub>IN</sub> = 3.0 V에 ac 1, 10 Hz~100 MHz 120점. 실제 칩은 기준 전압과 오차 증폭기 바이어스로 새는 경로, 기판 결합, 패스 소자 C<sub>gd</sub> 이외의 기생이 고주파 PSRR을 더 깎는다.)</div>
+      <div class="sim-note">해볼 것: ① 기본값에서 낮은 주파수 PSRR은 약 52 dB(루프 이득이 정한다), 1 MHz에서는 약 58 dB로 목표 40 dB를 넘는다. ② α를 0으로 하면(게이트가 접지 기준) 저주파 PSRR이 약 36 dB로 떨어지고 1 MHz에서도 목표에 아슬아슬하다. 오차 증폭기 출력단이 VIN 기준이어야 하는 이유다. ③ C<sub>out</sub>을 100 nF로 줄이면 1 MHz에서 약 10 dB, 3 MHz에서 20 dB 넘게 나빠진다. 10 µF로 키우면 100 kHz부터 좋아진다. ④ 부하를 줄이면 패스 소자 g<sub>m</sub>가 작아져 고주파 PSRR이 좋아진다. (AN.circuit AC 해석, V<sub>IN</sub> = 3.0 V에 ac 1, 10 Hz~100 MHz 120점. 실제 칩은 기준 전압과 오차 증폭기 바이어스로 새는 경로, 기판 결합, 패스 소자 C<sub>gd</sub> 이외의 기생이 고주파 PSRR을 더 깎는다.)</div>
     </div>
 
     <p>PSRR 곡선에는 세 구간이 보인다. 루프 이득이 큰 저주파 평탄 구간, 루프 이득이 주파수에 따라 줄어드는 중간 구간, 출력 커패시터가 잡음을 접지로 흘리는 고주파 구간이다. 이 장의 등가 모델처럼 출력 극점이 지배 극점이면 중간 구간의 손실과 커패시터의 이득이 같은 비율(20 dB/dec)로 바뀌어 서로 상쇄되고, 곡선은 \(f_u\) 근처까지 평탄하다가 위로 올라간다. 실제 칩에서는 패스 소자의 \(C_{gd}\)와 \(C_{gs}\), 기판 결합 때문에 수 MHz 이상에서 PSRR이 다시 떨어진다.</p>
@@ -359,24 +359,24 @@
           <label class="ctrl"><span><em class="nm">패키지 열저항 θ<sub>JA</sub></em> <output id="eff-th-out"></output></span><input type="range" id="eff-th" min="30" max="250" step="5" value="100"></label>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">LDO</em></span><span><i style="background:var(--accent2)"></i><em class="nm">벅 컨버터 (모델)</em></span><span><i style="background:var(--ok)"></i><em class="nm">부하에 전달</em></span><span><i style="background:var(--bad)"></i><em class="nm">손실</em></span></div>
+      <div class="map-legend"><span><i style="background:var(--accent)"></i><em class="nm">LDO</em></span><span><i style="background:var(--accent-2)"></i><em class="nm">벅 컨버터 (모델)</em></span><span><i style="background:var(--ok)"></i><em class="nm">부하에 전달</em></span><span><i style="background:var(--bad)"></i><em class="nm">손실</em></span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">LDO 효율 / 벅 효율</span><span class="v" id="eff-o1">—</span></div>
         <div class="stat"><span class="k">패스 소자 손실</span><span class="v" id="eff-o2">—</span></div>
         <div class="stat"><span class="k">온도 상승 ΔT</span><span class="v" id="eff-o3">—</span></div>
         <div class="stat"><span class="k">배터리 2.5~3.6 V 평균 효율 LDO / 벅</span><span class="v" id="eff-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 배터리 3.6 V에서 LDO 효율은 50%, 방전 끝 2.5 V에서 72%다. 벅은 어디서나 85% 안팎이다. ② 부하를 0.1 mA로 줄이면 LDO의 정지 전류(50 µA)와 벅의 고정 손실(스위칭·제어)이 커 보인다. 가벼운 부하에서는 LDO가 벅보다 나을 수도 있다. ③ 부하를 500 mA로 올리면 3.6 V에서 패스 손실이 0.9 W, θ<sub>JA</sub> 100 °C/W면 90 °C 상승이다. 열이 LDO의 한계가 된다. (LDO: η = V<sub>OUT</sub>I<sub>LOAD</sub>/[V<sub>IN</sub>(I<sub>LOAD</sub> + I<sub>Q</sub>)], V<sub>OUT</sub> = 1.8 V. 벅: 고정 손실 0.2 mW + 도통 손실 I²·0.5 Ω + 전력의 5%인 교육용 모델.)</div>
+      <div class="sim-note">해볼 것: ① 배터리 3.6 V에서 LDO 효율은 50%, 방전 끝 2.5 V에서 72%다. 벅은 10 mA에서 배터리 전압과 관계없이 약 94%다. ② 부하를 0.1 mA로 줄이면 LDO의 정지 전류(50 µA)와 벅의 고정 손실(스위칭·제어)이 커 보인다. 가벼운 부하에서는 LDO가 벅보다 나을 수도 있다. ③ 부하를 500 mA로 올리면 3.6 V에서 패스 손실이 0.9 W, θ<sub>JA</sub> 100 °C/W면 90 °C 상승이다. 열이 LDO의 한계가 된다. (LDO: η = V<sub>OUT</sub>I<sub>LOAD</sub>/[V<sub>IN</sub>(I<sub>LOAD</sub> + I<sub>Q</sub>)], V<sub>OUT</sub> = 1.8 V. 벅: 고정 손실 0.2 mW + 도통 손실 I²·0.5 Ω + 전력의 5%인 교육용 모델.)</div>
     </div>
 
     <p>AB-1의 LDO는 10 mA만 다루므로 손실은 최악 18 mW, 온도 상승은 2 °C 안쪽이다. 효율 50~72%는 아쉽지만, AB-1이 지키려는 것은 효율이 아니라 깨끗한 전원이다. 실제 제품에서는 배터리 → 벅 컨버터(효율) → LDO(깨끗함)로 둘을 이어 쓰는 경우가 많다. 벅이 2.1 V 정도로 내려 주면 LDO는 300 mV만 버리면 되고(η ≈ 86%), 벅의 스위칭 잔물결은 LDO의 PSRR이 지운다. 그래서 1 MHz 근처의 PSRR 사양이 중요해진다.</p>
 
     <div class="casefile">
       <div class="tag"><b>TARGET AB-1</b><span>타깃 파일 · 14장</span></div>
-      <h4>2.5~3.6 V → 1.8 V, 10 mA LDO: 드롭아웃 약 90 mV, PM 61°, PSRR 58 dB @ 1 MHz</h4>
-      <p>13장의 밴드갭 1.2 V를 기준으로, 분배기 150 kΩ/300 kΩ(β = 2/3, 4 µA)으로 1.8 V를 만든다. 오차 증폭기는 AB-1 OTA의 1단과 같은 5트랜지스터 단(이득 약 100, 40 dB)에 게이트 버퍼를 붙인 것으로 보고(출력 저항 20 kΩ, 게이트 마디 약 10 pF), 출력단은 VIN 기준(α ≈ 0.9)으로 둔다. 패스 소자 크기는 <code>AN.mos</code>로 정했다. 최저 입력 2.0 V(1.8 V + 200 mV), 게이트 바닥 0.2 V면 \(V_{SG,max}\) = 1.8 V이고, \(V_{SD}\) = 0.2 V에서 10 mA를 내는 최소 W는 L 0.18 µm에서 약 100 µm(10.5 mA)다. 2배 여유를 둬 <b>W/L = 200/0.18 µm</b>로 정했다. 엔진 DC 스윕으로 10 mA 드롭아웃은 약 90 mV(손 계산 I·R<sub>on</sub> ≈ 105 mV)로 사양 200 mV 안쪽이다. 라인 레귤레이션은 2.5 → 3.6 V에서 약 1 mV, 로드 레귤레이션은 0 → 10 mA에서 약 8 mV(0.45%)다. C<sub>out</sub> 1 µF(ESR 10 mΩ)에서 미들브룩 주입으로 잰 PM은 10 mA에서 <b>약 61°</b>(f<sub>u</sub> ≈ 460 kHz), 1 mA에서 81°, 0.1 mA에서 98°다. 0.1 → 10 mA 계단에서 출력은 약 6.6 mV 내려가고 그 가운데 순간 언더슈트는 약 0.5 mV다. PSRR은 10 mA에서 저주파 약 51 dB, <b>1 MHz에서 약 58 dB</b>로 목표 40 dB를 넘는다. 효율은 3.6 V에서 50%, 2.5 V에서 72%, 패스 손실은 최대 18 mW다.</p>
+      <h4>2.5~3.6 V → 1.8 V, 10 mA LDO: 드롭아웃 약 110 mV, PM 61°, PSRR 58 dB @ 1 MHz</h4>
+      <p>13장의 밴드갭 1.2 V를 기준으로, 분배기 150 kΩ/300 kΩ(β = 2/3, 4 µA)으로 1.8 V를 만든다. 오차 증폭기는 AB-1 OTA의 1단과 같은 5트랜지스터 단(이득 약 100, 40 dB)에 게이트 버퍼를 붙인 것으로 보고(출력 저항 20 kΩ, 게이트 마디 약 10 pF), 출력단은 VIN 기준(α ≈ 0.9)으로 둔다. 패스 소자 크기는 <code>AN.mos</code>로 정했다. 최저 입력 2.0 V(1.8 V + 200 mV), 게이트 바닥 0.2 V면 \(V_{SG,max}\) = 1.8 V이고, \(V_{SD}\) = 0.2 V에서 10 mA를 내는 최소 W는 L 0.18 µm에서 약 100 µm(10.5 mA)다. 2배 여유를 둬 <b>W/L = 200/0.18 µm</b>로 정했다. 엔진 DC 스윕으로 10 mA 드롭아웃은 약 110 mV(손 계산 I·R<sub>on</sub> ≈ 105 mV)로 사양 200 mV 안쪽이다. 라인 레귤레이션은 2.5 → 3.6 V에서 약 2.7 mV, 로드 레귤레이션은 0 → 10 mA에서 약 8 mV(0.45%)다. C<sub>out</sub> 1 µF(ESR 10 mΩ)에서 미들브룩 주입으로 잰 PM은 10 mA에서 <b>약 61°</b>(f<sub>u</sub> ≈ 460 kHz), 1 mA에서 80°, 0.1 mA에서 88°다. 0.1 → 10 mA 계단에서 출력은 약 6.6 mV 내려가고 그 가운데 순간 언더슈트는 약 0.5 mV다. PSRR은 10 mA에서 저주파 약 52 dB, <b>1 MHz에서 약 58 dB</b>로 목표 40 dB를 넘는다. 효율은 3.6 V에서 50%, 2.5 V에서 72%, 패스 손실은 최대 18 mW다.</p>
       <div class="clue">
-        <div><b>이 장에서 정한 것</b>PMOS 패스 200/0.18 µm, R<sub>1</sub>/R<sub>2</sub> = 150 k/300 kΩ, C<sub>out</sub> 1 µF 세라믹(ESR ≤ 0.1 Ω), 오차 증폭기 이득 40 dB·게이트 극점 약 770 kHz. 드롭아웃 ≈ 90 mV ≤ 200 mV, PM ≥ 60°(전 부하 범위), PSRR ≥ 40 dB @ 1 MHz.</div>
+        <div><b>이 장에서 정한 것</b>PMOS 패스 200/0.18 µm, R<sub>1</sub>/R<sub>2</sub> = 150 k/300 kΩ, C<sub>out</sub> 1 µF 세라믹(ESR ≤ 0.1 Ω), 오차 증폭기 이득 40 dB·게이트 극점 약 770 kHz. 드롭아웃 ≈ 110 mV ≤ 200 mV, PM ≥ 60°(전 부하 범위), PSRR ≥ 40 dB @ 1 MHz.</div>
         <div><b>아직 남은 문제</b>로드 레귤레이션 8 mV는 이득 40 dB의 한계다. 이득을 올리면 무거운 부하에서 PM이 깎인다. 오차 증폭기 슬루, 밴드갭의 잡음이 출력에 그대로 1.5배로 나오는 것, 외장 커패시터 핀 하나가 필요한 것도 남았다.</div>
         <div><b>다음 단계</b>이 깨끗한 1.8 V 위에서 15장은 ADC 앞의 스위치드 커패시터 샘플러를 만든다. 디지털 블록용 LDO를 따로 두고, 캡리스 구조로 외장 핀을 없애는 것은 발전 과제다.</div>
       </div>
@@ -428,7 +428,7 @@
           <button class="opt">부하 전류는 동작점만 바꿀 뿐 극점과 PM에는 영향이 없다.</button>
           <button class="opt">게이트 극점이 부하 전류에 비례해 올라가 PM이 커진다.</button>
         </div>
-        <div class="quiz-exp">R<sub>out</sub> ≈ r<sub>op</sub> ∝ 1/I<sub>LOAD</sub>이므로 출력 극점은 부하에 비례해 올라가고, f<sub>u</sub> ≈ Aβg<sub>mp</sub>/(2πC<sub>out</sub>)도 g<sub>mp</sub>를 따라 올라간다. 게이트 극점 R<sub>o</sub>C<sub>G</sub>는 거의 그대로이므로 위상 여유가 줄어든다(이 장의 모델: 98° → 61°). 캡리스 LDO는 반대로 가벼운 부하가 위험하다.</div>
+        <div class="quiz-exp">R<sub>out</sub> ≈ r<sub>op</sub> ∝ 1/I<sub>LOAD</sub>이므로 출력 극점은 부하에 비례해 올라가고, f<sub>u</sub> ≈ Aβg<sub>mp</sub>/(2πC<sub>out</sub>)도 g<sub>mp</sub>를 따라 올라간다. 게이트 극점 R<sub>o</sub>C<sub>G</sub>는 거의 그대로이므로 위상 여유가 줄어든다(이 장의 모델: 88° → 61°). 캡리스 LDO는 반대로 가벼운 부하가 위험하다.</div>
       </div>
       <div class="quiz-q">
         <p>4. 부하가 순간적으로 10 mA 늘었고 루프가 반응하기까지 약 0.5 µs가 걸린다. C<sub>out</sub> = 1 µF, ESR은 무시할 때 언더슈트 어림값은?</p>
@@ -448,7 +448,7 @@
           <button class="opt">효율</button>
           <button class="opt">부하 계단의 언더슈트</button>
         </div>
-        <div class="quiz-exp">게이트가 V<sub>IN</sub>을 따라가면 입력 잡음이 패스 소자의 V<sub>SG</sub>를 흔들지 못하고, 남는 길은 r<sub>op</sub>로 새는 것뿐이다. 엔진에서 α = 0 → 0.9로 바꾸면 저주파 PSRR이 약 36 dB에서 51 dB로 좋아진다. 드롭아웃과 효율은 패스 소자와 전압비가 정한다.</div>
+        <div class="quiz-exp">게이트가 V<sub>IN</sub>을 따라가면 입력 잡음이 패스 소자의 V<sub>SG</sub>를 흔들지 못하고, 남는 길은 r<sub>op</sub>로 새는 것뿐이다. 엔진에서 α = 0 → 0.9로 바꾸면 저주파 PSRR이 약 36 dB에서 52 dB로 좋아진다. 드롭아웃과 효율은 패스 소자와 전압비가 정한다.</div>
       </div>
     </div>
   </section>
@@ -486,7 +486,8 @@
     c.p = p;
     const src = p.rbat ? "bat" : "vin";
     c.V(src, 0, { dc: p.vin, ac: mode === "inj" ? 0 : 1, wave: p.vwave }, { name: "Vin" });
-    c.setVin = (v) => { c.p.vin = v; c.set("Vin", "dc", v); if (c.el("Vk")) c.set("Vk", "dc", (1 - c.p.alpha) * v); };
+    c.setVin = (v) => { c.p.vin = v; c.set("Vin", "dc", v); c.p.vk = (1 - c.p.alpha) * v; if (c.el("Vk")) c.set("Vk", "dc", c.p.vk); };
+    c.stepVin = (v) => { c.p.vin = v; c.set("Vin", "dc", v); };
     if (p.rbat) c.R("bat", "vin", p.rbat, { name: "Rbat" });
     if (mode === "bypass") {
       c.C("vin", 0, p.cout, { name: "Cout" });
@@ -494,9 +495,10 @@
       return c;
     }
     c.V("ref", 0, VREF, { name: "Vref" });
-    c.V("vk", 0, (1 - p.alpha) * p.vin, { name: "Vk" });
+    p.vk = (1 - p.alpha) * p.vin;
+    c.V("vk", 0, p.vk, { name: "Vk" });
     c.E("vx", "vk", "vin", 0, p.alpha, { name: "Etr" });
-    c.E("ea", "vx", "fbi", "ref", { fn: (vd) => -sclamp(c.p.v0 - c.p.A * vd, 0, c.p.vin - c.p.gmin) }, { name: "EA" });
+    c.E("ea", "vx", "fbi", "ref", { fn: (vd) => { const vx = c.p.vk + c.p.alpha * c.p.vin; return -sclamp(c.p.v0 - c.p.A * vd, vx - c.p.vin, vx - c.p.gmin); } }, { name: "EA" });
     c.R("ea", "g", p.ro, { name: "Ro" });
     c.C("g", "vin", p.cg, { name: "Cg" });
     if (p.cm) c.C("g", "out", p.cm, { name: "Cm" });
@@ -577,11 +579,11 @@
     // 태그
     if (op) {
       S.tag(X(2.4), yR - 1.1 * u, `V_IN ${st.vin.toFixed(2)} V`, { color: AB.trace(1) });
-      S.tag(X(11), yG + 1.6 * u, `V_G ${op.v.g.toFixed(2)} V`, { color: P.accent2, align: "center" });
+      S.tag(u < 12 ? X(12.6) : X(12), Y(3), `${u < 12 ? "" : "V_G "}${op.v.g.toFixed(2)} V`, { color: P.accent2, align: "center" });
       S.tag(X(17.5), yO - 1.3 * u, `${op.v.out.toFixed(3)} V`, { color: tri ? P.bad : P.ok });
-      S.tag(X(13.2), yF + 1.2 * u, `V_FB ${(op.v.fb * 1e3).toFixed(1)} mV`, { color: P.accent2, align: "center" });
-      S.tag(X(5.8), Y(15.6), "1.2 V", { color: P.dim });
-      S.label(X(17.4), yG + 0.2 * u, tri ? "선형!" : regName(d.region), { size: Math.max(10, u * 0.75), color: tri ? P.bad : P.dim });
+      S.tag(X(14), yF + 1.2 * u, `V_FB ${(op.v.fb * 1e3).toFixed(1)} mV`, { color: P.accent2, align: "center" });
+      S.tag(X(5.8), Y(16.1), "1.2 V", { color: P.dim });
+      S.label(X(16.6), yG + 1.7 * u, tri ? "선형!" : regName(d.region), { size: Math.max(10, u * 0.75), color: tri ? P.bad : P.dim });
     }
     return { hits, u };
   }
@@ -609,7 +611,7 @@
       res = { t, vin, vout, il, mean, pp, mode, ok: tr.ok };
       if (!steady[mode]) {
         const cs = build({ vin: 2.5, il: 1e-3, rbat: 3 }, mode === "raw" ? "bypass" : "reg");
-        const a = cs.op().v[mode === "raw" ? "vin" : "out"]; cs.setVin(3.6); const b = cs.op().v[mode === "raw" ? "vin" : "out"];
+        const a = cs.op().v[mode === "raw" ? "vin" : "out"]; cs.stepVin(3.6); const b = cs.op().v[mode === "raw" ? "vin" : "out"];
         steady[mode] = b - a;
       }
       AB.stat("why-o1", `${mean.toFixed(3)} V`);
@@ -627,9 +629,9 @@
       AN.scope(ctx, top, {
         t: [0, 20e-6], y: [0, 4], tDiv: "2 µs/div", vDiv: "0.5 V/div",
         traces: [
-          { t: res.t, v: res.il.map((i) => 0.1 + (i / 10e-3) * 0.5), label: "I_LOAD (10 mA/div)", color: AB.trace(4), width: 1.4 },
-          { t: res.t, v: res.vin, label: "배터리 단자 V_IN", color: AB.trace(1) },
-          { t: res.t, v: res.vout, label: res.mode === "raw" ? "칩 전원 = V_IN" : "칩 전원 = LDO 출력", color: AB.trace(3) },
+          { t: res.t, v: res.il.map((i) => 0.1 + (i / 10e-3) * 0.5), label: nar ? "I_LOAD" : "I_LOAD (10 mA/div)", color: AB.trace(4), width: 1.4 },
+          { t: res.t, v: res.vin, label: nar ? "V_IN" : "배터리 단자 V_IN", color: AB.trace(1) },
+          { t: res.t, v: res.vout, label: nar ? "칩 전원" : res.mode === "raw" ? "칩 전원 = V_IN" : "칩 전원 = LDO 출력", color: AB.trace(3) },
         ],
       });
       const div = res.pp > 0.04 ? 0.025 : res.pp > 0.008 ? 0.005 : 0.001;
@@ -662,7 +664,7 @@
       AB.stat("ldo-o1", `<span class="${Math.abs(op.v.out - 1.8) > 0.02 ? "bad-t" : "ok-t"}">${op.v.out.toFixed(4)} V</span>`);
       AB.stat("ldo-o2", `${vsg.toFixed(3)} / ${vsd.toFixed(3)} V`);
       AB.stat("ldo-o3", d.region === "triode" ? `<span class="bad-t">${regName(d.region)}</span>` : `<span class="ok-t">${regName(d.region)}</span>`);
-      AB.stat("ldo-o4", `${AB.fmt(T0, 3)} <small>(${(20 * Math.log10(Math.max(T0, 1e-3))).toFixed(1)} dB)</small>`);
+      AB.stat("ldo-o4", T0 < 1 ? `<span class="bad-t">≈ 0 (루프 열림)</span>` : `${AB.fmt(T0, 3)} <small>(${(20 * Math.log10(T0)).toFixed(1)} dB)</small>`);
       const pin = vin * Math.abs(op.i.Vin), pout = op.v.out * il;
       AB.stat("ldo-o5", AB.pct(pout / pin));
       showInfo();
@@ -736,7 +738,7 @@
     }
     function draw(ctx, w, h) {
       const P = AB.palette();
-      box = { x: 56, y: 26, w: w - 76, h: h - 74 };
+      box = { x: 56, y: 26, w: w - 76, h: h - (w < 640 ? 104 : 74) };
       if (!res) return;
       const bands = [];
       let s = null;
@@ -753,7 +755,7 @@
         vlines: [{ x: res.vin[k], color: P.text, dash: [2, 3] }],
         points: [{ x: res.vin[k], y: res.vout[k], color: res.ops[k].dev.MP.region === "triode" ? P.bad : P.accent, r: 5 }, { x: res.vin[k], y: res.vg[k], color: P.accent2, r: 4 }],
       });
-      panelTitle(ctx, box.x, 6, `I_LOAD ${res.il * 1e3} mA, W ${AB.si(res.W, "m", 3)}: V_OUT과 게이트 V_G (엔진 DC 스윕)`);
+      panelTitle(ctx, w < 640 ? 8 : box.x, 6, `I_LOAD ${res.il * 1e3} mA, W ${AB.si(res.W, "m", 3)}` + (w < 640 ? " (엔진 DC 스윕)" : ": V_OUT과 게이트 V_G (엔진 DC 스윕)"));
       if (isFinite(res.vdo)) {
         const xd = 1.782 + res.vdo;
         ctx.save(); ctx.strokeStyle = P.bad; ctx.lineWidth = 1.4; ctx.setLineDash([3, 3]);
@@ -762,7 +764,7 @@
       }
       txt(ctx, ch.X(res.vin[k]) + 6, ch.Y(res.vg[k]) + 12, "V_G", { size: 11, color: P.accent2 });
     }
-    cv = AB.canvas("#drop-cv", draw, H("drop-cv", (w) => (w < 640 ? 340 : 380)));
+    cv = AB.canvas("#drop-cv", draw, H("drop-cv", (w) => (w < 640 ? 370 : 380)));
     AB.drag(cv.canvas, { move(x) { if (!box) return; cur = AB.clamp(VLO + ((x - box.x) / box.w) * (VHI - VLO), VLO, VHI); stats(); } });
     solve();
   })();
@@ -788,8 +790,9 @@
     }
     function draw(ctx, w, h) {
       const P = AB.palette();
-      const box = { x: 58, y: 26, w: w - 120, h: h - 74 };
-      const Ws = AN.logspace(Math.log10(W0), Math.log10(W1), 60);
+      const nar = w < 640;
+      const box = { x: 58, y: nar ? 30 : 26, w: w - 120, h: h - (nar ? 108 : 74) };
+      const Ws = AN.logspace(W0, W1, 60);
       const hot = $("size-hot").checked;
       const ser = [{ data: Ws.map((W) => [W, idAt(W) * 1e3]), color: P.accent, width: 2.6 }];
       if (hot) ser.push({ data: Ws.map((W) => [W, idAt(W, 398) * 1e3]), color: P.warn, width: 2, dash: [6, 4] });
@@ -810,10 +813,10 @@
       ctx.save(); ctx.font = AB.font(11, true); ctx.fillStyle = P.accent2; ctx.textAlign = "left"; ctx.textBaseline = "middle";
       [1e-14, 1e-13, 1e-12, 1e-11, 1e-10].forEach((c) => ctx.fillText(AB.si(c, "F", 1).replace(" ", ""), box.x + box.w + 6, YC(c)));
       ctx.restore();
-      txt(ctx, box.x + box.w + 6, box.y - 12, "게이트 C", { size: 11, color: P.accent2 });
-      panelTitle(ctx, box.x, 6, `V_SG ${gv().toFixed(2)} V, L ${gl()} µm: 고른 W = ${AB.si(Wsel, "m", 3)}`);
+      if (!nar) txt(ctx, box.x + box.w + 6, box.y - 12, "게이트 C", { size: 11, color: P.accent2 });
+      panelTitle(ctx, nar ? 8 : box.x, 6, `V_SG ${gv().toFixed(2)} V, L ${gl()} µm: ${nar ? "" : "고른 "}W = ${AB.si(Wsel, "m", 3)}`);
     }
-    cv = AB.canvas("#size-cv", draw, H("size-cv", (w) => (w < 640 ? 330 : 360)));
+    cv = AB.canvas("#size-cv", draw, H("size-cv", (w) => (w < 640 ? 370 : 360)));
     AB.drag(cv.canvas, { move(x) { if (!ch) return; const b = ch.box; const t = AB.clamp((x - b.x) / b.w, 0, 1); Wsel = lg(Math.log10(W0) + t * Math.log10(W1 / W0)); stats(); cv.redraw(); } });
     stats(); cv.redraw();
   })();
@@ -831,7 +834,7 @@
       const swl = cl.dc(ILS, (c, i) => c.set("IL", "dc", i));
       const lo = Array.from(swl.v("out"));
       const cv2 = build({ A, alpha, vin: 2.5, il: 10e-3 });
-      const swv = cv2.dc(VIS, (c, v) => c.setVin(v));
+      const swv = cv2.dc(VIS, (c, v) => c.stepVin(v));
       const li = Array.from(swv.v("out"));
       // 손 계산
       const pd = { type: "p", W: BASE.W, L: BASE.L };
@@ -858,13 +861,13 @@
       const rng = (a, b) => { const all = a.concat(b).map((v) => v * 1e3); let lo = Math.min(...all), hi = Math.max(...all); const pad = Math.max(0.05, (hi - lo) * 0.12); return [lo - pad, hi + pad]; };
       AB.chart(ctx, b1, {
         x: [0, 20], y: rng(res.lo, res.loadH), xLabel: "부하 전류 I_LOAD (mA)", yLabel: "ΔV_OUT (mV)",
-        series: [{ data: res.loadH.map((v, i) => [ILS[i] * 1e3, v * 1e3]), color: P.warn, width: 2, dash: [6, 4] }, { data: res.lo.map((v, i) => [ILS[i] * 1e3, v * 1e3]), color: P.accent, width: 2.6 }],
+        series: [{ data: res.lo.map((v, i) => [ILS[i] * 1e3, v * 1e3]), color: P.accent, width: 2.6 }, { data: res.loadH.map((v, i) => [ILS[i] * 1e3, v * 1e3]), color: P.warn, width: 2, dash: [6, 4] }],
         vlines: [{ x: 10, color: P.faint }],
       });
       panelTitle(ctx, b1.x, 8, "로드 레귤레이션 (V_IN 3.0 V)");
       AB.chart(ctx, b2, {
         x: [2.5, 3.6], y: rng(res.li, res.lineH), xLabel: "입력 V_IN (V)", yLabel: "ΔV_OUT (mV)",
-        series: [{ data: res.lineH.map((v, i) => [VIS[i], v * 1e3]), color: P.warn, width: 2, dash: [6, 4] }, { data: res.li.map((v, i) => [VIS[i], v * 1e3]), color: P.accent, width: 2.6 }],
+        series: [{ data: res.li.map((v, i) => [VIS[i], v * 1e3]), color: P.accent, width: 2.6 }, { data: res.lineH.map((v, i) => [VIS[i], v * 1e3]), color: P.warn, width: 2, dash: [6, 4] }],
       });
       panelTitle(ctx, b2.x, b2.y - 20, "라인 레귤레이션 (I_LOAD 10 mA)");
     }
@@ -910,8 +913,8 @@
       const bot = { x: 8, y: top.y + top.h + 10, w: w - 16, h: h - top.h - 26 };
       AN.scope(ctx, top, { t: [0, 12e-6], y: [-2e-3, 14e-3], tDiv: "1.2 µs/div", vDiv: "2 mA/div", traces: res ? [{ t: res.t, v: res.il, label: "부하 전류 I_LOAD", color: AB.trace(4) }] : [] });
       if (!res) return;
-      const drop = Math.max(res.v0 - res.mn, 1e-4);
-      const div = [0.5e-3, 1e-3, 2e-3, 5e-3, 1e-2, 2e-2, 5e-2, 0.1].find((d) => d * 5.5 >= drop) || 0.1;
+      const drop = Math.max(res.v0 - res.mn, 1e-4), up = Math.max(0, ...res.v.map((x) => x - res.v0));
+      const div = [0.5e-3, 1e-3, 2e-3, 5e-3, 1e-2, 2e-2, 5e-2, 0.1].find((d) => d * 5.5 >= drop && d * 1.9 >= up) || 0.1;
       const trs = [];
       if (prev) trs.push({ t: prev.t, v: prev.v.map((x) => x - prev.v0), label: "직전", color: "rgba(233,236,245,0.35)", dash: [4, 4], width: 1.3 });
       trs.push({ t: res.t, v: res.v.map((x) => x - res.v0), label: "ΔV_OUT (계단 전 기준)", color: AB.trace(3) });
@@ -953,7 +956,7 @@
       if (cv) cv.redraw();
     }
     function runSweep() {
-      const ils = AN.logspace(-5, Math.log10(20e-3), 9);
+      const ils = AN.logspace(1e-5, 20e-3, 9);
       sweep = ils.map((il) => { const r = loopBd(Object.assign({ il }, cfg()), 0.1, 1e9, 90); return [il * 1e3, r.m.pm]; });
       if (cv) cv.redraw();
     }
@@ -977,7 +980,7 @@
         else if (kind === "o") { ctx.beginPath(); ctx.arc(x, ya, 6, 0, TAU); ctx.stroke(); }
         else { ctx.setLineDash([3, 3]); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(x, strip.y + 2); ctx.lineTo(x, strip.y + strip.h - 2); ctx.stroke(); }
         ctx.restore();
-        txt(ctx, x, ya + 14, label, { size: 11, weight: 700, color: col, align: "center" });
+        txt(ctx, kind === "u" ? x + 4 : x, kind === "u" ? strip.y + 9 : ya + 14, label, { size: 11, weight: 700, color: col, align: kind === "u" ? "left" : "center" });
         marks.push({ x, f, label });
       };
       xm(res.pout, "x", "p_out", P.warn);
@@ -990,7 +993,7 @@
       panelTitle(ctx, bb.x, bb.y - 22, "루프 이득 T(jω) (엔진, 미들브룩 주입)");
       AN.bode(ctx, bb, { f: res.r.bd.f, db: res.r.bd.db, ph: res.r.bd.ph, color: P.accent, width: 2.6 }, { f: [F0, F1], db: [-60, 100], ph: [-225, 45], phTicks: [-180, -90, 0], marks: true, phLines: [{ y: -180, color: P.bad, label: "−180°" }] });
       // PM vs 부하
-      const pb = nar ? { x: 58, y: bb.y + bb.h + 86, w: w - 76, h: h - bb.y - bb.h - 86 - 50 } : { x: bb.x + bb.w + 70, y: bb.y, w: sw, h: bb.h * 0.62 };
+      const pb = nar ? { x: 58, y: bb.y + bb.h + 86, w: w - 76, h: h - bb.y - bb.h - 86 - 66 } : { x: bb.x + bb.w + 70, y: bb.y, w: sw, h: bb.h * 0.62 };
       panelTitle(ctx, pb.x, pb.y - 22, "PM vs 부하 전류");
       const il = lg(gi());
       AB.chart(ctx, pb, {
@@ -1049,15 +1052,15 @@
       if (cv) cv.redraw();
     }
     function draw(ctx, w, h) {
-      const P = AB.palette();
+      const P = AB.palette(), nar = w < 640;
       if (!res) return;
-      const box = { x: 58, y: 28, w: w - 76, h: h - 76 };
+      const box = { x: 58, y: 28, w: w - 76, h: h - (nar ? 108 : 76) };
       const ser = [];
       if (kept) ser.push({ data: kept.f.map((f, i) => [f, kept.ps[i]]), color: P.faint, width: 1.8, dash: [6, 4] });
       ser.push({ data: res.f.map((f, i) => [f, res.ps[i]]), color: P.accent, width: 2.8 });
       ch = AB.chart(ctx, box, {
         x: [10, 1e8], y: [0, 120], logX: true, xLabel: "잡음 주파수", yLabel: "PSRR (dB, 클수록 좋다)",
-        xFmt: (v) => AB.si(v, "Hz", 2).replace(" ", ""), yTicks: [0, 20, 40, 60, 80, 100, 120],
+        xFmt: (v) => AB.si(v, "Hz", 2).replace(" ", ""), xTicks: nar ? [10, 1e3, 1e5, 1e7] : undefined, yTicks: [0, 20, 40, 60, 80, 100, 120],
         series: ser, vlines: [{ x: 1e6, color: P.bad, label: "1 MHz" }],
         bands: [{ x0: 3e5, x1: 3e6, color: AB.alpha(P.warn, 0.08) }],
       });
@@ -1067,10 +1070,10 @@
       ctx.strokeStyle = P.bad; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ch.X(3e5), y40); ctx.lineTo(ch.X(3e6), y40); ctx.stroke();
       ctx.fillStyle = P.bad; ctx.beginPath(); ctx.arc(x1, y40, 4.5, 0, TAU); ctx.fill(); ctx.restore();
       txt(ctx, ch.X(3e6) + 4, y40 + 10, "목표 40 dB", { size: 11.5, weight: 700, color: P.bad });
-      panelTitle(ctx, box.x, 6, `PSRR = −20 log|v_out/v_in| · ${res.label}`);
-      if (kept) txt(ctx, box.x + box.w - 4, box.y + 10, "점선: " + kept.label, { size: 11, color: P.dim, align: "right" });
+      panelTitle(ctx, nar ? 8 : box.x, 6, nar ? `PSRR · ${res.label}` : `PSRR = −20 log|v_out/v_in| · ${res.label}`);
+      if (kept) txt(ctx, box.x + box.w - 4, box.y + box.h - 10, "점선: " + kept.label, { size: 11, color: P.dim, align: "right" });
     }
-    cv = AB.canvas("#psrr-cv", draw, H("psrr-cv", (w) => (w < 640 ? 330 : 380)));
+    cv = AB.canvas("#psrr-cv", draw, H("psrr-cv", (w) => (w < 640 ? 360 : 380)));
     AB.drag(cv.canvas, {
       hover(x, y) {
         if (!ch || !res || x < ch.box.x || x > ch.box.x + ch.box.w) { tip.hide(); return; }
@@ -1116,7 +1119,7 @@
       panelTitle(ctx, lbox.x, 6, "효율 vs 배터리 전압 (초록 띠: AB-1 배터리 범위)");
       // 전력 막대
       const a = ldo(vin, il, iq), b = buck(vin, il);
-      const bb = nar ? { x: 16, y: lbox.y + lbox.h + 70, w: w - 32, h: h - lbox.y - lbox.h - 80 } : { x: lbox.x + lbox.w + 40, y: 28, w: w - lbox.x - lbox.w - 56, h: h - 60 };
+      const bb = nar ? { x: 16, y: lbox.y + lbox.h + 70, w: w - 32, h: h - lbox.y - lbox.h - 100 } : { x: lbox.x + lbox.w + 40, y: 28, w: w - lbox.x - lbox.w - 56, h: h - 80 };
       panelTitle(ctx, bb.x, bb.y - 22, `입력 전력의 행방 (V_IN ${vin.toFixed(2)} V)`);
       const pmax = Math.max(a.pin, b.pin) * 1.08;
       const bars = [

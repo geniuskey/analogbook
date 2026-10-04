@@ -716,7 +716,7 @@
     ["ΔΣ 변조기", "Delta-sigma modulator", "ΔΣ", "적분기와 거친 양자화기를 피드백 루프에 넣어 양자화 잡음을 대역 밖으로 미는 변환기. AB-1 온도 채널은 2차 1비트, OSR 128.", "conv", "sigmadelta"],
     ["잡음 성형", "Noise shaping", "", "양자화 잡음 스펙트럼을 (1 − z⁻¹)^L 꼴로 저주파에서 누르고 고주파로 미는 것. L차 성형은 OSR 2배당 (6L+3) dB.", "conv", "sigmadelta"],
     ["잡음 전달 함수", "Noise transfer function", "NTF", "양자화 잡음이 출력까지 가는 전달 함수. 신호 전달 함수(STF)는 대역에서 1, NTF는 대역에서 작게 설계한다.", "conv", "sigmadelta"],
-    ["SQNR", "Signal-to-quantization-noise ratio", "SQNR", "양자화 잡음만 따진 SNR. 2차 1비트 ΔΣ, OSR 128에서 약 100 dB로 16비트 목표에 여유가 있다.", "conv", "sigmadelta"],
+    ["SQNR", "Signal-to-quantization-noise ratio", "SQNR", "양자화 잡음만 따진 SNR. 2차 1비트 ΔΣ, OSR 128의 이론값은 약 100 dB지만 실제 변조기(−6 dBFS 입력)는 약 84 dB로, 16비트에는 차수나 OSR을 더 올려야 한다.", "conv", "sigmadelta"],
     ["유휴 톤", "Idle tones", "", "저차 ΔΣ에 DC 입력을 넣으면 비트열이 주기적으로 반복되며 생기는 스퓨리어스 톤. 디더나 고차 루프로 깬다.", "conv", "sigmadelta"],
     ["디더", "Dither", "", "양자화 오차를 신호와 무관한 잡음처럼 만들려고 일부러 더하는 작은 무작위 신호. 유휴 톤과 고조파를 흩는다.", "conv", "sigmadelta"],
     ["데시메이션 필터", "Decimation filter", "", "ΔΣ 비트열의 대역 밖 잡음을 걸러 내고 샘플률을 OSR분의 1로 줄이는 디지털 필터. 보통 CIC + FIR로 만든다.", "conv", "sigmadelta"],

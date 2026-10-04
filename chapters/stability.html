@@ -90,7 +90,7 @@
     <h2>위상 여유와 계단 응답</h2>
     <p>루프 이득의 크기가 1(0 dB)이 되는 주파수 \(f_u\)에서 위상 지연이 180°에 얼마나 못 미치는지를 <span class="term">위상 여유</span><span class="en">(Phase margin, PM)</span>라 한다. 위상 지연이 180°가 되는 주파수 \(f_{180}\)에서 \(|L|\)이 0 dB보다 몇 dB 아래인지를 <span class="term">이득 여유</span><span class="en">(Gain margin, GM)</span>라 한다.</p>
     <div class="formula">$$\text{PM} = 180^\circ + \angle L(j2\pi f_u),\qquad \text{GM} = -20\log_{10}|L(j2\pi f_{180})|\ \text{dB}$$
-      <div class="where">AB-1 OTA(\(C_c\) = 1 pF, \(R_z\) = 2 kΩ, \(C_L\) = 2 pF): \(f_u\) ≈ 23.5 MHz, PM ≈ 67.6°, \(f_{180}\) ≈ 1 GHz, GM ≈ 52 dB(엔진 <code>AN.ota2Open()</code>).</div>
+      <div class="where">AB-1 OTA(\(C_c\) = 1 pF, \(R_z\) = 2 kΩ, \(C_L\) = 2 pF): \(f_u\) ≈ 23.5 MHz, PM ≈ 67.5°, \(f_{180}\) ≈ 1 GHz, GM ≈ 52 dB(엔진 <code>AN.ota2Open()</code>).</div>
     </div>
     <p>PM은 숫자 하나지만 시간 영역에서 뜻이 분명하다. 극점 둘짜리 루프를 단위 귀환으로 닫으면 폐루프는 2차 시스템이 되고, PM이 작을수록 폐루프 극점이 허수축에 다가가 계단 응답이 울린다. 아래에서 두 번째 극점 \(p_2\)를 끌어 PM을 바꿔 보라.</p>
 
@@ -123,7 +123,7 @@
         <tr><td>50°</td><td class="num">0.48</td><td class="num">18%</td><td class="warn-t">R<sub>z</sub> 없는 AB-1(51°)</td></tr>
         <tr><td>60°</td><td class="num">0.61</td><td class="num">8.8%</td><td class="ok-t">흔한 설계 목표</td></tr>
         <tr><td>65°</td><td class="num">0.70</td><td class="num">4.7%</td><td class="ok-t">빠른 정착(약 0.7)</td></tr>
-        <tr><td>70°</td><td class="num">0.80</td><td class="num">1.4%</td><td class="ok-t">AB-1 최종(67.6°) 근처</td></tr>
+        <tr><td>70°</td><td class="num">0.80</td><td class="num">1.4%</td><td class="ok-t">AB-1 최종(67.5°) 근처</td></tr>
         <tr><td>76°</td><td class="num">0.99</td><td class="num">0%</td><td>임계 감쇠, 다소 느림</td></tr>
       </tbody>
     </table></div>
@@ -337,18 +337,18 @@
         <div class="stat"><span class="k">f<sub>u</sub> / PM</span><span class="v" id="mb-o3">—</span></div>
         <div class="stat"><span class="k">판정</span><span class="v s" id="mb-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 미들브룩 주입에서 V<sub>os</sub>를 −3 ~ +3 mV로 움직여도 출력은 0.9 V 근처, 곡선은 기준과 겹친다(PM ≈ 67.6°). ② "루프 끊기"로 바꾸면 V<sub>os</sub> = 0에서도 시스템적 오프셋 때문에 출력이 1.1 V로 벗어나고, ±1 mV면 레일에 붙어 직류 이득이 크게 무너진다. ③ "개루프(오프셋 맞춤)"는 엔진이 입력을 이분법으로 조정해 기준과 거의 같은 곡선을 준다. 실제 실험실에서는 이 조정이 불가능하다. (미들브룩: AB-1 OTA를 단위 이득 버퍼로 묶고 출력과 반전 입력 사이에 AC 전압원을 넣은 AN.circuit, T = −v<sub>out</sub>/v<sub>inn</sub>. 수백 MHz 위에서 곡선이 다시 올라가는 것은 주입점 뒤의 C<sub>gs</sub>가 더는 고임피던스가 아니어서 생기는 전압 주입만의 오차다.)</div>
+      <div class="sim-note">해볼 것: ① 미들브룩 주입에서 V<sub>os</sub>를 −3 ~ +3 mV로 움직여도 출력은 0.9 V 근처, 곡선은 기준과 겹친다(PM ≈ 67.5°). ② "루프 끊기"로 바꾸면 V<sub>os</sub> = 0에서도 시스템적 오프셋 때문에 출력이 1.1 V로 벗어나고, ±1 mV면 레일에 붙어 직류 이득이 크게 무너진다. ③ "개루프(오프셋 맞춤)"는 엔진이 입력을 이분법으로 조정해 기준과 거의 같은 곡선을 준다. 실제 실험실에서는 이 조정이 불가능하다. (미들브룩: AB-1 OTA를 단위 이득 버퍼로 묶고 출력과 반전 입력 사이에 AC 전압원을 넣은 AN.circuit, T = −v<sub>out</sub>/v<sub>inn</sub>. 수백 MHz 위에서 곡선이 다시 올라가는 것은 주입점 뒤의 C<sub>gs</sub>가 더는 고임피던스가 아니어서 생기는 전압 주입만의 오차다.)</div>
     </div>
 
-    <p>엔진으로 재면 미들브룩 주입의 PM은 67.6°로 오프셋을 맞춘 개루프 값과 0.1° 안에서 일치한다. SPICE의 루프 이득 해석(<code>stb</code> 같은 기능)도 같은 생각으로, 전압 주입과 전류 주입을 함께 써서 양방향 부하 효과까지 지운다.</p>
+    <p>엔진으로 재면 미들브룩 주입의 PM은 67.5°로 오프셋을 맞춘 개루프 값과 0.1° 안에서 일치한다. SPICE의 루프 이득 해석(<code>stb</code> 같은 기능)도 같은 생각으로, 전압 주입과 전류 주입을 함께 써서 양방향 부하 효과까지 지운다.</p>
     <div class="callout deep"><strong>다른 보상 맛보기</strong> 밀러 보상 + \(R_z\)가 2단 OTA의 표준이지만 유일한 방법은 아니다. <b>간접 보상</b>(Ahuja 보상)은 \(C_c\)의 전류를 1단 캐스코드 소자의 소스(저임피던스 마디)로 되돌려 앞먹임 경로를 없앤다. 우반면 영점이 사라지고 \(p_2\)가 더 높이 올라가 같은 전력에서 GBW를 더 얻는다. <b>단일단 OTA</b>(폴디드 캐스코드, 9장)는 고임피던스 마디가 출력 하나뿐이어서 부하 \(C_L\) 자체가 보상 커패시터가 된다. \(C_L\)이 클수록 오히려 안정해진다. 3단 이상에서는 <b>중첩 밀러 보상</b>(NMC)으로 커패시터를 여러 겹 건다. 레귤레이터 루프(14장)와 PLL 루프(18장)도 같은 PM 언어로 보상한다.</div>
 
     <div class="casefile">
       <div class="tag"><b>TARGET AB-1</b><span>타깃 파일 · 10장</span></div>
-      <h4>R<sub>z</sub> = 2 kΩ로 우반면 영점을 옮겨 PM 67.6°, 버퍼 오버슈트 약 2%</h4>
-      <p>9장 설계(\(C_c\) = 1 pF, \(R_z\) = 0)는 PM 약 51°로 사양 60°에 못 미쳤다. 원인은 우반면 영점 \(g_{m6}/2\pi C_c\) ≈ 121 MHz가 \(f_u\)에서 약 11°를 빼앗는 것이다. 엔진(<code>AN.ota2Open</code>)으로 \(R_z\)를 훑으면 1 kΩ에서 PM 59.5°, 1/g<sub>m6</sub> ≈ 1.31 kΩ에서 영점이 무한대로 가고, 2 kΩ에서 영점이 좌반면 약 232 MHz로 넘어와 <b>PM 67.6°, GM 52 dB, GBW 23.5 MHz</b>가 된다. 단위 이득 버퍼에 0.1 V 계단을 넣은 과도 해석에서 오버슈트는 약 2.4%, 1% 정착은 약 30 ns다(R<sub>z</sub> = 0이면 13%). 반대로 \(R_z\) = 0에서 \(C_c\)를 0.6 pF로 줄이면 GBW는 35 MHz로 빨라지지만 PM 약 40°, 오버슈트 약 25%로 울린다. 부하가 \(C_L\) = 5 pF로 늘면 기본 보상에서도 PM 약 50°(오버슈트 약 14%), 20 pF면 약 28°로 무너진다.</p>
+      <h4>R<sub>z</sub> = 2 kΩ로 우반면 영점을 옮겨 PM 67.5°, 버퍼 오버슈트 약 2%</h4>
+      <p>9장 설계(\(C_c\) = 1 pF, \(R_z\) = 0)는 PM 약 51°로 사양 60°에 못 미쳤다. 원인은 우반면 영점 \(g_{m6}/2\pi C_c\) ≈ 121 MHz가 \(f_u\)에서 약 11°를 빼앗는 것이다. 엔진(<code>AN.ota2Open</code>)으로 \(R_z\)를 훑으면 1 kΩ에서 PM 59.4°, 1/g<sub>m6</sub> ≈ 1.31 kΩ에서 영점이 무한대로 가고, 2 kΩ에서 영점이 좌반면 약 232 MHz로 넘어와 <b>PM 67.5°, GM 52 dB, GBW 23.5 MHz</b>가 된다. 단위 이득 버퍼에 0.1 V 계단을 넣은 과도 해석에서 오버슈트는 약 2.4%, 1% 정착은 약 30 ns다(R<sub>z</sub> = 0이면 13%). 반대로 \(R_z\) = 0에서 \(C_c\)를 0.6 pF로 줄이면 GBW는 35 MHz로 빨라지지만 PM 약 40°, 오버슈트 약 25%로 울린다. 부하가 \(C_L\) = 5 pF로 늘면 기본 보상에서도 PM 약 50°(오버슈트 약 14%), 20 pF면 약 28°로 무너진다.</p>
       <div class="clue">
-        <div><b>이 장에서 정한 것</b>C<sub>c</sub> = 1 pF, R<sub>z</sub> = 2 kΩ(1/g<sub>m6</sub>의 약 1.5배, 공정 변동 여유). PM 67.6° ≥ 60°, GBW 23.5 MHz ≥ 20 MHz. 사양은 C<sub>L</sub> ≤ 약 3 pF에서만 성립한다.</div>
+        <div><b>이 장에서 정한 것</b>C<sub>c</sub> = 1 pF, R<sub>z</sub> = 2 kΩ(1/g<sub>m6</sub>의 약 1.5배, 공정 변동 여유). PM 67.5° ≥ 60°, GBW 23.5 MHz ≥ 20 MHz. 사양은 C<sub>L</sub> ≤ 약 3 pF에서만 성립한다.</div>
         <div><b>아직 남은 문제</b>이 OTA가 만드는 잡음과 오프셋은 아직 따지지 않았다. 10 kHz 센서 대역에서 입력 환산 잡음은 얼마인가?</div>
         <div><b>다음 단계</b>11장에서 같은 OTA의 열잡음·1/f 잡음을 엔진으로 계산한다. 큰 샘플링 커패시터를 모는 경우의 PM과 정착은 15장에서 다시 본다.</div>
       </div>

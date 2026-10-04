@@ -732,26 +732,33 @@
     return { f, mag, db: mag.map((m) => 20 * Math.log10(Math.max(m, 1e-30))), ph: AN.unwrap(v.map((c) => (Math.atan2(c[1], c[0]) * 180) / Math.PI)) };
   };
   /** 안정도 여유: 루프 이득 보드 데이터 → {fu: 단위 이득 주파수, pm: 위상 여유(도), f180, gm: 이득 여유(dB)} */
-  AN.margins = function (bd) {
+  AN.margins = function (bd, o = {}) {
     const { f, db, ph } = bd;
     let fu = NaN, pm = NaN, f180 = NaN, gm = NaN;
-    const ph0 = ph[0];
-    // DC 위상이 −180(반전)인 경우도 같은 기준으로: 루프 위상 지연 = ph − ph0
+    // 기준 위상: 저주파 기울기로 적분기 개수 k(−20k dB/dec)를 세고, 적분기 몫(−90k°)을 뺀 나머지를
+    // 180°의 배수로 맞춘다(반전 증폭기의 ±180°만 걷어 낸다). o.ref로 직접 줄 수도 있다.
+    let ref = o.ref;
+    if (ref == null) {
+      const j = Math.min(f.length - 1, Math.max(1, Math.round(f.length / 40)));
+      const slope = (db[j] - db[0]) / Math.log10(f[j] / f[0]);
+      const k = Math.max(0, Math.round(-slope / 20 - 0.25));
+      ref = Math.round((ph[0] + 90 * k) / 180) * 180;
+    }
     for (let i = 1; i < f.length; i++) {
       if (isNaN(fu) && db[i - 1] >= 0 && db[i] < 0) {
         const t = db[i - 1] / (db[i - 1] - db[i]);
         fu = Math.exp(Math.log(f[i - 1]) + t * (Math.log(f[i]) - Math.log(f[i - 1])));
         const p = ph[i - 1] + t * (ph[i] - ph[i - 1]);
-        pm = 180 + (p - ph0);
+        pm = 180 + (p - ref);
       }
-      const l0 = ph[i - 1] - ph0, l1 = ph[i] - ph0;
+      const l0 = ph[i - 1] - ref, l1 = ph[i] - ref;
       if (isNaN(f180) && l0 > -180 && l1 <= -180) {
         const t = (l0 + 180) / (l0 - l1);
         f180 = Math.exp(Math.log(f[i - 1]) + t * (Math.log(f[i]) - Math.log(f[i - 1])));
         gm = -(db[i - 1] + t * (db[i] - db[i - 1]));
       }
     }
-    return { fu, pm, f180, gm };
+    return { fu, pm, f180, gm, ref };
   };
   /** 이득이 DC보다 3 dB 떨어지는 주파수 */
   AN.f3db = function (bd) {
@@ -1164,9 +1171,9 @@
         const xu = top.X(m.fu);
         ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = P.accent; ctx.lineWidth = 1.2;
         ctx.beginPath(); ctx.moveTo(xu, top.Y(dbR[1])); ctx.lineTo(xu, bot.Y(phR[0])); ctx.stroke(); ctx.restore();
-        const pAt = list[0].ph[0] - 180 + m.pm;
-        ctx.save(); ctx.strokeStyle = P.ok; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(xu, bot.Y(Math.max(phR[0], list[0].ph[0] - 180))); ctx.lineTo(xu, bot.Y(pAt)); ctx.stroke();
-        ctx.fillStyle = P.ok; ctx.font = F_(12, false, 700); ctx.textBaseline = "middle"; ctx.fillText(`PM ${m.pm.toFixed(0)}°`, xu + 6, bot.Y((pAt + Math.max(phR[0], list[0].ph[0] - 180)) / 2)); ctx.restore();
+        const base = m.ref - 180, pAt = base + m.pm;
+        ctx.save(); ctx.strokeStyle = P.ok; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(xu, bot.Y(Math.max(phR[0], base))); ctx.lineTo(xu, bot.Y(pAt)); ctx.stroke();
+        ctx.fillStyle = P.ok; ctx.font = F_(12, false, 700); ctx.textBaseline = "middle"; ctx.fillText(`PM ${m.pm.toFixed(0)}°`, xu + 6, bot.Y((pAt + Math.max(phR[0], base)) / 2)); ctx.restore();
       }
     }
     return { X: top.X, Ym: top.Y, Yp: bot.Y, top, bot };

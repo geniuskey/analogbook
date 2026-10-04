@@ -32,6 +32,10 @@
 <!--head:end-->
 <style>
   .stat .v small { font-family: var(--font); font-size: 12px; }
+  @media (max-width: 640px) {
+    figure.diagram[data-scroll] { overflow-x: auto; padding: 14px 10px; }
+    figure.diagram[data-scroll] svg { min-width: 580px; }
+  }
 </style>
 </head>
 <body data-chapter="sigmadelta">
@@ -86,7 +90,7 @@
     <h2>1차 ΔΣ 변조기: 1의 밀도가 입력이다</h2>
     <p>오차를 밀어내는 장치가 <span class="term">델타-시그마 변조기</span><span class="en">(Delta-sigma modulator, ΔΣ)</span>다. 1차 변조기는 부품이 셋이다. 입력과 피드백의 차이(Δ)를 쌓는 <b>적분기</b>(Σ), 그 부호만 보는 <b>1비트 비교기</b>, 비트를 ±V<sub>ref</sub>로 되돌리는 <b>1비트 DAC</b>. 적분기는 지금까지의 오차 합을 기억하고, 비교기는 그 합을 0 쪽으로 끌어당기는 비트를 낸다. 그 결과 출력 비트의 평균이 입력과 같아진다.</p>
 
-    <figure class="diagram">
+    <figure class="diagram" data-scroll>
       <svg viewBox="0 0 720 270" role="img" aria-label="1차 델타-시그마 변조기 블록도: 입력 u에서 DAC 출력을 뺀 차이를 적분기가 쌓고, 1비트 비교기가 부호를 내며, 그 비트가 출력 y이자 1비트 DAC로 되돌아간다. 아래는 비교기를 양자화 오차 e를 더하는 덧셈점으로 바꾼 선형 모델">
         <defs><marker id="sd-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
         <text class="lbl lbl-b" x="20" y="22">1차 ΔΣ 변조기 (이산 시간)</text>
@@ -129,7 +133,7 @@
     <div class="sim" id="sim-mod1" data-big data-desc="1차 ΔΣ 변조기 블록도 위로 표본이 한 바퀴씩 돌며 적분기 값과 비트가 바뀐다. DC 입력 점선을 끌면 비트열의 1 밀도와 이동 평균이 입력을 따라간다">
       <div class="sim-head"><span class="sim-tag">SIMULATOR</span><h3>1차 ΔΣ 변조기를 한 표본씩 돌린다</h3></div>
       <div class="sim-body side">
-        <div class="sim-view"><canvas id="m1-cv"></canvas><span class="hint">아래 그래프의 입력 점선을 위아래로 끈다</span></div>
+        <div class="sim-view"><canvas id="m1-cv"></canvas><span class="hint">입력 점선을 위아래로 끈다</span></div>
         <div class="sim-controls">
           <div class="seg" id="m1-sp"><button data-value="slow" class="on">한 표본씩</button><button data-value="fast">빠르게</button></div>
           <label class="ctrl"><span>DC 입력 u <output id="m1-u-out"></output></span><input type="range" id="m1-u" min="-1" max="1" step="0.01" value="0.4"></label>
@@ -197,10 +201,10 @@
         <div class="stat"><span class="k">측정 ENOB</span><span class="v" id="ns-enob">—</span></div>
         <div class="stat"><span class="k">NTF 기울기</span><span class="v" id="ns-sl">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 기본값(2차 1비트, OSR 128, −6 dBFS)은 AB-1 온도 채널이다. 측정 약 86 dB, 풀스케일 식 100 dB, Δ = 2와 −6 dBFS를 보정한 이론 약 88 dB와 비교한다. ② OSR을 한 칸(2배) 올리면 2차는 약 15 dB, 1차로 바꾸면 약 9 dB씩 오른다. ③ 3차 1비트는 루프가 발산해 스펙트럼이 무너진다(다음 절). 4비트로 바꾸면 3차도 안정하고 SQNR이 140 dB를 넘는다. (오차 피드백 구조로 NTF = (1−z⁻¹)^L을 정확히 구현한 행동 모델, 32768점 Hann FFT, 대역 내 = 3번 빈~fs/2OSR, 신호 ±2빈, 회로 잡음·부정합 없음)</div>
+      <div class="sim-note">해볼 것: ① 기본값(2차 1비트, OSR 128, −6 dBFS)은 AB-1 온도 채널이다. 측정 약 84 dB, 풀스케일 식 100 dB, Δ = 2와 −6 dBFS를 보정한 이론 약 88 dB와 비교한다. ② OSR을 한 칸(2배) 올리면 이론으로는 2차 15 dB, 1차 9 dB씩 오른다. 측정은 2차가 약 13 dB로 조금 작고, 1차는 유휴 톤 때문에 들쭉날쭉하다. ③ 3차 1비트는 루프가 발산해 스펙트럼이 무너진다(다음 절). 4비트로 바꾸면 3차도 안정하고 SQNR이 140 dB를 넘는다. (오차 피드백 구조로 NTF = (1−z⁻¹)^L을 정확히 구현한 행동 모델, 32768점 Hann FFT, 대역 내 = 3번 빈~fs/2OSR, 신호 ±2빈, 회로 잡음·부정합 없음)</div>
     </div>
 
-    <p>측정 곡선은 이론 점선을 잘 따라간다. 다만 1비트에서는 측정 SQNR이 풀스케일 식보다 10 dB 이상 낮다. 이유는 셋이다. 첫째, 1비트 출력 ±1의 간격은 \(\Delta\) = 2라서 오차 전력이 \(\Delta^2/12\) = 1/3이다. N = 1을 넣은 식은 \(\Delta\) = 1을 가정한다(−6 dB). 둘째, 입력을 −6 dBFS로 낮춰야 루프가 안정하다(−6 dB). 셋째, 1비트 비교기의 "이득"은 입력에 따라 변해서 선형 모델이 근사일 뿐이다. 설계에서는 식으로 대략을 잡고 반드시 시뮬레이션으로 확인한다.</p>
+    <p>측정 곡선은 이론 점선을 잘 따라간다. 다만 1비트에서는 측정 SQNR이 풀스케일 식보다 15 dB 가까이 낮다. 이유는 셋이다. 첫째, 1비트 출력 ±1의 간격은 \(\Delta\) = 2라서 오차 전력이 \(\Delta^2/12\) = 1/3이다. N = 1을 넣은 식은 \(\Delta\) = 1을 가정한다(−6 dB). 둘째, 입력을 −6 dBFS로 낮춰야 루프가 안정하다(−6 dB). 셋째, 1비트 비교기의 "이득"은 입력에 따라 변해서 선형 모델이 근사일 뿐이다. 설계에서는 식으로 대략을 잡고 반드시 시뮬레이션으로 확인한다.</p>
     <div class="callout"><strong>STF와 NTF는 따로 고를 수 있다.</strong> 같은 루프 필터라도 입력을 어디로 넣느냐(피드포워드 경로)에 따라 STF를 1이나 \(z^{-1}\)처럼 평탄하게 만들 수 있다. 신호는 그대로 통과하고 잡음만 깎이는 것이 이상적이다. 피드포워드 구조에서는 적분기가 신호 성분을 거의 처리하지 않아 OTA 스윙과 선형성 요구가 줄어든다.</div>
   </section>
 
@@ -215,7 +219,7 @@
         <div class="sim-controls">
           <label class="ctrl"><span>목표 해상도 <output id="map-b-out"></output></span><input type="range" id="map-b" min="10" max="24" step="1" value="16"></label>
           <label class="ctrl"><span>양자화 비트 N <output id="map-n-out"></output></span><input type="range" id="map-n" min="1" max="5" step="1" value="1"></label>
-          <label class="check"><input type="checkbox" id="map-real" checked> 1비트 현실 보정(−12 dB, 3차 이상 OBG 1.5)</label>
+          <label class="check"><input type="checkbox" id="map-real" checked> 1비트 현실 보정(측정 맞춤, 3차 이상 OBG 1.5)</label>
         </div>
       </div>
       <div class="sim-readout">
@@ -225,7 +229,7 @@
         <div class="stat"><span class="k">L = 3 필요 OSR</span><span class="v" id="map-3">—</span></div>
         <div class="stat"><span class="k">L = 4 필요 OSR</span><span class="v" id="map-4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 16비트(98.1 dB) 목표에서 이상식으로는 2차가 OSR 약 115면 된다. AB-1의 OSR 128(별표)은 이상식으로 겨우 넘는다. ② "현실 보정"을 켜면 2차는 OSR 약 200이 필요하다. 3차로 올리거나 비트를 늘려야 한다. ③ N을 1에서 4로 올리면 곡선 전체가 18 dB 올라가 같은 해상도를 훨씬 낮은 OSR로 얻는다. 대신 다중 비트 DAC의 선형성이 문제가 된다(7절). (식은 앞 절의 이상 SQNR, 0차 = 단순 오버샘플링. 현실 보정: 1비트는 Δ = 2와 −6 dBFS 입력으로 −12 dB, 3차 이상은 안정을 위해 NTF 이득을 1.5로 낮춘 경우의 대략적 손실을 차수당 추가로 반영한 근사)</div>
+      <div class="sim-note">해볼 것: ① 16비트(98.1 dB) 목표에서 이상식으로는 2차가 OSR 약 115면 된다. AB-1의 OSR 128(별표)은 이상식으로 겨우 넘는다. ② "현실 보정"을 켜면 2차는 OSR 약 240이 필요하다. 3차로 올리거나 비트를 늘려야 한다. ③ N을 1에서 4로 올리면 곡선 전체가 18 dB 올라가 같은 해상도를 훨씬 낮은 OSR로 얻는다. 대신 다중 비트 DAC의 선형성이 문제가 된다(7절). (식은 앞 절의 이상 SQNR, 0차 = 단순 오버샘플링. 현실 보정: 이 장의 행동 모델로 −6 dBFS에서 잰 SQNR에 맞춘 차수별 손실 1차 9, 2차 16, 3차 34, 4차 50 dB. Δ = 2와 −6 dBFS 입력의 −12 dB에 비교기 비선형성, 3차 이상은 NTF 이득을 1.5로 낮춘 손실이 더해진 근사)</div>
     </div>
     <p>지도에서 읽을 수 있는 설계 감각은 이렇다. OSR이 낮을 때(16 이하)는 차수를 올려도 이득이 작아 비트를 늘리는 편이 낫다. 광대역 변환기(수 MHz~수십 MHz 대역)가 다중 비트 양자화기를 쓰는 이유다. OSR이 높을 때(100 이상)는 차수 하나가 30 dB 이상을 준다. 오디오와 계측용 변환기가 1비트 2~5차를 쓰는 이유다. 그러나 차수를 무작정 올릴 수는 없다. 다음 절의 안정도 문제가 있다.</p>
   </section>
@@ -256,7 +260,7 @@
         <div class="stat"><span class="k">최대 안정 입력(MSA)</span><span class="v" id="st-msa">—</span></div>
         <div class="stat"><span class="k">−20 dBFS의 SQNR</span><span class="v" id="st-20">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 2차 1비트를 스윕한다. SQNR이 진폭에 비례해 1 dB/dB로 오르다 약 −5 dBFS 근처에서 최고가 되고 0 dBFS에서 무너진다. 아래 그래프에서 양자화기 입력이 함께 치솟는다. ② 3차 1비트 (1−z⁻¹)³을 스윕하면 모든 진폭에서 양자화기 입력이 10⁶을 넘고 SQNR이 바닥이다. ③ OBG 1.5로 바꾸면 3차가 안정해지고 2차보다 약 15 dB 좋지만 MSA가 조금 낮다. 4비트 2차는 0 dBFS 가까이까지 버틴다. (OSR 64, 8192점 Hann FFT, 진폭 2 dB 간격, MSA = SQNR이 최고점에서 10 dB 이상 떨어지기 직전 진폭, OBG 1.5 NTF는 버터워스 고역 통과형 극점을 쌍선형 변환으로 구해 |NTF(−1)| = 1.5가 되게 맞춘 것)</div>
+      <div class="sim-note">해볼 것: ① 2차 1비트를 스윕한다. SQNR이 진폭에 비례해 1 dB/dB로 오르다 약 −8 dBFS 근처에서 최고(약 69 dB)가 되고 0 dBFS에서 무너진다. 아래 그래프에서 양자화기 입력이 함께 치솟는다. ② 3차 1비트 (1−z⁻¹)³을 스윕하면 모든 진폭에서 양자화기 입력이 10⁶을 넘고 SQNR이 바닥이다. ③ OBG 1.5로 바꾸면 3차가 안정해지고 2차보다 약 11 dB 좋지만 MSA가 조금 낮다. 4비트 2차는 0 dBFS 가까이까지 버틴다. (OSR 64, 8192점 Hann FFT, 진폭 2 dB 간격, MSA = SQNR이 최고점에서 10 dB 이상 떨어지기 직전 진폭, OBG 1.5 NTF는 버터워스 고역 통과형 극점을 쌍선형 변환으로 구해 |NTF(−1)| = 1.5가 되게 맞춘 것)</div>
     </div>
     <p>무너진 변조기는 스스로 돌아오지 않는 경우가 많다. 실제 칩에서는 적분기 출력이 OTA 출력 범위에서 잘리고, 적분기가 포화되면 루프가 사실상 끊긴다. 그래서 고차 변조기에는 적분기 출력을 감시하다가 문턱을 넘으면 적분기 커패시터를 초기화(리셋)하는 회로를 넣는다. 그리고 입력 범위를 MSA 아래로 제한해 사양을 정한다.</p>
     <div class="callout warn"><strong>"이론 SQNR"은 이상 루프의 상한이다.</strong> OTA의 유한 이득(적분기 누설), 유한 GBW와 슬루율(정착 오차), 커패시터 비 오차는 NTF 영점을 DC에서 조금 옮겨 대역 내 잡음을 키운다. 적분기 누설은 첫 단 OTA의 DC 이득이 대략 OSR보다 충분히 커야 무시할 수 있다. AB-1 OTA의 약 3,900배(71.8 dB)는 OSR 128에 넉넉하다.</div>
@@ -292,7 +296,7 @@
     <h2>데시메이션: 비트열을 워드로</h2>
     <p>변조기 출력은 2.048 MHz로 흐르는 1비트 열이다. 쓸모 있는 것은 8 kHz 대역 안의 신호뿐이다. <span class="term">데시메이션 필터</span><span class="en">(Decimation filter)</span>는 두 가지 일을 한다. 대역 밖으로 밀려난 큰 잡음을 걸러 내고, 표본화 속도를 신호 대역에 맞게 낮춘다(다운샘플링). 비트 하나짜리 고속 열이 비트가 많은 저속 워드 열로 바뀐다. 해상도가 비트 수에서 시간으로 옮겨 갔다가 다시 비트 수로 돌아오는 셈이다.</p>
 
-    <figure class="diagram">
+    <figure class="diagram" data-scroll>
       <svg viewBox="0 0 720 230" role="img" aria-label="ΔΣ ADC 신호 사슬: 아날로그 입력, RC 앤티에일리어싱 필터, 2차 1비트 변조기 2.048 MHz, sinc 세제곱 필터로 32분의 1 다운샘플링 64 kHz, FIR 하프밴드 필터로 4분의 1 다운샘플링해 16 kHz 16비트 워드 출력">
         <defs><marker id="sd-ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>
         <text class="lbl lbl-b" x="20" y="22">ΔΣ ADC 사슬 (AB-1 온도 채널)</text>
@@ -375,7 +379,7 @@
         <div class="stat"><span class="k">3차 고조파</span><span class="v" id="dm-h3">—</span></div>
         <div class="stat"><span class="k">소자 오차 σ 실제</span><span class="v" id="dm-act">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① "이상 DAC"에서 약 120 dB를 확인한 뒤 "고정 선택"으로 바꾸면 고조파가 서고 SNDR이 수십 dB 떨어진다. 위 지도에서 아래쪽 소자만 자주 쓰이는 것을 본다. ② DWA로 바꾸면 소자 사용 지도가 대각선 띠로 돌고, 고조파가 사라지며 잡음이 대역 밖으로 올라간다. ③ σ를 2%까지 키워도 DWA는 고정 선택보다 수십 dB 좋다. (2차 CIFB 루프, 9레벨 양자화기 = 온도계 코드 단위 소자 8개, 소자 값 1 + σ·N(0,1) 정규화, OSR 64, −6 dBFS 사인, 16384점 Hann FFT)</div>
+      <div class="sim-note">해볼 것: ① "이상 DAC"에서 약 90 dB를 확인한 뒤 "고정 선택"으로 바꾸면 고조파가 서고 SNDR이 수십 dB 떨어진다. 위 지도에서 아래쪽 소자만 자주 쓰이는 것을 본다. ② DWA로 바꾸면 소자 사용 지도가 대각선 띠로 돌고, 고조파가 사라지며 잡음이 대역 밖으로 올라간다. ③ σ를 2%까지 키워도 DWA는 고정 선택보다 수십 dB 좋다. (2차 CIFB 루프, 9레벨 양자화기 = 온도계 코드 단위 소자 8개, 소자 값 1 + σ·N(0,1) 정규화, OSR 64, −6 dBFS 사인, 16384점 Hann FFT)</div>
     </div>
     <p>DWA는 디지털 논리 몇 개로 구현되고, 다중 비트 ΔΣ의 사실상 표준이 되었다. 다만 DWA는 특정 입력에서 자체 톤을 만들 수 있어 무작위 시작점이나 2차 성형 DEM 같은 변형이 쓰인다.</p>
 
@@ -395,10 +399,10 @@
 
     <div class="casefile">
       <div class="tag"><b>TARGET AB-1</b><span>타깃 파일 · 17장</span></div>
-      <h4>온도 채널: 2차 1비트, OSR 128 → 이론 100.2 dB, 측정 약 86 dB</h4>
-      <p>AB-1의 온도 채널은 대역 8 kHz를 16비트(이상 SQNR 98.1 dB)로 읽는 것이 목표다. 2차 1비트 변조기를 \(f_s\) = 2.048 MHz로 돌리면 OSR = 2.048 MHz / (2 × 8 kHz) = 128이다. 앞 절의 식(N = 1, L = 2)은 7.78 − 12.9 + 5 × 21.07 ≈ <b>100.2 dB</b>로 16비트를 넘는다. 그러나 이 장의 행동 모델 시뮬레이터(잡음 성형 시뮬레이터 기본값)로 실제 비트열을 FFT하면 −6 dBFS 입력에서 대역 내 SQNR이 약 <b>86 dB</b>(ENOB 약 14)다. 차이 약 14 dB는 1비트 간격 Δ = 2(−6 dB), 입력 여유 −6 dBFS(−6 dB), 비교기 이득의 비선형성에서 온다. 진폭 스윕으로 본 최대 SQNR은 약 −5 dBFS 근처, 0 dBFS에서는 과부하로 무너진다. 같은 OSR에서 3차 1비트(OBG 1.5)는 약 100 dB, OSR 256의 2차는 약 97 dB로 측정된다. 데시메이션은 sinc³ ↓32(64 kHz, 16비트 워드) 다음 FIR 하프밴드 ↓4로 16 kS/s 출력을 만든다. 첫 단 적분기 OTA는 AB-1 OTA(DC 이득 약 3,900배 ≫ OSR 128)를 쓴다.</p>
+      <h4>온도 채널: 2차 1비트, OSR 128 → 이론 100.2 dB, 측정 약 84 dB</h4>
+      <p>AB-1의 온도 채널은 대역 8 kHz를 16비트(이상 SQNR 98.1 dB)로 읽는 것이 목표다. 2차 1비트 변조기를 \(f_s\) = 2.048 MHz로 돌리면 OSR = 2.048 MHz / (2 × 8 kHz) = 128이다. 앞 절의 식(N = 1, L = 2)은 7.78 − 12.9 + 5 × 21.07 ≈ <b>100.2 dB</b>로 16비트를 넘는다. 그러나 이 장의 행동 모델 시뮬레이터(잡음 성형 시뮬레이터 기본값)로 실제 비트열을 FFT하면 −6 dBFS 입력에서 대역 내 SQNR이 약 <b>84 dB</b>(ENOB 약 13.7)다. 차이 약 16 dB는 1비트 간격 Δ = 2(−6 dB), 입력 여유 −6 dBFS(−6 dB), 비교기 이득의 비선형성에서 온다. 진폭을 쓸면 SQNR은 −8~−6 dBFS 근처에서 최고이고, 0 dBFS에서는 과부하로 무너진다. 같은 OSR에서 3차 1비트(OBG 1.5)는 약 100 dB, OSR 256의 2차는 약 97 dB로 측정된다. 데시메이션은 sinc³ ↓32(64 kHz, 16비트 워드) 다음 FIR 하프밴드 ↓4로 16 kS/s 출력을 만든다. 첫 단 적분기 OTA는 AB-1 OTA(DC 이득 약 3,900배 ≫ OSR 128)를 쓴다.</p>
       <div class="clue">
-        <div><b>이 장에서 정한 것</b>2차 1비트, OSR 128, fs 2.048 MHz를 기본 구조로 둔다. 1비트 DAC는 본질적으로 선형이라 DEM이 필요 없다. 이상식은 100 dB지만 측정 약 86 dB라서 16비트 목표에는 여유가 부족하다. 여유가 필요하면 3차 OBG 1.5(측정 약 100 dB) 또는 OSR 256으로 올린다. 데시메이션 첫 단은 sinc³(K = L + 1).</div>
+        <div><b>이 장에서 정한 것</b>2차 1비트, OSR 128, fs 2.048 MHz를 기본 구조로 둔다. 1비트 DAC는 본질적으로 선형이라 DEM이 필요 없다. 이상식은 100 dB지만 측정 약 84 dB라서 16비트 목표에는 여유가 부족하다. 여유가 필요하면 3차 OBG 1.5(측정 약 100 dB) 또는 OSR 256으로 올린다. 데시메이션 첫 단은 sinc³(K = L + 1).</div>
         <div><b>아직 남은 문제</b>양자화 잡음 말고도 샘플링 커패시터의 kT/C와 OTA 잡음이 대역 내 잡음에 더해진다. 그리고 SAR ADC(1 MS/s)와 ΔΣ 변조기(2.048 MHz)를 움직이는 클록은 어디서 오며, 클록 가장자리의 흔들림(지터)은 이 SQNR을 얼마나 깎는가?</div>
         <div><b>다음 단계</b><a href="pll.html">18장 발진기와 PLL</a>에서 4 MHz 기준으로 칩의 클록을 만들고, 지터가 변환기 SNR에 주는 한계를 따진다.</div>
       </div>
@@ -411,7 +415,7 @@
       <li>양자화 잡음 전력 \(\Delta^2/12\)는 \(f_s\)와 무관하다. 오버샘플링은 같은 잡음을 \(f_s/2\)까지 펴서 대역 내 몫을 \(1/\mathrm{OSR}\)로 줄인다. OSR 2배당 +3 dB, 4배당 1비트.</li>
       <li>ΔΣ 변조기는 적분기, 1비트 비교기, DAC의 루프다. 적분기가 오차의 누적을 묶어 두므로 비트열의 평균(1의 밀도 \((1+u)/2\))이 입력과 같다.</li>
       <li>선형 모델 \(Y = \mathrm{STF}\cdot U + \mathrm{NTF}\cdot E\), \(\mathrm{NTF} = (1 - z^{-1})^L\). 잡음은 \(20L\) dB/dec로 성형되어 대역 밖으로 밀려나고, OSR 2배당 \(3(2L+1)\) dB가 오른다.</li>
-      <li>이상 SQNR = \(6.02N + 1.76 - 10\log(\pi^{2L}/(2L+1)) + (2L+1)10\log\mathrm{OSR}\). 2차 1비트 OSR 128은 100.2 dB지만, 1비트 Δ = 2와 입력 여유 때문에 실측은 약 86 dB다.</li>
+      <li>이상 SQNR = \(6.02N + 1.76 - 10\log(\pi^{2L}/(2L+1)) + (2L+1)10\log\mathrm{OSR}\). 2차 1비트 OSR 128은 100.2 dB지만, 1비트 Δ = 2와 입력 여유 때문에 실측은 약 84 dB다.</li>
       <li>3차 이상 1비트 루프에 \((1 - z^{-1})^L\)을 그대로 쓰면 발산한다. 대역 외 이득을 약 1.5로 낮추고(Lee의 규칙) 입력을 MSA 아래로 제한한다.</li>
       <li>1차 변조기는 작은 DC 입력에서 \(u f_s/2\) 근처의 유휴 톤을 만든다. 디더와 높은 차수가 톤을 깬다.</li>
       <li>데시메이션 첫 단은 sinc\(^K\)(CIC): 영점이 \(f_s/M\)의 배수에 서서 접힘 대역을 죽인다. \(K \ge L + 1\). 이어서 FIR이 날카롭게 자르고 처짐을 보정한다.</li>
@@ -540,10 +544,10 @@
     let wmax = 0, blown = false;
     for (let i = 0; i < u.length; i++) {
       let f = 0; for (let k = 1; k < nb; k++) f += c[k] * eh[k - 1] - t.d[k] * fh[k - 1];
-      let w = u[i] + f; if (dith) w += dith * rnd();
+      let w = u[i] + f, dv = 0; if (dith) { dv = dith * rnd(); w += dv; }
       const aw = Math.abs(w); if (aw > wmax) wmax = aw;
       let q = Math.round((w + 1) / D) * D - 1; if (q > 1) q = 1; else if (q < -1) q = -1;
-      y[i] = q; const e = q - w;
+      y[i] = q; const e = q - (w - dv);
       for (let k = nb - 1; k > 0; k--) { eh[k] = eh[k - 1]; fh[k] = fh[k - 1]; }
       eh[0] = e; fh[0] = f;
       if (wmax > 1e6) { blown = true; for (let j = i + 1; j < u.length; j++) y[j] = q; break; }
@@ -686,7 +690,7 @@
       AB.stat("m1-err", (av - u >= 0 ? "+" : "") + (av - u).toFixed(3));
       AB.stat("m1-x", xr.length ? Math.min(...xr).toFixed(2) + " ~ " + Math.max(...xr).toFixed(2) : "—");
     }
-    cv = AB.canvas("#m1-cv", draw, { get height() { return pw("m1-cv") < 560 ? 560 : 470; } });
+    cv = AB.canvas("#m1-cv", draw, { get height() { return pw("m1-cv") < 560 ? 590 : 488; } });
     reset();
     $("m1-pause").addEventListener("click", (e) => { paused = !paused; e.target.textContent = paused ? "계속" : "멈춤"; });
     $("m1-step").addEventListener("click", () => { step(); phase = 0; stats(); cv.redraw(); });
@@ -711,8 +715,8 @@
       const P = AB.palette(), narrow = w < 560, fs = narrow ? 11 : 12.5;
       const c = cur || { u: uu(), d: 0, x: 0, y: -1, yp: -1 };
       // 블록도
-      const yM = 64, yF = 138;
-      const xU = narrow ? 30 : 46, xS = w * 0.2, iL = w * 0.29, iR = w * 0.47, cL = w * 0.55, cR = w * 0.64, xN = w * 0.74, dL = w * 0.39, dR = w * 0.6;
+      const yM = narrow ? 78 : 64, yF = narrow ? 146 : 138, tY = narrow ? yM - 38 : yM - 36;
+      const xU = narrow ? 30 : 46, xS = w * (narrow ? 0.18 : 0.2), iL = w * (narrow ? 0.28 : 0.29), iR = w * (narrow ? 0.5 : 0.47), cL = w * (narrow ? 0.57 : 0.55), cR = w * (narrow ? 0.66 : 0.64), xN = w * (narrow ? 0.76 : 0.74), dL = w * (narrow ? 0.37 : 0.39), dR = w * (narrow ? 0.63 : 0.6);
       const wire = (pts, col, wd) => { ctx.strokeStyle = col || AB.color("sch-wire") || P.text; ctx.lineWidth = wd || 1.8; ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.stroke(); };
       const fwd = [[xU + 12, yM], [xS - 14, yM]], p2 = [[xS + 14, yM], [iL, yM]], p3 = [[iR, yM], [cL, yM]], p4 = [[cR, yM], [xN, yM]], fb = [[xN, yM], [xN, yF], [dR, yF]], fb2 = [[dL, yF], [xS, yF], [xS, yM + 14]];
       const hot = AB.color("sch-hot") || P.accent;
@@ -729,7 +733,7 @@
       txt(ctx, "−", xS - 10, yM + 24, { size: 14, weight: 700, color: P.accent2, align: "center" });
       blk(iL, yM - 26, iR - iL, 52, act === 1);
       txt(ctx, "적분기", (iL + iR) / 2, yM - 9, { size: fs, weight: 700, align: "center" });
-      txt(ctx, "x += u − y", (iL + iR) / 2, yM + 10, { size: fs - 1, mono: true, align: "center", color: P.dim });
+      txt(ctx, "x += u − y", (iL + iR) / 2, yM + 10, { size: narrow ? fs - 1.5 : fs - 1, mono: true, align: "center", color: P.dim });
       ctx.fillStyle = act === 2 ? AB.alpha(P.accent, 0.16) : P.surface || P.bg; ctx.strokeStyle = act === 2 ? P.accent : P.text; ctx.lineWidth = act === 2 ? 2.4 : 1.6;
       ctx.beginPath(); ctx.moveTo(cL, yM - 24); ctx.lineTo(cL, yM + 24); ctx.lineTo(cR, yM); ctx.closePath(); ctx.fill(); ctx.stroke();
       txt(ctx, "비교기", (cL + cR) / 2 - 4, yM + 38, { size: fs - 1, align: "center", color: P.dim });
@@ -738,10 +742,10 @@
       // 값 태그
       const tag = (tx, ty, s, col) => { ctx.save(); ctx.font = F(fs - 0.5, true, 600); const tw = ctx.measureText(s).width + 10; ctx.fillStyle = AB.alpha(P.bg, 0.92); ctx.strokeStyle = col; ctx.lineWidth = 1.2; AB.rrect(ctx, tx - tw / 2, ty - 10, tw, 20, 5); ctx.fill(); ctx.stroke(); ctx.fillStyle = col; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(s, tx, ty + 0.5); ctx.restore(); };
       const sg = (v) => (v >= 0 ? "+" : "") + v.toFixed(2);
-      tag(xU + 4, yM - 26, "u " + sg(c.u), P.accent2);
-      tag((xS + iL) / 2 + 2, yM - 26, sg(c.d), P.dim);
-      tag((iR + cL) / 2, yM - 26, "x " + sg(c.x), P.text);
-      tag(xN + (narrow ? 22 : 34), yM - 26, "y " + (c.y > 0 ? "1" : "0"), c.y > 0 ? P.accent : P.dim);
+      tag(xU + 4, tY, "u " + sg(c.u), P.accent2);
+      tag((xS + iL) / 2 + 2, narrow ? yM - 62 : tY, sg(c.d), P.dim);
+      tag((iR + cL) / 2, tY, "x " + sg(c.x), P.text);
+      tag(xN + (narrow ? 22 : 34), tY, "y " + (c.y > 0 ? "1" : "0"), c.y > 0 ? P.accent : P.dim);
       tag((xS + dL) / 2, yF - 22, sg(c.yp), P.dim);
       txt(ctx, "u", xU - 6, yM, { size: 13, weight: 700, color: P.accent2, align: "center" });
       // 흐르는 점
@@ -750,7 +754,7 @@
         const p = along(path, phase);
         ctx.save(); ctx.fillStyle = hot; ctx.shadowColor = hot; ctx.shadowBlur = 8; ctx.beginPath(); ctx.arc(p[0], p[1], 5, 0, 7); ctx.fill(); ctx.restore();
       }
-      txt(ctx, "출력 비트열 →", w - 12, yM + 18, { size: 11, color: P.dim, align: "right" });
+      txt(ctx, narrow ? "비트열 →" : "출력 비트열 →", w - 12, yM + 18, { size: 11, color: P.dim, align: "right" });
       // 비트열 띠
       const nShow = narrow ? 32 : 64, bandY = 186, cw = (w - 70) / nShow;
       txt(ctx, "비트열", 8, bandY + 11, { size: 11, color: P.dim });
@@ -758,7 +762,7 @@
       bs.forEach((b, i) => { const bx = 60 + i * cw; ctx.fillStyle = b > 0 ? P.accent : AB.alpha(P.text, 0.08); ctx.fillRect(bx + 0.5, bandY, cw - 1, 22); });
       if (cw > 12) bs.forEach((b, i) => txt(ctx, b > 0 ? "1" : "0", 60 + i * cw + cw / 2, bandY + 11, { size: 10, mono: true, align: "center", color: b > 0 ? P.bg : P.dim }));
       // 그래프
-      const box = { x: 56, y: bandY + 50, w: w - 56 - 16, h: h - bandY - 50 - 40 };
+      const box = { x: 56, y: bandY + 50, w: w - 56 - 16, h: h - bandY - 50 - (narrow ? 72 : 58) };
       const K = kk(), n0 = Math.max(0, bits.length - nShow), avg = [], xsd = [], ud = [];
       for (let i = n0; i < bits.length; i++) { const t = i - n0 + 0.5; avg.push([t, avgAt(i, K)]); xsd.push([t, xs[i]]); ud.push([t, us[i]]); }
       const ch = AB.chart(ctx, box, { x: [0, nShow], y: [-1.4, 1.4], xLabel: "표본 n (최근 " + nShow + "개)", yLabel: "값", yTicks: [-1, -0.5, 0, 0.5, 1], series: [
@@ -869,7 +873,7 @@
 
   /* ---------------------------------------------------------- 5. 성능 지도 */
   (function simMap() {
-    const LOSS = { 0: 6, 1: 9, 2: 14, 3: 34, 4: 50 };
+    const LOSS = { 0: 6, 1: 9, 2: 16, 3: 34, 4: 50 };
     let selL = 2, cv = null, lay = null;
     const bb = AB.range("map-b", (v) => v + " 비트", () => upd());
     const nn = AB.range("map-n", (v) => v + " 비트", () => upd());
@@ -881,7 +885,7 @@
       [1, 2, 3, 4].forEach((L) => { const o = need(L); AB.stat("map-" + L, isFinite(o) ? "≈ " + Math.round(o) : "1024 초과"); });
       if (cv) cv.redraw();
     }
-    cv = AB.canvas("#map-cv", draw, { get height() { return pw("map-cv") < 560 ? 400 : 400; } });
+    cv = AB.canvas("#map-cv", draw, { get height() { return pw("map-cv") < 560 ? 430 : 400; } });
     upd();
     const tip = AB.tip(cv.canvas); cv.canvas.addEventListener("pointerleave", tip.hide);
     const near = (x, y) => { if (!lay) return null; const b = lay.ch.box; if (x < b.x || x > b.x + b.w || y < b.y || y > b.y + b.h) return null; const o = Math.pow(10, L10(4) + ((x - b.x) / b.w) * (L10(1024) - L10(4))); let best = null, bd = 30; for (let L = 0; L <= 4; L++) { const d = Math.abs(lay.ch.Y(sq(L, o)) - y); if (d < bd) { bd = d; best = { L, o }; } } return best; };
@@ -891,13 +895,14 @@
     });
     function draw(ctx, w, h) {
       const P = AB.palette(), narrow = w < 560;
-      const box = { x: 58, y: narrow ? 50 : 30, w: w - 58 - 16, h: h - (narrow ? 50 : 30) - 50 };
+      const box = { x: 58, y: narrow ? 50 : 30, w: w - 58 - 16, h: h - (narrow ? 50 : 30) - (narrow ? 80 : 50) };
       const tg = 6.02 * bb() + 1.76, cols = [P.faint, P.series[0], P.series[1], P.series[2], P.series[3]];
       const series = [];
       for (let L = 0; L <= 4; L++) { const d = []; for (let e = 2; e <= 10.0001; e += 0.05) { const o = Math.pow(2, e); d.push([o, sq(L, o)]); } series.push({ data: d, color: cols[L], width: L === selL ? 3.4 : 1.6, dash: rl.checked && nn() === 1 && L >= 3 ? [7, 4] : null }); }
       const pts = [];
       for (let L = 1; L <= 4; L++) { const o = need(L); if (isFinite(o) && o >= 4) pts.push({ x: o, y: tg, color: cols[L], r: L === selL ? 6 : 4 }); }
-      const ch = AB.chart(ctx, box, { x: [4, 1024], y: [20, 200], logX: true, xTicks: narrow ? [4, 16, 64, 256, 1024] : [4, 8, 16, 32, 64, 128, 256, 512, 1024], xFmt: (v) => String(v), xLabel: "OSR", yLabel: "SQNR (dB)", yTicks: [20, 50, 80, 110, 140, 170, 200], series, hlines: [{ y: tg, color: P.bad, label: "목표 " + bb() + "비트 = " + tg.toFixed(1) + " dB" }], points: pts });
+      const ch = AB.chart(ctx, box, { x: [4, 1024], y: [20, 200], logX: true, xTicks: narrow ? [4, 16, 64, 256, 1024] : [4, 8, 16, 32, 64, 128, 256, 512, 1024], xFmt: (v) => String(v), xLabel: "OSR", yLabel: "SQNR (dB)", yTicks: [20, 50, 80, 110, 140, 170, 200], series, hlines: [{ y: tg, color: P.bad, label: narrow ? "" : "목표 " + bb() + "비트 = " + tg.toFixed(1) + " dB" }], points: pts });
+      if (narrow) txt(ctx, "빨간 점선: 목표 " + bb() + "비트 = " + tg.toFixed(1) + " dB", box.x, 34, { size: 11.5, weight: 600, color: P.bad });
       // 곡선 이름
       for (let L = 0; L <= 4; L++) {
         let o = 900; while (o > 5 && sq(L, o) > 192) o /= 1.15;
@@ -909,7 +914,7 @@
         ctx.save(); ctx.fillStyle = P.accent; ctx.strokeStyle = P.bg; ctx.lineWidth = 1.5; ctx.beginPath();
         for (let i = 0; i < 10; i++) { const r = i % 2 ? 4 : 9, a = -Math.PI / 2 + (i * Math.PI) / 5; ctx.lineTo(ax + r * Math.cos(a), ay + r * Math.sin(a)); }
         ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
-        txt(ctx, "AB-1 (2차, OSR 128): " + sq(2, 128).toFixed(1) + " dB", ax + 12, ay + 14, { size: 11.5, weight: 700, color: P.accent });
+        txt(ctx, (narrow ? "AB-1 " : "AB-1 (2차, OSR 128): ") + sq(2, 128).toFixed(1) + " dB", ax + 12, ay + 14, { size: 11.5, weight: 700, color: P.accent });
       }
       txt(ctx, nn() + "비트 양자화기 · 비트 +1 = 곡선 +6 dB" + (rl.checked && nn() === 1 ? " · 현실 보정 적용" : ""), box.x, narrow ? 16 : 12, { size: 11.5, color: P.dim, weight: 600 });
       lay = { ch };
@@ -931,7 +936,7 @@
       let msa = pk[0]; r.forEach((p) => { if (p[0] >= pk[0] && p[1] > pk[1] - 10 && p[0] >= msa) msa = p[0]; });
       for (const p of r) { if (p[0] > pk[0] && p[1] <= pk[1] - 10) { msa = Math.min(msa, p[0] - 2); break; } }
       const p20 = r.find((p) => Math.abs(p[0] + 20) < 0.01);
-      AB.stat("st-pk", dB(pk[1])); AB.stat("st-pa", pk[0] + " dBFS"); AB.stat("st-msa", r.length === AMPS.length ? "≈ " + msa + " dBFS" : "측정 중"); AB.stat("st-20", p20 ? dB(p20[1]) : "—");
+      const dead = pk[1] < 20; AB.stat("st-pk", dB(pk[1])); AB.stat("st-pa", dead ? "—" : pk[0] + " dBFS"); AB.stat("st-msa", r.length < AMPS.length ? "측정 중" : dead ? "없음(발산)" : "≈ " + msa + " dBFS"); AB.stat("st-20", p20 ? dB(p20[1]) : "—");
     }
     res.l2 = AMPS.map((a) => point("l2", a));
     cv = AB.canvas("#st-cv", draw, { get height() { return pw("st-cv") < 560 ? 500 : 460; } });
@@ -976,12 +981,12 @@
     function calc() {
       const u = new Float64Array(N).fill(uu()), r = dsm(u, ntfPure(+ll()), 2, dd(), gaussRng(7));
       const sp = AN.spectrum(r.y, { window: "hann", dc: true }), nb = Math.floor(N / (2 * OSR));
-      let mk = 4, pn = 0; for (let k = 4; k <= nb; k++) { if (sp.p[k] > sp.p[mk]) mk = k; pn += sp.p[k]; }
+      let mk = 4, pn = 0; for (let k = 4; k <= nb; k++) { if (sp.p[k] >= sp.p[k - 1] && sp.p[k] >= sp.p[k + 1] && sp.p[k] > sp.p[mk]) mk = k; pn += sp.p[k]; }
       res = { sp, y: r.y, mk, nb };
       AB.stat("id-ft", hz((uu() * FS) / 2));
-      AB.stat("id-tone", sp.db[mk].toFixed(1) + " dBFS");
-      AB.stat("id-tf", hz((mk * FS) / N));
-      AB.stat("id-n", (10 * L10(pn / 1.5 / 0.5)).toFixed(1) + " dBFS");
+      AB.stat("id-tone", sp.db[mk] < -200 ? "없음" : sp.db[mk].toFixed(1) + " dBFS");
+      AB.stat("id-tf", sp.db[mk] < -200 ? "—" : hz((mk * FS) / N));
+      const nd = 10 * L10(pn / 1.5 / 0.5); AB.stat("id-n", nd < -200 ? "< −200 dBFS" : nd.toFixed(1) + " dBFS");
       if (cv) cv.redraw();
     }
     cv = AB.canvas("#id-cv", draw, { get height() { return pw("id-cv") < 560 ? 420 : 400; } });
@@ -1003,10 +1008,11 @@
       const fB = FS / (2 * OSR), ft = (uu() * FS) / 2;
       const ch = AB.chart(ctx, box, { x: [200, FS / 2], y: [-160, 0], logX: true, xTicks: [1e3, 1e4, 1e5, 1e6], xFmt: (v) => logLbl(v) + "Hz", xLabel: "주파수 (fs = 2.048 MHz)", yLabel: "dBFS (빈당)", yTicks: [-160, -120, -80, -40, 0], bands: [{ x0: 200, x1: fB, color: AB.alpha(P.ok, 0.13) }], vlines: ft > 200 ? [{ x: ft, color: P.accent2, label: "u·fs/2" }] : [], series: [] });
       drawSpec(ctx, ch, Array.from(res.sp.f, (k) => (k * FS) / N), res.sp.db, 1, P.accent, { peak: true });
-      txt(ctx, "신호 대역 8 kHz", ch.X(fB) - 4, box.y + box.h - 12, { size: 11, color: P.ok, align: "right", weight: 600 });
+      ctx.save(); ctx.font = F(11, false, 600); const bw = ctx.measureText("신호 대역 8 kHz").width + 8; ctx.fillStyle = AB.alpha(P.bg, 0.85); ctx.fillRect(ch.X(fB) - 2 - bw, box.y + box.h - 21, bw, 18); ctx.restore();
+      txt(ctx, "신호 대역 8 kHz", ch.X(fB) - 6, box.y + box.h - 12, { size: 11, color: P.ok, align: "right", weight: 600 });
       const mk = res.mk, mx = ch.X((mk * FS) / N), my = ch.Y(res.sp.db[mk]);
-      ctx.save(); ctx.strokeStyle = P.bad; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(mx, my, 7, 0, 7); ctx.stroke(); ctx.restore();
-      boxText(ctx, [["대역 내 최대 " + res.sp.db[mk].toFixed(1) + " dBFS", P.bad], ["@ " + hz((mk * FS) / N)], [(dd() > 0 ? "디더 σ " + dd().toFixed(2) : "디더 없음") + " · " + ll() + "차"]], box.x + box.w - 6, box.y + 6, { align: "right", size: narrow ? 11 : 12 });
+      if (res.sp.db[mk] > -160) { ctx.save(); ctx.strokeStyle = P.bad; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(mx, my, 7, 0, 7); ctx.stroke(); ctx.restore(); }
+      boxText(ctx, [[res.sp.db[mk] < -200 ? "대역 내 톤 없음" : "대역 내 최대 " + res.sp.db[mk].toFixed(1) + " dBFS", P.bad], [res.sp.db[mk] < -200 ? "1010… 반복 → fs/2에만 톤" : "@ " + hz((mk * FS) / N)], [(dd() > 0 ? "디더 σ " + dd().toFixed(2) : "디더 없음") + " · " + ll() + "차"]], narrow ? box.x + 6 : box.x + box.w - 6, narrow ? box.y + 22 : box.y + 6, { align: narrow ? "left" : "right", size: narrow ? 11 : 12 });
       lay = { box, ch };
     }
   })();

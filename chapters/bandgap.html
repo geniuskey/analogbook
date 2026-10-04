@@ -88,7 +88,7 @@
         <rect class="f-surface" x="30" y="120" width="400" height="120"/>
         <text class="lbl-dim" x="410" y="228" text-anchor="end">p 기판 = 컬렉터</text>
         <path class="f-acc2-soft" d="M90,120 L90,190 Q90,205 105,205 L295,205 Q310,205 310,190 L310,120 Z"/>
-        <text class="lbl-dim" x="200" y="196" text-anchor="middle">n 우물 = 베이스</text>
+        <text class="lbl-dim" x="252" y="196" text-anchor="middle">n 우물 = 베이스</text>
         <rect class="f-acc-soft" x="150" y="120" width="70" height="30"/>
         <text class="lbl lbl-acc" x="185" y="140" text-anchor="middle">p+</text>
         <rect class="f-acc2-soft" x="250" y="120" width="40" height="26"/>
@@ -195,7 +195,7 @@
           <div class="btn-row"><button class="btn" id="sm-best">최소 기울기 K 찾기</button></div>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--tr-1)"></i>V<sub>BE</sub>(CTAT)</span><span><i style="background:var(--tr-2)"></i>K·ΔV<sub>BE</sub>(PTAT)</span><span><i style="background:var(--accent)"></i>합 V<sub>REF</sub></span></div>
+      <div class="map-legend"><span><i style="background:var(--tr-1)"></i><bdi>V<sub>BE</sub> (CTAT)</bdi></span><span><i style="background:var(--tr-2)"></i><bdi>K·ΔV<sub>BE</sub> (PTAT)</bdi></span><span><i style="background:var(--accent)"></i><bdi>합 V<sub>REF</sub></bdi></span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">V<sub>REF</sub> @27 °C</span><span class="v" id="sm-o-v">—</span></div>
         <div class="stat"><span class="k">기울기 @27 °C</span><span class="v" id="sm-o-s">—</span></div>
@@ -330,7 +330,7 @@
           <div class="btn-row"><button class="btn primary" id="su-go">전원 켜기</button></div>
         </div>
       </div>
-      <div class="map-legend"><span><i style="background:var(--tr-1)"></i>V<sub>DD</sub></span><span><i style="background:var(--tr-2)"></i>V<sub>REF</sub></span><span><i style="background:var(--tr-3)"></i>인버터 출력 X</span><span><i style="background:var(--tr-4)"></i>Ms 전류(0.1 µA/div)</span></div>
+      <div class="map-legend"><span><i style="background:var(--tr-1)"></i><bdi>V<sub>DD</sub></bdi></span><span><i style="background:var(--tr-2)"></i><bdi>V<sub>REF</sub></bdi></span><span><i style="background:var(--tr-3)"></i>인버터 출력 X</span><span><i style="background:var(--tr-4)"></i>Ms 전류(0.1 µA/div)</span></div>
       <div class="sim-readout">
         <div class="stat"><span class="k">최종 V<sub>REF</sub></span><span class="v" id="su-o-v">—</span></div>
         <div class="stat"><span class="k">정착(±1%) 시각</span><span class="v" id="su-o-t">—</span></div>
@@ -414,7 +414,7 @@
         <text class="lbl" x="574" y="206">R2</text>
         <line class="w" x1="60" y1="260" x2="640" y2="260"/>
         <text class="lbl-dim" x="650" y="264">GND</text>
-        <text class="lbl lbl-acc2" x="460" y="100">I = ΔV<tspan dy="4" font-size="10">BE</tspan><tspan dy="-4">/R0 + V</tspan><tspan dy="4" font-size="10">BE</tspan><tspan dy="-4">/R1</tspan></text>
+        <text class="lbl lbl-acc2" x="442" y="150">I = ΔV<tspan dy="4" font-size="10">BE</tspan><tspan dy="-4">/R0</tspan></text><text class="lbl lbl-acc2" x="452" y="172">+ V<tspan dy="4" font-size="10">BE</tspan><tspan dy="-4">/R1</tspan></text>
         <text class="lbl-dim" x="360" y="290" text-anchor="middle">VREF = R2 · (ΔVBE/R0 + VBE/R1) = (R2/R1) · (VBE + (R1/R0)·ΔVBE)</text>
       </svg>
       <figcaption><b>전류 모드(Banba) 밴드갭.</b> 증폭기가 A와 B를 같게 만들면 두 R1에는 같은 \(V_{BE1}\)이 걸려 CTAT 전류 \(V_{BE}/R_1\)이 흐르고, R0에는 \(\Delta V_{BE}\)가 걸려 PTAT 전류가 흐른다. 각 PMOS 전류는 두 전류의 합이고, M3가 이를 R2에 복사한다. 괄호 안은 앞 절의 1.2 V 조합 그대로이고, 앞의 R2/R1이 그것을 원하는 크기로 줄인다. 그래서 1 V 아래의 기준도, 1 V 남짓한 전원도 가능하다.</figcaption>
@@ -612,7 +612,7 @@
       ctx.fillStyle = p.text; ctx.beginPath(); ctx.moveTo(xi, 146); ctx.lineTo(xi - 6, 156); ctx.lineTo(xi + 6, 156); ctx.closePath(); ctx.fill();
       txt(ctx, "V_in " + V3(vin), Math.min(Math.max(xi, 50), w - 50), 166, { size: 11.5, mono: true, align: "center", bold: true });
       // 확대 창
-      const zy = 186, zh = h - zy - 12, lsb = VR0 / M, span = 12 * lsb;
+      const zy = 186, zh = h - zy - 34, lsb = VR0 / M, span = 12 * lsb;
       const va = vin - span, vb = vin + span;
       const ZX = (v) => x0 + ((v - va) / (vb - va)) * (x1 - x0);
       ctx.strokeStyle = p.border; ctx.lineWidth = 1; ctx.strokeRect(x0, zy, x1 - x0, zh);
@@ -635,7 +635,7 @@
         ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(x0, y + 13); ctx.lineTo(x1, y + 13); ctx.stroke();
       });
       ctx.save(); ctx.strokeStyle = p.text; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(ZX(vin), zy + 18); ctx.lineTo(ZX(vin), zy + zh - 4); ctx.stroke(); ctx.restore();
-    }, heightFor("#lsb-cv", () => 330, () => 320));
+    }, heightFor("#lsb-cv", () => 352, () => 342));
     AB.drag(cv.canvas, { move(x, y) { if (!st.box || y > 175) return; const b = st.box; const v = AB.clamp(((x - b.x0) / (b.x1 - b.x0)) * b.Vmax, 0, 1.19); vR.set(Math.round(v * 1000) / 1000); } });
     upd();
   })();
@@ -683,7 +683,7 @@
       S.tag(narrow ? sx + 2 * u : 8, narrow ? ye : ye + 7.2 * u, "VBE " + V3(st.cur.v27), { color: p.accent });
       S.label(narrow ? sx + 2 * u : 8, narrow ? ye + 2 * u : ye + 9 * u, "27 °C · " + AB.si(st.cur.I, "A", 2) + " · ×" + st.cur.A, { size: 10.5, color: p.dim });
       S.flow([[sx, top], [sx, q.gy]], st.ph, { gap: u * 1.5 });
-      const box = narrow ? { x: 56, y: schH + 14, w: w - 72, h: h - schH - 14 - 48 } : { x: schW + 62, y: 14, w: w - schW - 80, h: h - 62 };
+      const box = narrow ? { x: 56, y: schH + 14, w: w - 72, h: h - schH - 14 - 86 } : { x: schW + 62, y: 14, w: w - schW - 80, h: h - 62 };
       let ch;
       if (!ext) {
         ch = AB.chart(ctx, box, { x: [-40, 125], y: [0.3, 1.05], xLabel: "온도 (°C)", yLabel: "V_BE (V)",
@@ -699,11 +699,11 @@
             { data: TS.map((t, i) => [t + K0, st.ref.v[i]]), color: p.faint, width: 1.5 }, { data: TS.map((t, i) => [t + K0, st.cur.v[i]]), color: AB.trace(1), width: 2.6 }],
           hlines: [{ y: PNP.eg, color: p.dim, label: "V_G0 = 1.17 V" }],
           points: [{ x: 0, y: vx, color: p.accent, r: 5 }, { x: 0, y: vxr, color: p.faint, r: 3.5 }, { x: T27, y: st.cur.v27, color: p.accent, r: 4 }] });
-        txt(ctx, "0 K 연장 " + V3(vx), ch.X(0) + 10, ch.Y(vx) + 14, { size: 12, color: p.accent, bold: true });
+        txt(ctx, "0 K 연장 " + V3(vx), ch.X(0) + 12, ch.Y(vx) - 14, { size: 12, color: p.accent, bold: true });
         txt(ctx, "−40~125 °C", ch.X(330), ch.Y(0.95), { size: 11, color: p.dim, align: "center" });
       }
       st.X = ch.X; st.Y = ch.Y; st.box = box; st.ext = ext;
-    }, heightFor("#ct-cv", (w) => 130 + 14 + Math.round(w * 0.62) + 48, () => 340));
+    }, heightFor("#ct-cv", (w) => 130 + 14 + Math.round(w * 0.62) + 86, () => 340));
     const tip = AB.tip(cv.canvas);
     cv.canvas.addEventListener("pointerleave", tip.hide);
     AB.drag(cv.canvas, { hover(x, y) {
@@ -810,15 +810,15 @@
     }
     const cv = AB.canvas("#sm-cv", (ctx, w, h) => {
       const p = AB.palette(), K = kR(), v = sumOf(K), narrow = w < 560;
-      const lm = 62, gap = 64, h1 = Math.round((h - gap - 46 - 14) * 0.55), h2 = h - 14 - h1 - gap - 46;
+      const lm = 62, gap = 64, bm = narrow ? 84 : 46, h1 = Math.round((h - gap - bm - 14) * 0.55), h2 = h - 14 - h1 - gap - bm;
       const b1 = { x: lm, y: 14, w: w - lm - 18, h: h1 }, b2 = { x: lm, y: 14 + h1 + gap, w: w - lm - 18, h: h2 };
       const ch = AB.chart(ctx, b1, { x: [-40, 125], y: [0, 1.4], xLabel: "온도 (°C)", yLabel: "전압 (V)",
         series: [{ data: TS.map((t, i) => [t, D.vbe[i]]), color: AB.trace(1), width: 2.2 }, { data: TS.map((t, i) => [t, K * D.dv[i]]), color: AB.trace(2), width: 2.6 }, { data: TS.map((t, i) => [t, v[i]]), color: p.accent, width: 3 }],
-        hlines: [{ y: 1.2, color: p.faint, label: narrow ? "" : "1.2 V" }] });
+        hlines: [{ y: 1.2, color: p.faint, label: narrow || Math.abs(v[33] - 1.2) < 0.12 ? "" : "1.2 V" }] });
       st.top = b1; st.Y = ch.Y;
       const yK = ch.Y(K * D.dv27);
       ctx.fillStyle = AB.trace(2); ctx.beginPath(); ctx.arc(ch.X(27), yK, 6, 0, 7); ctx.fill();
-      txt(ctx, "K·ΔVBE  (K = " + K.toFixed(2) + ")", ch.X(27) + 10, yK - 12, { size: 11.5, color: AB.trace(2), bold: true });
+      txt(ctx, "K·ΔVBE  (K = " + K.toFixed(2) + ")", ch.X(27) + 10, yK - (narrow ? 22 : 12), { size: 11.5, color: AB.trace(2), bold: true });
       txt(ctx, "VBE", ch.X(-36), ch.Y(D.vbe[0]) - 12, { size: 11.5, color: AB.trace(1), bold: true });
       txt(ctx, "합 " + V3(v[33]), ch.X(122), ch.Y(Math.min(1.33, v[33])) - 12, { size: 11.5, color: p.accent, bold: true, align: "right" });
       const v27 = D.vbe27 + K * D.dv27, dev = v.map((x) => (x - v27) * 1e3);
@@ -829,7 +829,7 @@
         series: [{ data: TS.map((t, i) => [t, dev[i]]), color: b.tc <= 20 ? p.accent : p.bad, width: 2.6 }],
         hlines: [{ y: 0, color: p.faint }] });
       txt(ctx, "확대 · 상자 TC " + b.tc.toFixed(1) + " ppm/°C", b2.x + 8, b2.y + 10, { size: 11.5, color: b.tc <= 20 ? p.ok : p.bad, bold: true });
-    }, heightFor("#sm-cv", (w) => Math.round(w * 1.1) + 120, () => 470));
+    }, heightFor("#sm-cv", (w) => Math.round(w * 1.1) + 158, () => 470));
     AB.drag(cv.canvas, { move(x, y) { const b = st.top; if (!b || y < b.y - 10 || y > b.y + b.h + 10) return; const V = 1.4 * (1 - (y - b.y) / b.h); kR.set(AB.clamp(Math.round((V / D.dv27) * 100) / 100, 0, 16)); } });
     upd();
   })();
@@ -933,19 +933,19 @@
         { n: "R3", x: xR, y: (ya + yc) / 2 }, { n: "A1", x: cx, y: (yAp + yBase) / 2 + 0.5 * u }];
       const schH = yc + 5.4 * u;
       // 그래프
-      const box = narrow ? { x: 66, y: schH + 16, w: w - 84, h: h - schH - 16 - 48 } : { x: schW + 72, y: 16, w: w - schW - 88, h: h - 64 };
+      const box = narrow ? { x: 66, y: schH + 16, w: w - 84, h: h - schH - 16 - 68 } : { x: schW + 72, y: 16, w: w - schW - 88, h: h - 64 };
       const tc = st.tc, m = tc.m, half = (20e-6 * 165 * m) / 2, mid = (tc.mx + tc.mn) / 2;
       const span = Math.max((tc.mx - tc.mn) * 0.65, half * 1.5, 1.5e-3);
       const ylo = (mid - span) * 1e3, yhi = (mid + span) * 1e3;
       const okc = tc.tc <= 20 ? p.accent : p.bad;
-      const ch = AB.chart(ctx, box, { x: [-40, 125], y: [ylo, yhi], xLabel: "온도 (°C)", yLabel: "V_REF (mV)", yFmt: (v) => v.toFixed(yhi - ylo > 8 ? 0 : 1),
+      const ch = AB.chart(ctx, box, { x: [-40, 125], y: [ylo, yhi], xLabel: "온도 (°C)", yLabel: "V_REF (mV)", yFmt: (v) => v.toFixed(yhi - ylo > 8 || Math.abs(v - Math.round(v)) < 1e-6 ? 0 : 1),
         series: [{ data: TS.map((t, i) => [t, st.sw[i] * 1e3]), color: okc, width: 2.8 }],
         hlines: [{ y: (mid + half) * 1e3, color: p.ok, dash: [6, 4] }, { y: (mid - half) * 1e3, color: p.ok, dash: [6, 4] }],
         vlines: [{ x: tR(), color: p.faint }],
         points: [{ x: tR(), y: op.v.vref * 1e3, color: p.accent, r: 5 }] });
       txt(ctx, "20 ppm/°C 상자", box.x + box.w - 6, ch.Y((mid + half) * 1e3) - 9, { size: 11, color: p.ok, align: "right", bold: true });
-      txt(ctx, "TC " + tc.tc.toFixed(1) + " ppm/°C", box.x + 8, box.y + box.h - 12, { size: 12, color: okc, bold: true });
-    }, { get height() { const el = document.querySelector("#bg-cv"), w = el ? el.parentElement.clientWidth : 800; if (w >= 640) return 390; const u = Math.max(10, Math.min(14, w / 26)); return Math.round(15.6 * u + 16 + Math.max(220, w * 0.62) + 48); } });
+      txt(ctx, "TC " + tc.tc.toFixed(1) + " ppm/°C", box.x + 8, st.sw[0] < mid ? box.y + 12 : box.y + box.h - 12, { size: 12, color: okc, bold: true });
+    }, { get height() { const el = document.querySelector("#bg-cv"), w = el ? el.parentElement.clientWidth : 800; if (w >= 640) return 390; const u = Math.max(10, Math.min(14, w / 26)); return Math.round(15.6 * u + 16 + Math.max(220, w * 0.62) + 68); } });
     AB.drag(cv.canvas, { start(x, y) { const it = hit(st.pos, x, y, 30); if (it) { st.sel = it.n; info(it.n); cv.redraw(); } } });
     AB.loop(cv.canvas, (dt) => { if (!st.op) return; st.ph[0] += dt * flowSpeed(st.op.i.R1); st.ph[1] += dt * flowSpeed(st.op.i.R2); cv.redraw(); });
     rebuild();
@@ -975,7 +975,7 @@
     const cv = AB.canvas("#cu-cv", (ctx, w, h) => {
       const d = st.d; if (!d) return;
       const p = AB.palette();
-      const box = { x: 66, y: 16, w: w - 84, h: h - 64 };
+      const box = { x: 66, y: 16, w: w - 84, h: h - (w < 560 ? 84 : 64) };
       const m = d.b.m, dev = d.v.map((x) => (x - m) * 1e3), devr = d.raw.map((x) => (x - boxTC(d.raw).m) * 1e3);
       let r = Math.max(0.5, ...dev.map(Math.abs), ...(cR() > 0 ? devr.map(Math.abs) : [0])) * 1.2;
       const ch = AB.chart(ctx, box, { x: [-40, 125], y: [-r, r], xLabel: "온도 (°C)", yLabel: "V_REF − 평균 (mV)", yFmt: (v) => v.toFixed(r < 2 ? 2 : 1),
@@ -986,7 +986,7 @@
       txt(ctx, "상자: " + mV(d.b.mx - d.b.mn, 2) + " / 165 °C → " + d.b.tc.toFixed(2) + " ppm/°C", box.x + 8, box.y + 12, { size: 11.5, color: p.accent2, bold: true });
       if (cR() > 0) txt(ctx, "점선: 보정 전", box.x + 8, box.y + 30, { size: 11, color: p.dim });
       st.box = box; st.X = ch.X;
-    }, heightFor("#cu-cv", (w) => Math.round(w * 0.75) + 60, () => 340));
+    }, heightFor("#cu-cv", (w) => Math.round(w * 0.75) + 80, () => 340));
     const tip = AB.tip(cv.canvas);
     cv.canvas.addEventListener("pointerleave", tip.hide);
     AB.drag(cv.canvas, { hover(x, y) {
@@ -1047,7 +1047,7 @@
     }
     const cv = AB.canvas("#tr-cv", (ctx, w, h) => {
       const p = AB.palette(), L = st.chips, post = mS() === "post";
-      const box = { x: 62, y: 16, w: w - 80, h: h - 64 };
+      const box = { x: 62, y: 16, w: w - 80, h: h - (w < 560 ? 102 : 64) };
       let xr = 10, yr = 40;
       L.forEach((c) => { xr = Math.max(xr, Math.abs(c.e0) * 1.1, Math.abs(c.e1) * 1.1); yr = Math.max(yr, c.tc0 * 1.1, c.tc1 * 1.1); });
       xr = [10, 20, 50, 100, 200].find((x) => x >= xr) || xr; yr = [40, 80, 150, 300, 600].find((x) => x >= yr) || yr;
@@ -1066,7 +1066,7 @@
       });
       txt(ctx, L.length < NCHIP ? "칩 계산 중… " + L.length + " / " + NCHIP : (post ? "R2 트림 후 (" + bS() + "비트)" : "트림 전"), box.x + box.w - 8, box.y + 12, { size: 12, align: "right", bold: true, color: p.text });
       st.ch = ch;
-    }, heightFor("#tr-cv", (w) => Math.round(w * 0.8) + 64, () => 360));
+    }, heightFor("#tr-cv", (w) => Math.round(w * 0.8) + 102, () => 360));
     const tip = AB.tip(cv.canvas);
     cv.canvas.addEventListener("pointerleave", tip.hide);
     AB.drag(cv.canvas, { hover(x, y) {
@@ -1107,7 +1107,7 @@
     const cv = AB.canvas("#zs-cv", (ctx, w, h) => {
       const p = AB.palette(), narrow = w < 560;
       const barW = narrow ? 70 : 110;
-      const box = { x: 62, y: 18, w: w - 62 - barW - 30, h: h - 66 };
+      const box = { x: 62, y: 18, w: w - 62 - barW - 30, h: h - (narrow ? 104 : 66) };
       const ch = AB.chart(ctx, box, { x: [0, 0.8], y: [0, 20], xLabel: "V_A = V_B (V)", yLabel: "가지 전류 (µA)",
         series: [{ data: Vs.map((v, i) => [v, I1[i] * 1e6]), color: AB.trace(1), width: 2.6 }, { data: Vs.map((v, i) => [v, I2[i] * 1e6]), color: AB.trace(2), width: 2.6 }] });
       const vop = 0.7142, iop = 9.97;
@@ -1133,7 +1133,7 @@
         txt(ctx, "해", bx + 25, yv, { size: 11, color: p.accent, bold: true });
       }
       st.bar = { bx, by0, by1 };
-    }, heightFor("#zs-cv", (w) => Math.round(w * 0.8) + 66, () => 340));
+    }, heightFor("#zs-cv", (w) => Math.round(w * 0.8) + 104, () => 340));
     AB.drag(cv.canvas, { move(x, y) { const b = st.bar; if (!b || Math.abs(x - b.bx) > 45) return; st.g = Math.round(AB.clamp((1 - (y - b.by0) / (b.by1 - b.by0)) * 1.8, 0, 1.8) * 100) / 100; solve(); } });
     solve();
   })();
@@ -1184,7 +1184,7 @@
         vDiv: "0.25 V/div (I: 0.1 µA/div)", tDiv: AB.si(d.ts / 10, "s", 2) + "/div" });
       const Y = (v) => box.y + box.h - (v / 2) * box.h;
       ctx.save(); ctx.font = AB.font(11.5, true, 600); ctx.fillStyle = "#cfd6e4"; ctx.textAlign = "right"; ctx.textBaseline = "bottom";
-      ctx.fillText((onC.checked ? "스타트업 켬" : "스타트업 끔") + " · VREF " + d.v[d.v.length - 1].toFixed(3) + " V", box.x + box.w - 8, Y(d.v[d.v.length - 1]) - 6);
+      ctx.fillText((onC.checked ? "스타트업 켬" : "스타트업 끔") + " · VREF " + d.v[d.v.length - 1].toFixed(3) + " V", box.x + box.w - 8, Math.min(Y(d.v[d.v.length - 1]) - 6, box.y + box.h - 30));
       ctx.restore();
     }, heightFor("#su-cv", (w) => Math.round(w * 0.75), () => 320));
     go();

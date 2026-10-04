@@ -325,7 +325,7 @@
         <div class="stat"><span class="k">f<sub>z</sub> / f<sub>p</sub></span><span class="v" id="loop-o3">—</span></div>
         <div class="stat"><span class="k">f<sub>c</sub>/f<sub>ref</sub> · 폐루프 피킹</span><span class="v" id="loop-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① AB-1에서 f<sub>c</sub> ≈ 185 kHz, PM ≈ 60°. 위상이 영점과 극점 사이에서 −180° 위로 볼록 솟은 꼭대기에 f<sub>c</sub>가 걸려 있다. ② "R = 0"을 누르면 영점이 사라져 위상이 −180°에 붙고 PM이 0으로 떨어진다. 적분기 둘짜리 루프의 본성이다. ③ I<sub>CP</sub>를 8배로 키우면 크기 곡선만 위로 올라가 f<sub>c</sub>가 꼭대기 오른쪽으로 밀려 PM이 35° 아래로 떨어지고, f<sub>c</sub>가 f<sub>ref</sub>/10을 넘는다. ④ R과 I<sub>CP</sub>를 함께 키우면 f<sub>c</sub>가 커지지만, 이 연속 시간 모형은 f<sub>c</sub>가 f<sub>ref</sub>에 다가갈 때의 불안정을 보여 주지 못한다. 그것은 마지막 시뮬레이터에서 본다. (선형 연속 시간 모형 L(s): AN.tf → AN.bodeData(10 Hz~100 MHz). 원점 극점 둘은 AN.pz로 쓸 수 없어 다항식으로 넣었다. AN.margins는 첫 점의 위상(−180°)을 기준으로 지연을 재므로 PM = margins.pm − 180°로 보정한다. K<sub>VCO</sub> 25 MHz/V, N 8.)</div>
+      <div class="sim-note">해볼 것: ① AB-1에서 f<sub>c</sub> ≈ 185 kHz, PM ≈ 60°. 위상이 영점과 극점 사이에서 −180° 위로 볼록 솟은 꼭대기에 f<sub>c</sub>가 걸려 있다. ② "R = 0"을 누르면 영점이 사라져 위상이 −180°에 붙고 PM이 0으로 떨어진다. 적분기 둘짜리 루프의 본성이다. ③ I<sub>CP</sub>를 8배로 키우면 크기 곡선만 위로 올라가 f<sub>c</sub>가 꼭대기 오른쪽으로 밀려 PM이 35° 아래로 떨어지고, f<sub>c</sub>가 f<sub>ref</sub>/10을 넘는다. ④ R과 I<sub>CP</sub>를 함께 키우면 f<sub>c</sub>가 커지지만, 이 연속 시간 모형은 f<sub>c</sub>가 f<sub>ref</sub>에 다가갈 때의 불안정을 보여 주지 못한다. 그것은 마지막 시뮬레이터에서 본다. (선형 연속 시간 모형 L(s): AN.tf → AN.bodeData(10 Hz~100 MHz). 원점 극점 둘은 AN.pz로 쓸 수 없어 다항식으로 넣었다. AN.margins가 저주파 기울기에서 적분기 둘을 알아보고 −180°를 기준으로 PM을 잰다. K<sub>VCO</sub> 25 MHz/V, N 8.)</div>
     </div>
 
     <p>2형 루프의 장점은 정상 상태 위상 오차가 0이라는 것이다. \(C_1\)이 적분기라 위상차가 남아 있으면 전류가 계속 흘러 \(V_c\)를 고친다. 그래서 락이 된 뒤 REF와 DIV의 에지는 (이상적으로) 정확히 같은 시각에 온다.</p>
@@ -1062,7 +1062,7 @@
   }
   function loopMargins(p) {
     const H = loopTF(p), bd = AN.bodeData(H, 10, 1e8, 420), m = AN.margins(bd);
-    return { bd, H, fc: m.fu, pm: m.pm - 180 };
+    return { bd, H, fc: m.fu, pm: m.pm };
   }
   const fcHand = (p) => ((p.icp * KV * p.r) / (TAU * p.n)) * (13.3 / 14.3);
 
