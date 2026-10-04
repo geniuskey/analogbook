@@ -138,6 +138,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 48px 0; }
 }
 .ab-btn:hover { border-color: var(--accent); }
 .ab-btn.icon { width: 36px; padding: 0; }
+@media (max-width: 500px) { .ab-topbar { gap: 6px; padding: 0 12px; } .ab-logo span { display: none; } }
 .ab-progress { position: absolute; left: 0; bottom: -1px; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0; }
 
 /* Drawer (chapter list) */

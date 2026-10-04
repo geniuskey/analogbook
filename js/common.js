@@ -521,6 +521,7 @@
     const root = body.dataset.root != null ? body.dataset.root : body.dataset.chapter ? "../" : "";
     const curSlug = body.dataset.chapter || "";
     const href = (slug) => (slug ? `${root}chapters/${slug}.html` : `${root}index.html`);
+    const feedbackUrl = "https://books.euiyun.com/feedback.html?book=analogbook&page=" + encodeURIComponent(location.href);
 
     // favicon
     if (!document.querySelector('link[rel="icon"]')) { const fi = document.createElement("link"); fi.rel = "icon"; fi.type = "image/svg+xml"; fi.href = root + "favicon.svg"; document.head.appendChild(fi); }
@@ -530,12 +531,22 @@
     bar.className = "ab-topbar";
     bar.innerHTML = `
       <button class="ab-btn icon" id="ab-menu" aria-label="챕터 목록">${ICON_MENU}</button>
-      <a class="ab-logo" href="${href("")}">${LOGO}<span>AnalogBook <small>아날로그 회로설계</small></span></a>
+      <a class="ab-logo" href="${href("")}" aria-label="AnalogBook 홈">${LOGO}<span>AnalogBook <small>아날로그 회로설계</small></span></a>
       <span class="spacer"></span>
+      <a class="ab-btn icon" href="https://books.euiyun.com/" aria-label="전체 책 보기" title="전체 책 보기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h6v14H4zM10 5.5h6v14h-6zM17 7l3-1 2 13-3 1z"/></svg></a>
       <a class="ab-btn" href="${root}sims.html" aria-label="시뮬레이터 갤러리" title="시뮬레이터 갤러리">${ICON_GRID}<span class="lbl-wide">시뮬레이터</span></a>
       ${curSlug ? `<button class="ab-btn toggle" id="ab-simonly" aria-pressed="false" title="글을 숨기고 시뮬레이터만 본다">${ICON_SIM}<span class="lbl-wide">시뮬레이터만</span></button>` : ""}
       <button class="ab-btn icon" id="ab-theme" aria-label="테마 전환"></button>
       <div class="ab-progress" id="ab-progress"></div>`;
+    const feedbackButton = document.createElement("a");
+    feedbackButton.className = "ab-btn icon";
+    feedbackButton.href = feedbackUrl;
+    feedbackButton.target = "_blank";
+    feedbackButton.rel = "noopener";
+    feedbackButton.setAttribute("aria-label", "독자 의견 보내기");
+    feedbackButton.title = "독자 의견 보내기";
+    feedbackButton.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-6 4V6a2 2 0 0 1 2-2z"/><path d="M8 9h8M8 13h5"/></svg>';
+    bar.querySelector("#ab-theme").before(feedbackButton);
     body.prepend(bar);
 
     // drawer
@@ -649,6 +660,12 @@
     foot.className = "ab-foot";
     foot.innerHTML = `AnalogBook — 만져 보며 배우는 반도체 아날로그 회로설계 · 시뮬레이터의 수치는 가상의 교육용 공정(AB180) 모델입니다.<br>
       © 2026 geniuskey 및 AnalogBook 기여자 · 콘텐츠 <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> · 코드 <a href="${root}LICENSE-MIT">MIT</a> · <a href="${root}LICENSE.md">라이선스 안내</a>`;
+    const feedbackLink = document.createElement("a");
+    feedbackLink.href = feedbackUrl;
+    feedbackLink.target = "_blank";
+    feedbackLink.rel = "noopener";
+    feedbackLink.textContent = "독자 의견";
+    foot.append(" · ", feedbackLink);
     body.appendChild(foot);
 
     // quiz
