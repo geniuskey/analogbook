@@ -334,7 +334,7 @@ wire 8 12 14 12
         <div class="stat"><span class="k">ENOB(사양 ≥ 10.5)</span><span class="v" id="ch-o3">—</span></div>
         <div class="stat"><span class="k">오프셋 3σ(센서 환산)</span><span class="v" id="ch-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① 기본값(나이퀴스트 대역)에서는 PGA 잡음이 0.92 MHz 대역 전체를 끌고 들어와 ENOB가 9 아래다. ② "디지털 필터 10 kHz"를 고르면 백색 잡음은 17 dB 줄지만 OTA의 1/f가 남아 ENOB 10.4로 아슬아슬하게 불합격이다. ③ 초핑을 켜면 1/f와 오프셋이 사라져 합격한다. ④ G를 70 이상으로 올리면 ±10 mV × G가 ADC 범위(±0.6 V)를 넘어 잘린다. G를 15로 내리면 ADC 쪽 잡음이 센서로 환산될 때 커진다. (막대에 마우스를 올리면 계산식이 나온다. 가정: 신호는 ±10 mV, 10 kHz 근처 사인. OTA GBW 23.5 MHz, 입력 잡음 \(14\sqrt{1+14\,\text{kHz}/f}\) nV/√Hz, 1/f 적분 하한은 측정 시간(8192표본, 8.2 ms)의 역수인 약 122 Hz. 브리지 열잡음은 PGA 잡음 대역까지. 지터 10 ps. 오프셋 σ 2.1 mV는 잡음과 따로 보는 정적 오차이고, 초핑 시 잔류 3σ를 5 µV로 둔다. FFT는 8192점, 같은 PSD로 만든 잡음 + 12비트 양자화.)</div>
+      <div class="sim-note">해볼 것: ① 기본값(나이퀴스트 대역)에서는 PGA 잡음이 0.92 MHz 대역 전체를 끌고 들어와 ENOB가 9 아래다. ② "디지털 필터 10 kHz"를 고르면 백색 잡음은 17 dB 줄지만 OTA의 1/f가 남아 ENOB 10.4로 아슬아슬하게 불합격이다. ③ 초핑을 켜면 1/f와 오프셋이 사라져 합격한다. ④ G를 70 이상으로 올리면 ±10 mV × G가 ADC 범위(±0.6 V)를 넘어 잘린다. G를 15로 내리면 ADC 쪽 잡음이 센서로 환산될 때 커진다. (막대에 마우스를 올리면 계산식이 나온다. 가정: 신호는 ±10 mV, 10 kHz 근처 사인. OTA GBW 23.5 MHz, 입력 잡음 \(14\sqrt{1+14\,\text{kHz}/f}\) nV/√Hz, 1/f 적분 하한은 측정 시간(8192표본, 8.2 ms)의 역수인 약 122 Hz. 브리지 열잡음은 PGA 잡음 대역까지. 지터 약 17 ps. 오프셋 σ 2.1 mV는 잡음과 따로 보는 정적 오차이고, 초핑 시 잔류 3σ를 5 µV로 둔다. FFT는 8192점, 같은 PSD로 만든 잡음 + 12비트 양자화.)</div>
     </div>
     <div class="table-wrap"><table>
       <thead><tr><th>기여(센서 환산, µV rms)</th><th>나이퀴스트</th><th>10 kHz 필터</th><th>10 kHz 필터 + 초핑</th></tr></thead>
@@ -1617,7 +1617,7 @@ wire 8 12 14 12
   })();
 
   /* ======================================================== 신호 사슬 예산 */
-  const CH = { kT: AN.kT(300), gbw: 23.5e6, en: 14e-9, fc: 14e3, fs: 1e6, N: 8192, fb: 1e4, lsb: 1.2 / 4096, amp: 10e-3, vos: 2.1e-3, jit: 10e-12 };
+  const CH = { kT: AN.kT(300), gbw: 23.5e6, en: 14e-9, fc: 14e3, fs: 1e6, N: 8192, fb: 1e4, lsb: 1.2 / 4096, amp: 10e-3, vos: 2.1e-3, jit: AN.AB1.spec.pll.jitter };
   CH.flo = CH.fs / CH.N; CH.fsig = AN.coherent(CH.fs, CH.N, 5e3).f;
   function budget(o) {
     const G = o.G, Bn = (Math.PI / 2) * (CH.gbw / G), fn = CH.fs / 2, flt = o.band === "flt", kw = flt ? CH.fb / fn : 1;
@@ -1629,7 +1629,7 @@ wire 8 12 14 12
       { n: "kT/C 샘플러", blk: 2, p: (CH.kT / o.cs / (G * G)) * kw, f: `√(kT/${AB.si(o.cs, "F")}) ÷ G` },
       { n: "양자화 Δ/√12", blk: 3, p: ((CH.lsb * CH.lsb) / 12 / (G * G)) * kw, f: "293 µV/√12 ÷ G" },
       { n: "비교기 잡음", blk: 3, p: (Math.pow(o.cmp * CH.lsb, 2) / (G * G)) * kw, f: `${o.cmp} LSB ÷ G` },
-      { n: "클록 지터", blk: 3, p: (Math.pow(2 * Math.PI * CH.fsig * A * CH.jit, 2) / 2 / (G * G)) * kw, f: "2πf·A·σt/√2 ÷ G (10 ps)" },
+      { n: "클록 지터", blk: 3, p: (Math.pow(2 * Math.PI * CH.fsig * A * CH.jit, 2) / 2 / (G * G)) * kw, f: "2πf·A·σt/√2 ÷ G (17 ps)" },
     ];
     src.forEach((s) => (s.v = Math.sqrt(s.p)));
     const tot = Math.sqrt(src.reduce((a, s) => a + s.p, 0));

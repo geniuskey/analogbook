@@ -134,7 +134,7 @@
         <tr><td>온도 채널</td><td>16비트 ΔΣ ADC, OSR 128, 대역 8 kHz</td><td><a href="sigmadelta.html">17장</a></td></tr>
         <tr><td>밴드갭</td><td>1.2 V, 온도 계수 20 ppm/°C(−40~125 °C)</td><td><a href="bandgap.html">13장</a></td></tr>
         <tr><td>LDO</td><td>배터리 2.5~3.6 V → 1.8 V, 10 mA, 드롭아웃 200 mV, PSRR 40 dB @1 MHz</td><td><a href="ldo.html">14장</a></td></tr>
-        <tr><td>PLL</td><td>4 MHz 기준 → 32 MHz(N = 8), 지터 10 ps rms</td><td><a href="pll.html">18장</a></td></tr>
+        <tr><td>PLL</td><td>4 MHz 기준 → 32 MHz(N = 8), 지터 약 17 ps rms</td><td><a href="pll.html">18장</a></td></tr>
       </tbody>
     </table></div>
   </section>
@@ -487,7 +487,7 @@
       adc: ["12비트 SAR ADC", "축차 비교(Successive Approximation)로 표본 전압을 기준 1.2 V와 이진 탐색으로 비교해 12비트 코드를 만든다. 1 LSB = 1.2 V / 4096 ≈ 293 µV, 이상 SNDR 74 dB.", ["12 bit", "1 MS/s", "Vref 1.2 V", "ENOB ≥ 10.5"], '<a href="adc.html">16장 ADC</a> · 온도 채널은 <a href="sigmadelta.html">17장 ΔΣ</a>'],
       bg: ["밴드갭 기준 전압", "온도에 따라 내려가는 전압(PN 접합)과 올라가는 전압(열전압 비례)을 더해 온도에 거의 무관한 1.2 V를 만든다. ADC의 자(기준)이므로 이것이 흔들리면 모든 코드가 함께 틀린다.", ["1.2 V", "20 ppm/°C", "−40~125 °C"], '<a href="bandgap.html">13장 밴드갭</a>'],
       ldo: ["LDO 레귤레이터", "배터리 2.5~3.6 V를 받아 깨끗한 1.8 V를 만든다. 배터리 전압이 출렁여도, 디지털이 전류를 확 당겨도 출력은 그대로여야 한다. 센서 브리지와 아날로그 블록 모두 이 전원을 쓴다.", ["2.5~3.6 V → 1.8 V", "10 mA", "드롭아웃 200 mV", "PSRR 40 dB"], '<a href="ldo.html">14장 LDO</a>'],
-      pll: ["PLL(위상 고정 루프)", "4 MHz 수정 발진기 기준을 8배 해서 32 MHz 클록을 만든다. 샘플러가 스위치를 여는 순간과 SAR ADC의 비교 순서가 이 클록으로 정해진다. 클록이 흔들리면(지터) 표본 값이 틀린다.", ["4 → 32 MHz", "N = 8", "지터 10 ps rms"], '<a href="pll.html">18장 PLL</a>'],
+      pll: ["PLL(위상 고정 루프)", "4 MHz 수정 발진기 기준을 8배 해서 32 MHz 클록을 만든다. 샘플러가 스위치를 여는 순간과 SAR ADC의 비교 순서가 이 클록으로 정해진다. 클록이 흔들리면(지터) 표본 값이 틀린다.", ["4 → 32 MHz", "N = 8", "지터 약 17 ps rms"], '<a href="pll.html">18장 PLL</a>'],
     };
     let hits = [], sel = null;
     const amp = AB.range("ch-amp", (v) => v + " mV", () => { upd(); cv.redraw(); });

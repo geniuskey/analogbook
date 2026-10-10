@@ -218,7 +218,7 @@
       <figcaption><b>파이프라인 한 단.</b> 서브 ADC가 정한 값 d를 서브 DAC가 되돌려 빼고, 남은 잔차를 2배 키운다. 1.5비트/단은 비교기 둘(문턱 ±VREF/4)로 d ∈ {−1, 0, +1}을 정한다. 단마다 1비트 남짓을 겹쳐 정하므로 비교기가 틀려도 다음 단이 바로잡는다.</figcaption>
     </figure>
 
-    <p>1비트/단은 문턱 하나로 입력이 0보다 큰지만 정한다. 비교기 오프셋으로 문턱이 조금만 어긋나도 잔차가 \(\pm V_{\mathrm{REF}}\) 범위를 벗어나 다음 단을 포화시키고, 그 오차는 영영 되돌릴 수 없다. <span class="term">1.5비트/단</span><span class="en">(1.5-bit/stage, RSD)</span>은 문턱을 \(\pm V_{\mathrm{REF}}/4\) 두 개로 두고 출력을 −1, 0, +1 세 값으로 정한다. 잔차가 언제나 \(\pm V_{\mathrm{REF}}/2\) 안에 머물러 여유가 생기고, 비교기 오프셋이 \(V_{\mathrm{REF}}/4\)보다 작으면 그 오차는 다음 단 결과와 겹쳐 더해지면서(디지털 보정) 사라진다.</p>
+    <p>1비트/단은 문턱 하나로 입력이 0보다 큰지만 정한다. 비교기 오프셋으로 문턱이 조금만 어긋나도 잔차가 \(\pm V_{\mathrm{REF}}\) 범위를 벗어나 다음 단을 포화시키고, 그 오차는 영영 되돌릴 수 없다. <span class="term">1.5비트/단</span><span class="en">(1.5-bit/stage, RSD)</span>은 문턱을 \(\pm V_{\mathrm{REF}}/4\) 두 개로 두고 출력을 −1, 0, +1 세 값으로 정한다. 전체 입력 범위 \(\pm V_{\mathrm{REF}}\)에서 이상 잔차는 다음 단의 \(\pm V_{\mathrm{REF}}\) 범위 안에 머문다. 문턱 양쪽의 잔차가 \(\pm V_{\mathrm{REF}}/2\)로 뛰므로 비교기 문턱에 여유가 생기고, 비교기 오프셋이 \(V_{\mathrm{REF}}/4\)보다 작으면 그 오차는 다음 단 결과와 겹쳐 더해지면서(디지털 보정) 사라진다.</p>
 
     <div class="sim" id="sim-pipe" data-desc="파이프라인 4단의 잔차 전달 곡선을 단마다 그리고 입력을 끌어 잔차가 단을 따라 넘어가는 모습을 본다. 비교기 오프셋을 넣으면 1비트/단은 잔차가 범위를 벗어나 큰 오류를 내고, 1.5비트/단 + 디지털 보정은 견딘다">
       <div class="sim-head"><span class="sim-tag">SIMULATOR</span><h3>파이프라인 잔차와 1.5비트/단 보정</h3></div>
@@ -305,8 +305,8 @@
   <section id="map">
     <h2>구조 고르기: 해상도–속도 지도와 FoM</h2>
     <p>지금까지 본 구조들은 해상도와 속도를 서로 다르게 맞바꾼다. 플래시는 한 클록에 끝나지만 비트마다 비교기가 2배다. 파이프라인은 단을 늘려 해상도를 얻고 처리율을 유지한다. SAR는 비교기 하나로 N번 물어 전력은 작지만 클록이 N배 이상 빨라야 한다. ΔΣ(<a href="sigmadelta.html">17장</a>)는 속도를 해상도로 바꾼다. 같은 일을 얼마나 적은 에너지로 하는가를 비교하는 숫자가 <span class="term">Walden FoM</span><span class="en">(Figure of merit)</span>이다.</p>
-    <div class="formula">$$\mathrm{FoM}_W = \frac{P}{2^{\mathrm{ENOB}}\cdot f_s}\ \ [\mathrm{J/conv\text{-}step}],\qquad \mathrm{FoM}_S = \mathrm{SNDR} + 10\log_{10}\frac{f_s/2}{P}\ \ [\mathrm{dB}]$$<div class="where">\(P\) 소비 전력(W), \(f_s\) 표본화 속도(S/s). Walden FoM은 "실효 코드 한 칸을 한 번 변환하는 에너지"다. 최신 SAR ADC는 약 수 fJ/step, 무난한 설계는 수십~수백 fJ/step. Schreier FoM은 열잡음이 지배하는 고해상도 변환기 비교에 쓰며 약 170~185 dB가 최상위권이다</div></div>
-    <p>아래 지도에서 구조별 영역(정성적인 대략의 범위)을 보고, 설계점을 끌어 FoM을 계산한다. AB-1의 목표점(12비트 1 MS/s, ENOB 10.5)이 어느 영역에 들어가는지 확인한다.</p>
+    <div class="formula">$$\mathrm{FoM}_W = \frac{P}{2^{\mathrm{ENOB}}\cdot f_s}\ \ [\mathrm{J/conv\text{-}step}],\qquad \mathrm{FoM}_S = \mathrm{SNDR} + 10\log_{10}\frac{\mathrm{BW}}{P}\ \ [\mathrm{dB}]$$<div class="where">\(P\) 소비 전력(W), \(f_s\) 표본화 속도(S/s), \(\mathrm{BW}\) SNDR을 평가한 신호 대역폭(Hz). Schreier 식에서 BW = fs/2는 나이퀴스트 변환기에만 해당한다. 오버샘플링 변환기는 BW = fs/(2·OSR)를 사용한다. Walden FoM은 "실효 코드 한 칸을 한 번 변환하는 에너지"다. 최신 SAR ADC는 약 수 fJ/step, 무난한 설계는 수십~수백 fJ/step. Schreier FoM은 열잡음이 지배하는 고해상도 변환기 비교에 쓰며 약 170~185 dB가 최상위권이다</div></div>
+    <p>아래 지도에서 구조별 영역(정성적인 대략의 범위)을 보고, 설계점을 끌어 FoM을 계산한다. Schreier FoM은 신호 대역 BW = fs/(2·OSR)로 계산한다. 나이퀴스트 ADC는 OSR = 1, ΔΣ 등 오버샘플링 ADC는 실제 OSR을 입력한다. AB-1의 목표점(12비트 1 MS/s, ENOB 10.5)이 어느 영역에 들어가는지 확인한다.</p>
 
     <div class="sim" id="sim-map" data-desc="표본화 속도–ENOB 평면에 플래시·파이프라인·SAR·ΔΣ의 대략적 영역을 칠하고, 설계점을 끌어 전력과 함께 Walden FoM과 Schreier FoM을 계산한다. AB-1 목표점이 SAR 영역 한가운데에 있음을 본다">
       <div class="sim-head"><span class="sim-tag">SIMULATOR</span><h3>해상도–속도 지도와 FoM 계산기</h3></div>
@@ -314,6 +314,7 @@
         <div class="sim-view"><canvas id="map-cv"></canvas><span class="hint">설계점(◆)을 끈다</span></div>
         <div class="sim-controls">
           <label class="ctrl"><span>소비 전력 P <output id="map-p-out"></output></span><input type="range" id="map-p" min="-6" max="0" step="0.05" value="-4"></label>
+          <label class="ctrl"><span>오버샘플링 비 OSR <output id="map-osr-out"></output></span><input type="range" id="map-osr" min="0" max="10" step="1" value="0"></label>
           <div class="btn-row"><button class="btn" id="map-ab1">AB-1 목표점으로</button></div>
         </div>
       </div>
@@ -324,7 +325,7 @@
         <div class="stat"><span class="k">이 자리의 구조</span><span class="v" id="map-arch">—</span></div>
         <div class="stat"><span class="k">10 fJ/step이면 전력</span><span class="v" id="map-p10">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① "AB-1 목표점으로"를 누르면 1 MS/s, ENOB 10.5가 SAR 영역 안에 있고, 100 µW라면 Walden FoM은 약 69 fJ/step이다. ② 설계점을 위로 1비트 끌면(같은 전력) FoM이 2배 좋아진다. 열잡음이 지배하면 1비트당 전력이 4배 드는 것이 현실이라 고해상도에서는 Schreier FoM이 더 공정하다. ③ 설계점을 오른쪽 위(1 GS/s, 12비트)로 끌면 어떤 단일 구조로도 쉽지 않은 자리다. 시간 인터리빙이나 파이프라인-SAR 혼합이 쓰인다. (영역은 문헌 경향을 단순화한 정성적 그림, 경계는 기술 세대마다 움직인다. FoM 기준선 수 fJ/step은 대략값)</div>
+      <div class="sim-note">해볼 것: ① "AB-1 목표점으로"를 누르면 1 MS/s, ENOB 10.5가 SAR 영역 안에 있고, 100 µW라면 Walden FoM은 약 69 fJ/step이다. ② 설계점을 위로 1비트 끌면(같은 전력) FoM이 2배 좋아진다. 열잡음이 지배하면 1비트당 전력이 4배 드는 것이 현실이라 고해상도에서는 Schreier FoM이 더 공정하다. ③ 같은 fs·ENOB·전력에서 OSR을 1 → 128로 올리면 신호 대역이 128배 좁아져 Schreier FoM은 약 21.1 dB 내려간다. Walden 값은 이 지도에서 raw fs 기준이라 그대로다. ④ 설계점을 오른쪽 위(1 GS/s, 12비트)로 끌면 어떤 단일 구조로도 쉽지 않은 자리다. 시간 인터리빙이나 파이프라인-SAR 혼합이 쓰인다. (영역은 문헌 경향을 단순화한 정성적 그림, 경계는 기술 세대마다 움직인다. FoM 기준선 수 fJ/step은 대략값)</div>
     </div>
     <p>AB-1의 12비트 1 MS/s는 SAR가 가장 잘하는 자리다. 비교기 하나와 커패시터 배열 하나로 정적 전류 없이 만들 수 있고, 커패시터 배열이 표본-유지까지 겸한다. 남은 일은 SAR가 어떻게 이진 탐색을 하는지, 그리고 클록과 커패시터, 비교기에 예산을 나누는 것이다.</p>
   </section>
@@ -410,7 +411,7 @@
     <div class="casefile">
       <div class="tag"><b>TARGET AB-1</b><span>타깃 파일 · 16장</span></div>
       <h4>12비트 1 MS/s SAR: LSB 293 µV, 이상 74 dB, 예산을 나눠 ENOB 약 11.1 → 목표 10.5를 넘긴다</h4>
-      <p>기준 1.2 V를 4096칸으로 나누면 LSB ≈ 293 µV, 양자화 잡음 84.6 µV rms, 꽉 찬 사인(0.424 V rms)의 이상 SNDR은 74.0 dB다. 목표 ENOB 10.5는 SNDR 65.0 dB, 곧 잡음과 왜곡의 합을 약 239 µV rms 아래로 묶는다는 뜻이다. 이 예산을 넷으로 나눈다. 양자화 84.6 µV, 표본화 kT/C(배열 전체 1 pF) 64 µV, 비교기 입력 환산 잡음 100 µV(0.34 LSB), DAC 부정합(단위 σu 0.5% → σINL ≈ 0.16 LSB) 약 47 µV. 제곱합은 약 153 µV로 SNDR 약 68.8 dB, ENOB 약 11.1이다. 남는 몫(약 184 µV)은 표본화 지터에 줄 수 있는데, 500 kHz 꽉 찬 입력에서 σt 약 140 ps까지 들어간다. DNL은 MSB 전환에서 σ ≈ 64σu ≈ 0.32 LSB이므로 3σ로도 −1 LSB에 닿지 않아 누락 코드가 없다. 클록은 표본화 3 + 비트 12 + 1 = 16사이클로 16 MHz, 비트당 62.5 ns에서 DAC 정착 τ ≤ 약 4.4 ns, 래치 τ ≈ 50 ps.</p>
+      <p>기준 1.2 V를 4096칸으로 나누면 LSB ≈ 293 µV, 양자화 잡음 84.6 µV rms, 꽉 찬 사인(0.424 V rms)의 이상 SNDR은 74.0 dB다. 목표 ENOB 10.5는 SNDR 65.0 dB, 곧 잡음과 왜곡의 합을 약 239 µV rms 아래로 묶는다는 뜻이다. 이 예산을 넷으로 나눈다. 양자화 84.6 µV, 표본화 kT/C(배열 전체 1 pF) 64 µV, 비교기 입력 환산 잡음 100 µV(0.34 LSB), DAC 부정합(단위 σu 0.5% → σINL ≈ 0.16 LSB) 약 47 µV. 제곱합은 약 153 µV로 SNDR 약 68.8 dB, ENOB 약 11.1이다. 남는 몫(약 184 µV)은 표본화 지터에 줄 수 있는데, 500 kHz 꽉 찬 입력에서 σt 약 140 ps까지 들어간다. DNL은 MSB 전환에서 σ ≈ 64σu ≈ 0.32 LSB이므로 3σ 기준의 누락 코드 방지 설계 여유를 만족한다. 다만 가우시안 꼬리는 3σ 밖에도 있어 모든 칩의 누락 코드 없음을 보장하지 않는다. 전체 코드·공정 코너와 통계적 수율을 검증해야 한다. 클록은 표본화 3 + 비트 12 + 1 = 16사이클로 16 MHz, 비트당 62.5 ns에서 DAC 정착 τ ≤ 약 4.4 ns, 래치 τ ≈ 50 ps.</p>
       <div class="clue">
         <div><b>이 장에서 정한 것</b>구조는 전하 재분배 SAR, 비교기 하나(프리앰프 + 래치, 입력 잡음 ≤ 100 µV rms). DAC는 단위 정합 σu ≤ 0.5%(공통 중심 배치), 배열 전체 약 1 pF로 kT/C 64 µV. 클록 16 MHz, 1 µs = 16사이클. 예산 합 ENOB 약 11.1로 목표 10.5에 약 0.6비트 여유.</div>
         <div><b>아직 남은 문제</b>온도 채널은 16비트가 필요하다. 이 구조로 16비트를 얻으려면 LSB 18 µV, 단위 정합 σu 약 0.1%(같은 정합 계수라면 면적 약 25배)가 필요해 교정 없이는 무척 어렵다. 신호가 8 kHz로 느리다는 점을 해상도로 바꿀 수는 없을까? 또 16 MHz 클록의 지터는 실제로 얼마인가?</div>
@@ -474,7 +475,7 @@
           <button class="opt">단마다 비교기가 하나로 줄어 전력이 절반이 된다.</button>
           <button class="opt">파이프라인 지연(latency)이 없어진다.</button>
         </div>
-        <div class="quiz-exp">문턱을 ±VREF/4에 두고 잔차를 ±VREF/2 안에 두면 비교기가 틀려도 잔차가 다음 단의 범위 안에 있어 겹친 비트를 더하는 보정으로 바로잡힌다. 이득 오차와 DAC 오차는 보정하지 못하고, 비교기는 단마다 둘이다.</div>
+        <div class="quiz-exp">문턱을 ±VREF/4에 두면 비교기 오프셋이 VREF/4보다 작은 동안 잔차가 다음 단의 전체 범위 ±VREF 안에 있어 겹친 비트를 더하는 보정으로 바로잡힌다. 이득 오차와 DAC 오차는 보정하지 못하고, 비교기는 단마다 둘이다.</div>
       </div>
       <div class="quiz-q">
         <p>5. 12비트 SAR ADC를 2 MS/s로 돌리려 한다. 표본화 3사이클, 비트 결정 12사이클, 출력 1사이클을 쓴다면 필요한 클록과 비트당 시간은?</p>
@@ -1258,7 +1259,8 @@
     ];
     let pt = { lf: 6, e: 10.5 }, lay = {};
     const pp = AB.range("map-p", (v) => si(Math.pow(10, v), "W"), upd);
-    $("map-ab1").addEventListener("click", () => { pt = { lf: 6, e: 10.5 }; upd(); });
+    const oo = AB.range("map-osr", (v) => String(Math.pow(2, v)), upd);
+    $("map-ab1").addEventListener("click", () => { pt = { lf: 6, e: 10.5 }; oo.set(0); upd(); });
     const cv = AB.canvas("#map-cv", draw, { get height() { return pw("map-cv") < 620 ? 460 : 420; } });
     AB.drag(cv.canvas, {
       start(x, y) { lay.d = lay.b && Math.hypot(x - lay.px, y - lay.py) < 30; },
@@ -1270,10 +1272,10 @@
     });
     const inside = (p, x, y) => { let c = false; for (let i = 0, j = p.length - 1; i < p.length; j = i++) { const [xi, yi] = p[i], [xj, yj] = p[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
     function upd() {
-      const P = Math.pow(10, pp()), fs = Math.pow(10, pt.lf), fw = P / (Math.pow(2, pt.e) * fs), fsch = 6.02 * pt.e + 1.76 + 10 * Math.log10(fs / 2 / P);
+      const P = Math.pow(10, pp()), fs = Math.pow(10, pt.lf), osr = Math.pow(2, oo()), bw = fs / (2 * osr), fw = P / (Math.pow(2, pt.e) * fs), fsch = 6.02 * pt.e + 1.76 + 10 * Math.log10(bw / P);
       AB.stat("map-pt", si(fs, "S/s") + ` · ENOB ${pt.e.toFixed(1)}`);
       AB.stat("map-fw", (fw < 1e-15 ? Number((fw * 1e15).toPrecision(3)) + " fJ" : si(fw, "J")) + "/step");
-      AB.stat("map-fs", fsch.toFixed(1) + " dB");
+      AB.stat("map-fs", fsch.toFixed(1) + " dB <small>BW " + si(bw, "Hz") + "</small>");
       const a = REG.filter((r) => inside(r.p, pt.lf, pt.e)).map((r) => r.n);
       AB.stat("map-arch", a.length ? a.join(", ") : '<span class="warn-t">어려운 자리</span>');
       AB.stat("map-p10", si(10e-15 * Math.pow(2, pt.e) * fs, "W"));

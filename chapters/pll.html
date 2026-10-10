@@ -44,7 +44,7 @@
   <header class="chapter-hero">
     <div class="eyebrow">Chapter 18</div>
     <h1>발진기와 PLL</h1>
-    <p class="lead">10장에서는 루프 이득이 −1에 닿지 않도록 온 힘을 다해 피했다. 이 장은 정반대에서 출발한다. 루프 이득을 일부러 정확히 −1(한 바퀴 돌면 크기 1, 위상 360°)로 만들면 입력 없이도 스스로 흔들리는 <b>발진기</b>가 된다. 그런데 혼자 흔들리는 발진기의 주파수는 공정·전압·온도에 따라 수십 % 흔들리고, 위상은 시간이 갈수록 제멋대로 떠내려간다. 그래서 깨끗한 수정 기준 클록에 발진기를 묶어 두는 피드백 루프, <span class="term">위상 고정 루프</span><span class="en">(Phase-locked loop, PLL)</span>가 필요하다. AB-1은 4 MHz 기준에서 SAR ADC와 디지털이 쓸 32 MHz를 만든다.</p>
+    <p class="lead">10장에서는 루프 이득이 −1에 닿지 않도록 온 힘을 다해 피했다. 이 장은 정반대에서 출발한다. 음의 합산 부호까지 포함한 한 바퀴 전체 전달을 일부러 정확히 +1(한 바퀴 돌면 크기 1, 위상 360°)로 만들면 입력 없이도 스스로 흔들리는 <b>발진기</b>가 된다. 그런데 혼자 흔들리는 발진기의 주파수는 공정·전압·온도에 따라 수십 % 흔들리고, 위상은 시간이 갈수록 제멋대로 떠내려간다. 그래서 깨끗한 수정 기준 클록에 발진기를 묶어 두는 피드백 루프, <span class="term">위상 고정 루프</span><span class="en">(Phase-locked loop, PLL)</span>가 필요하다. AB-1은 4 MHz 기준에서 SAR ADC와 디지털이 쓸 32 MHz를 만든다.</p>
     <ul class="objectives">
       <li>바르크하우젠 조건을 발진기 설계 조건으로 읽고, 링 발진기의 주파수 \(f = 1/(2N\tau_d)\)를 엔진 과도 해석과 비교한다.</li>
       <li>LC 탱크의 손실을 교차 결합 쌍의 음저항 \(-2/g_m\)이 보충하는 조건(\(g_m R_p > 1\))과 진폭이 꼬리 전류로 제한되는 이유를 안다.</li>
@@ -210,17 +210,17 @@
     </div>
 
     <p>주파수 영역에서는 반송파 \(f_0\)에서 \(\Delta f\)만큼 떨어진 1 Hz 대역의 잡음 전력을 반송파 전력과 비교한 \(\mathcal{L}(\Delta f)\)(dBc/Hz)로 위상 잡음을 적는다. 리슨<span class="en">(Leeson)</span>의 모형에 따르면 백색 잡음이 위상을 흔드는 발진기의 위상 잡음은 \(1/\Delta f^2\)(−20 dB/dec)로 떨어진다. 위상은 주파수 잡음의 적분이라 낮은 주파수에서 커지기 때문이다. 시간 영역의 "\(\sqrt{k}\)로 쌓이는 지터"가 주파수 영역의 "\(1/\Delta f^2\)"다. 1/f 잡음이 섞이면 가까운 쪽은 \(1/\Delta f^3\)으로 더 가파르다.</p>
-    <div class="formula">$$\mathcal{L}(\Delta f) \approx \mathcal{L}(\Delta f_1)\left(\frac{\Delta f_1}{\Delta f}\right)^2\!\left(1+\frac{f_{1/f^3}}{\Delta f}\right),\qquad \sigma_\phi^2 = 2\int_{f_a}^{f_b}10^{\mathcal{L}(f)/10}\,df,\qquad \sigma_t = \frac{\sigma_\phi}{2\pi f_0}$$
+    <div class="formula">$$\mathcal{L}(\Delta f) \approx \mathcal{L}(\Delta f_1)+20\log_{10}\!\frac{\Delta f_1}{\Delta f}+10\log_{10}\!\frac{1+f_{1/f^3}/\Delta f}{1+f_{1/f^3}/\Delta f_1},\qquad \sigma_\phi^2 = 2\int_{f_a}^{f_b}10^{\mathcal{L}(f)/10}\,df,\qquad \sigma_t = \frac{\sigma_\phi}{2\pi f_0}$$
       <div class="where">\(\mathcal{L}(\Delta f)\): 단측파 위상 잡음(dBc/Hz), \(\sigma_\phi\): rms 위상 지터(rad), \(\sigma_t\): rms 시간 지터(s). 32 MHz 링 VCO의 대표값 약 −126 dBc/Hz @ 1 MHz. 자유 발진기는 \(f_a\) → 0에서 적분이 발산한다(지터가 끝없이 쌓인다).</div>
     </div>
-    <p>PLL로 묶으면 출력 위상 잡음은 둘로 나뉜다. 루프 대역 \(f_c\) 안쪽에서는 루프가 VCO 잡음을 눌러 기준·전하 펌프 잡음(\(N\)배로 커진 것)이 보이고, 바깥쪽에서는 루프가 따라가지 못해 VCO 잡음이 그대로 나온다. 루프 대역을 끌어 적분 지터가 최소가 되는 곳을 찾아보라.</p>
+    <p>PLL로 묶으면 출력 위상 잡음은 둘로 나뉜다. 단위 이득 교차 주파수 \(f_c\) 안쪽에서는 루프가 VCO 잡음을 눌러 기준·전하 펌프 잡음(\(N\)배로 커진 것)이 보이고, 바깥쪽에서는 루프가 따라가지 못해 VCO 잡음이 그대로 나온다. 루프 대역을 끌어 적분 지터가 최소가 되는 곳을 찾아보라.</p>
 
     <div class="sim" id="sim-pn" data-desc="VCO의 1/f² 위상 잡음과 기준 경로의 대역 내 잡음이 PLL 루프 대역에서 바뀌는 출력 위상 잡음을 그리고, 루프 대역 핸들을 끌어 적분 지터가 최소가 되는 대역을 찾는다.">
       <div class="sim-head"><span class="sim-tag">SIMULATOR</span><h3>루프 대역이 적분 지터를 정한다</h3></div>
       <div class="sim-body side">
         <div class="sim-view"><canvas id="pn-cv"></canvas><span class="hint">그래프 위를 좌우로 끌면 루프 대역 f<sub>c</sub>가 움직인다</span></div>
         <div class="sim-controls">
-          <label class="ctrl"><span><em class="nm">루프 대역 f<sub>c</sub></em> <output id="pn-fc-out"></output></span><input type="range" id="pn-fc" min="4" max="6.7" step="0.01" value="5.27"></label>
+          <label class="ctrl"><span><em class="nm">단위 이득 교차 f<sub>c</sub></em> <output id="pn-fc-out"></output></span><input type="range" id="pn-fc" min="4" max="6.7" step="0.01" value="5.27"></label>
           <label class="ctrl"><span><em class="nm">VCO 잡음 @ 1 MHz</em> <output id="pn-v-out"></output></span><input type="range" id="pn-v" min="-140" max="-106" step="1" value="-126"></label>
           <label class="ctrl"><span><em class="nm">대역 내 잡음 바닥</em> <output id="pn-r-out"></output></span><input type="range" id="pn-r" min="-140" max="-106" step="1" value="-126"></label>
           <label class="check"><input type="checkbox" id="pn-free"> <em class="nm">자유 발진 VCO 지터도 계산</em></label>
@@ -233,10 +233,10 @@
         <div class="stat"><span class="k">σ<sub>t</sub>가 최소인 f<sub>c</sub></span><span class="v" id="pn-o3">—</span></div>
         <div class="stat"><span class="k">f<sub>c</sub> / f<sub>ref</sub></span><span class="v" id="pn-o4">—</span></div>
       </div>
-      <div class="sim-note">해볼 것: ① f<sub>c</sub>를 10 kHz로 내리면 VCO 잡음 봉우리가 그대로 남아 지터가 약 100 ps로 커진다. ② f<sub>c</sub>를 올리면 VCO 잡음이 눌리지만, 너무 올리면 기준 경로 잡음이 넓은 대역에 걸쳐 나온다. 최소점은 두 잡음 선이 만나는 근처다. ③ VCO가 나빠지면(−110 dBc/Hz) 최적 f<sub>c</sub>가 올라간다. 그러나 f<sub>c</sub>는 f<sub>ref</sub>/10(400 kHz)을 넘기 어렵다(다음 절). ④ 자유 발진 지터를 켜면 같은 적분 구간에서도 수 ns가 나온다. (2형 PLL의 폐루프 H = L/(1+L), L은 영점 f<sub>c</sub>/3.73·극점 3.73 f<sub>c</sub>인 PM 60° 모형. 출력 = |H|²·대역 내 + |1−H|²·VCO. 1/f³ 모서리 200 kHz·3 kHz. 32 MHz 반송파.)</div>
+      <div class="sim-note">해볼 것: ① f<sub>c</sub>를 10 kHz로 내리면 VCO 잡음 봉우리가 그대로 남아 지터가 약 230 ps로 커진다. ② f<sub>c</sub>를 올리면 VCO 잡음이 눌리지만, 너무 올리면 기준 경로 잡음이 넓은 대역에 걸쳐 나온다. 최소점은 두 잡음 선이 만나는 근처다. ③ VCO가 나빠지면(−110 dBc/Hz) 최적 f<sub>c</sub>가 올라간다. 그러나 f<sub>c</sub>는 f<sub>ref</sub>/10(400 kHz)을 넘기 어렵다(다음 절). ④ 자유 발진 지터를 켜면 같은 적분 구간에서도 수 ns가 나온다. (2형 PLL의 폐루프 H = L/(1+L), L은 영점 f<sub>c</sub>/3.73·극점 3.73 f<sub>c</sub>이며 |L(jf<sub>c</sub>)| = 1로 정규화한 PM 약 60° 모형. f<sub>c</sub>는 단위 이득 교차이며 폐루프 −3 dB 대역과는 다르다. 출력 = |H|²·대역 내 + |1−H|²·VCO. 1/f³ 모서리 200 kHz·3 kHz. 32 MHz 반송파.)</div>
     </div>
 
-    <p>AB-1 기본값(VCO −126 dBc/Hz @ 1 MHz, 대역 내 바닥 −126 dBc/Hz, \(f_c\) ≈ 185 kHz)에서 1 kHz~16 MHz 적분 지터는 약 10 ps rms다. 최적 대역은 VCO 잡음과 대역 내 잡음이 만나는 곳 근처에 있고, 이 예에서는 수백 kHz다. 그러나 대역을 올리는 데는 상한이 있다. 루프는 기준 에지에서만 위상을 비교하는 이산 시간 시스템이기 때문이다.</p>
+    <p>AB-1 기본값(VCO −126 dBc/Hz @ 1 MHz, 대역 내 바닥 −126 dBc/Hz, \(f_c\) ≈ 185 kHz)에서 1 kHz~16 MHz 적분 지터는 약 17 ps rms다. 최적 대역은 VCO 잡음과 대역 내 잡음이 만나는 곳 근처에 있고, 이 예에서는 수백 kHz다. 그러나 대역을 올리는 데는 상한이 있다. 루프는 기준 에지에서만 위상을 비교하는 이산 시간 시스템이기 때문이다.</p>
   </section>
 
   <section id="pfd">
@@ -411,10 +411,10 @@
 
     <div class="casefile">
       <div class="tag"><b>TARGET AB-1</b><span>타깃 파일 · 18장</span></div>
-      <h4>4 MHz → 32 MHz 정수 N PLL: N = 8, f<sub>c</sub> ≈ 185 kHz, PM ≈ 60°, 지터 약 10 ps → 500 kHz 입력에서 SNR 한계 약 90 dB</h4>
-      <p>AB-1의 SAR ADC(1 MS/s, 변환마다 16+ 클록)와 디지털은 32 MHz가 필요하고, 칩 밖 수정 발진기는 4 MHz다. 그래서 \(N\) = 8인 정수 N 전하 펌프 PLL을 쓴다. VCO는 링 발진기로, \(K_{VCO}\) ≈ 25 MHz/V, 10~55 MHz 범위의 가운데(\(V_c\) ≈ 0.88 V)에 32 MHz가 오게 잡았다. 루프 필터는 \(R\) = 8 kΩ, \(C_1\) = 400 pF, \(C_2\) = 30 pF(\(C_1/C_2\) ≈ 13), \(I_{CP}\) = 50 µA다. 개루프 보드 선도(<code>AN.tf</code> → <code>AN.bodeData</code>)에서 <b>\(f_c\) ≈ 185 kHz ≤ \(f_{ref}/10\) = 400 kHz, PM ≈ 60°</b>이고, 행동 모형에서 10 MHz 출발 락 시간은 약 20 µs다. VCO 위상 잡음 약 −126 dBc/Hz @ 1 MHz, 대역 내 바닥 −126 dBc/Hz를 가정하면 1 kHz~16 MHz 적분 지터는 약 <b>10 ps rms</b>다. 이 지터만으로 정해지는 ADC SNR 한계는 \(-20\log_{10}(2\pi \cdot 500\ \text{kHz} \cdot 10\ \text{ps})\) ≈ <b>90 dB</b>로, 12비트 이상 SNR 74 dB보다 16 dB 위다. 지터 한계가 74 dB와 같아지는 \(\sigma_t\)는 약 63 ps인데 그때 전체 SNR이 3 dB 깎이므로, 그 3분의 1인 20 ps 이하를 목표로 둔다.</p>
+      <h4>4 MHz → 32 MHz 정수 N PLL: N = 8, f<sub>c</sub> ≈ 185 kHz, PM ≈ 60°, 지터 약 17 ps → 500 kHz 입력에서 SNR 한계 약 86 dB</h4>
+      <p>AB-1의 SAR ADC(1 MS/s, 변환마다 16+ 클록)와 디지털은 32 MHz가 필요하고, 칩 밖 수정 발진기는 4 MHz다. 그래서 \(N\) = 8인 정수 N 전하 펌프 PLL을 쓴다. VCO는 링 발진기로, \(K_{VCO}\) ≈ 25 MHz/V, 10~55 MHz 범위의 가운데(\(V_c\) ≈ 0.88 V)에 32 MHz가 오게 잡았다. 루프 필터는 \(R\) = 8 kΩ, \(C_1\) = 400 pF, \(C_2\) = 30 pF(\(C_1/C_2\) ≈ 13), \(I_{CP}\) = 50 µA다. 개루프 보드 선도(<code>AN.tf</code> → <code>AN.bodeData</code>)에서 <b>\(f_c\) ≈ 185 kHz ≤ \(f_{ref}/10\) = 400 kHz, PM ≈ 60°</b>이고, 행동 모형에서 10 MHz 출발 락 시간은 약 20 µs다. VCO 위상 잡음 약 −126 dBc/Hz @ 1 MHz, 대역 내 바닥 −126 dBc/Hz를 가정하면 1 kHz~16 MHz 적분 지터는 약 <b>17 ps rms</b>다. 이 지터만으로 정해지는 ADC SNR 한계는 \(-20\log_{10}(2\pi \cdot 500\ \text{kHz} \cdot 17\ \text{ps})\) ≈ <b>86 dB</b>로, 12비트 이상 SNR 74 dB보다 약 12 dB 위다. 지터 한계가 74 dB와 같아지는 \(\sigma_t\)는 약 63 ps인데 그때 전체 SNR이 3 dB 깎이므로, 그 3분의 1인 20 ps 이하를 목표로 둔다.</p>
       <div class="clue">
-        <div><b>이 장에서 정한 것</b>N = 8, I<sub>CP</sub> 50 µA, R 8 kΩ, C<sub>1</sub> 400 pF(MIM 2 fF/µm²로 약 0.2 mm²), C<sub>2</sub> 30 pF. f<sub>c</sub> ≈ 185 kHz, PM ≈ 60°, 락 약 20 µs. 목표 지터 ≤ 20 ps rms(추정 10 ps).</div>
+        <div><b>이 장에서 정한 것</b>N = 8, I<sub>CP</sub> 50 µA, R 8 kΩ, C<sub>1</sub> 400 pF(MIM 2 fF/µm²로 약 0.2 mm²), C<sub>2</sub> 30 pF. f<sub>c</sub> ≈ 185 kHz, PM ≈ 60°, 락 약 20 µs. 목표 지터 ≤ 20 ps rms(추정 17 ps).</div>
         <div><b>아직 남은 문제</b>C<sub>1</sub> 면적이 크다. 전하 펌프 부정합이 만드는 4 MHz 기준 스퍼와, VCO 전원(LDO 출력)의 잡음이 K<sub>VCO</sub>배로 지터가 되는 경로는 아직 따지지 않았다.</div>
         <div><b>다음 단계</b>지금까지 블록마다 정한 값들을 한 칩의 신호 사슬로 조립해, 센서 입력에서 디지털 출력까지 직접 돌려 본다.</div>
       </div>
@@ -428,10 +428,10 @@
       <li>홀수 인버터 링은 f = 1/(2Nτ<sub>d</sub>)로 발진한다. 짝수는 래치가 된다. 전력은 약 N·C<sub>L</sub>·V<sub>DD</sub>²·f.</li>
       <li>LC 발진기는 교차 결합 쌍의 음저항 −2/g<sub>m</sub>이 탱크 손실을 보충할 때(g<sub>m</sub>R<sub>p</sub> &gt; 1) 시동하고, f<sub>0</sub> = 1/(2π√LC), 진폭 ≈ (4/π)I<sub>tail</sub>R<sub>p</sub>. 링보다 위상 잡음이 좋고 범위가 좁다.</li>
       <li>VCO의 K<sub>VCO</sub>는 조정 곡선의 기울기이며 루프 이득에 곱해진다. 곡선이 휘면 루프 대역이 V<sub>c</sub>에 따라 바뀐다.</li>
-      <li>자유 발진 지터는 √k로 쌓이고(위상 잡음 1/Δf²), PLL은 루프 대역 안에서 그것을 누른다. 적분 지터 σ<sub>t</sub> = √(2∫𝓛 df)/(2πf<sub>0</sub>)는 루프 대역에 최적점이 있다.</li>
+      <li>자유 발진 지터는 √k로 쌓이고(위상 잡음 1/Δf²), PLL은 루프 대역 안에서 그것을 누른다. 적분 지터 σ<sub>t</sub> = √(2∫10<sup>𝓛/10</sup> df)/(2πf<sub>0</sub>)는 루프 대역에 최적점이 있다.</li>
       <li>PFD는 ±2π에서 선형이고 주파수 차도 감지한다. 전하 펌프 평균 전류 = I<sub>CP</sub>·Δφ/2π. XOR은 0~π에서만 단조다.</li>
       <li>2형 PLL은 원점 극점 둘 때문에 영점(R·C<sub>1</sub>)이 필수다. C<sub>1</sub>/C<sub>2</sub> ≈ 13이면 PM ≈ 60°. 표본화 때문에 f<sub>c</sub> ≤ f<sub>ref</sub>/10로 둔다.</li>
-      <li>지터가 정하는 ADC SNR 한계는 −20log(2πf<sub>in</sub>σ<sub>t</sub>). AB-1: 10 ps, 500 kHz → 약 90 dB.</li>
+      <li>지터가 정하는 ADC SNR 한계는 −20log(2πf<sub>in</sub>σ<sub>t</sub>). AB-1: 약 17 ps, 500 kHz → 약 86 dB.</li>
     </ol>
   </section>
 
@@ -899,7 +899,7 @@
   function plH(f, fc) {
     const wz = fc / 3.73, wp = fc * 3.73;
     const s = [0, f];
-    const Lr = AN.cx.div(AN.cx.mul([fc * fc, 0], [1, f / wz]), AN.cx.mul(AN.cx.mul(s, s), [1, f / wp]));
+    const Lr = AN.cx.div(AN.cx.mul([fc * fc / 3.73, 0], [1, f / wz]), AN.cx.mul(AN.cx.mul(s, s), [1, f / wp]));
     return AN.cx.div(Lr, [1 + Lr[0], Lr[1]]);
   }
   (function () {
@@ -908,7 +908,7 @@
     const gRn = AB.range("pn-r", (v) => v + " dBc/Hz", () => upd());
     $("pn-free").addEventListener("change", () => upd());
     const FS = AN.logspace(1e3, 1e8, 400);
-    const Lv = (df) => gVn() + 20 * Math.log10(1e6 / df) + 10 * Math.log10(1 + 2e5 / df);
+    const Lv = (df) => gVn() + 20 * Math.log10(1e6 / df) + 10 * Math.log10((1 + 2e5 / df) / (1 + 2e5 / 1e6));
     const Li = (df) => gRn() + 10 * Math.log10(1 + 3e3 / df);
     function out(fc) { return FS.map((f) => { const Hc = plH(f, fc), E = [1 - Hc[0], -Hc[1]]; return 10 * Math.log10(AN.cx.abs(Hc) ** 2 * lg(Li(f) / 10) + AN.cx.abs(E) ** 2 * lg(Lv(f) / 10)); }); }
     function integ(arr) { let s = 0; for (let i = 1; i < FS.length; i++) { if (FS[i] > 16e6) break; s += 0.5 * (lg(arr[i] / 10) + lg(arr[i - 1] / 10)) * (FS[i] - FS[i - 1]); } return Math.sqrt(2 * s); }
@@ -955,7 +955,7 @@
       title(ctx, top.x, 2, "위상 잡음: 오프셋 주파수 Δf");
       const sw = sweep.sw;
       const ymax = Math.min(200e-12, Math.max(...sw.map((p) => p[1]))) * 1.1;
-      const cb = AB.chart(ctx, bot, { x: [1e4, 5e6], y: [0, ymax * 1e12], logX: true, xTicks: nar ? [1e4, 1e5, 1e6] : [1e4, 1e5, 1e6], xFmt: fx, yLabel: "σt (ps)", xLabel: "루프 대역 fc", series: [{ data: sw.map((p) => [p[0], p[1] * 1e12]), color: P.accent, width: 2 }], vlines: [{ x: FREF / 10, color: P.bad }], points: [{ x: sweep.best[0], y: sweep.best[1] * 1e12, color: P.ok, r: 4.5 }, { x: cur.fc, y: Math.min(ymax, cur.st) * 1e12, color: P.accent, r: 6 }] });
+      const cb = AB.chart(ctx, bot, { x: [1e4, 5e6], y: [0, ymax * 1e12], logX: true, xTicks: nar ? [1e4, 1e5, 1e6] : [1e4, 1e5, 1e6], xFmt: fx, yLabel: "σt (ps)", xLabel: "단위 이득 교차 fc", series: [{ data: sw.map((p) => [p[0], p[1] * 1e12]), color: P.accent, width: 2 }], vlines: [{ x: FREF / 10, color: P.bad }], points: [{ x: sweep.best[0], y: sweep.best[1] * 1e12, color: P.ok, r: 4.5 }, { x: cur.fc, y: Math.min(ymax, cur.st) * 1e12, color: P.accent, r: 6 }] });
       void cb;
       title(ctx, bot.x, bot.y - 22, "적분 지터(1 kHz~16 MHz) vs 루프 대역");
     }

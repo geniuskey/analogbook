@@ -287,7 +287,7 @@
 
     <p>트랜지스터가 얼마나 빠른지는 <span class="term">전이 주파수</span><span class="en">(Transition frequency)</span> \(f_T\)로 잰다. 드레인을 교류 접지하고 게이트에 전류를 넣었을 때 전류 이득 \(|i_d/i_g|\)가 1이 되는 주파수다.</p>
     <div class="formula">$$f_T = \frac{g_m}{2\pi(C_{gs}+C_{gd})} \approx \frac{3\mu_n V_{OV}}{4\pi L^2}$$<div class="where">\(\mu_n = \mu_nC_{ox}/C_{ox}\) ≈ 0.033 m²/V·s. 10/1 µm, \(V_{OV}\) 0.2 V → 손 계산 약 1.6 GHz, 엔진 1.62 GHz. L을 0.18 µm로 줄이면 약 30배</div></div>
-    <p>\(f_T\)는 W와 무관하다. W를 키우면 \(g_m\)과 커패시턴스가 같이 커지기 때문이다. 대신 L에는 제곱으로, \(V_{OV}\)(즉 \(g_m/I_D\))에는 반비례로 걸린다. 효율(\(g_m/I_D\) 큼)과 속도(\(f_T\) 큼)가 서로 반대 방향이다.</p>
+    <p>\(f_T\)는 W와 무관하다. W를 키우면 \(g_m\)과 커패시턴스가 같이 커지기 때문이다. 강반전·채널 커패시턴스 지배 근사에서는 L²와 \(g_m/I_D\)에 반비례하고 \(V_{OV}\)에는 비례한다. 약반전이나 겹침 커패시턴스가 큰 영역에서는 이 단순 비례가 달라진다. 효율(\(g_m/I_D\) 큼)과 속도(\(f_T\) 큼)가 서로 반대 방향이다.</p>
 
     <div class="sim" id="sim-ft" data-desc="gm/ID를 끌면 네 가지 L의 fT 곡선 위에서 속도가 어떻게 떨어지는지, 그때 Cgs·Cgd·Cdb가 얼마인지 막대로 본다">
       <div class="sim-head"><span class="sim-tag">SIMULATOR</span><h3>효율을 올리면 느려진다: fT vs gm/ID</h3></div>

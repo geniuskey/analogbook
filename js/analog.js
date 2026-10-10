@@ -891,10 +891,11 @@
       const v = take(b); ph += v;
     }
     let pn = 0; for (let k = 1; k < half; k++) if (!used[k]) pn += P[k];
-    // 노이즈 바닥에서 가장 큰 스퍼(고조파 포함)
+    // 일관 표본화에서 기본파·최악 스퍼 모두 같은 창의 피크 빈으로 비교한다.
+    // 기본파의 주엽 합산 ps와 스퍼 한 빈을 비교하면 창의 에너지 배수가 남는다.
     for (let k = span + 1; k < half; k++) if (Math.abs(k - fb) > span && P[k] > spur) spur = P[k];
     const sndr = 10 * Math.log10(ps / (pn + ph + 1e-300));
-    return { sndr, snr: 10 * Math.log10(ps / (pn + 1e-300)), thd: 10 * Math.log10((ph + 1e-300) / ps), sfdr: 10 * Math.log10(ps / (spur + 1e-300)), enob: (sndr - 1.76) / 6.02, bin: fb, spec: S };
+    return { sndr, snr: 10 * Math.log10(ps / (pn + 1e-300)), thd: 10 * Math.log10((ph + 1e-300) / ps), sfdr: 10 * Math.log10(P[fb] / (spur + 1e-300)), enob: (sndr - 1.76) / 6.02, bin: fb, spec: S };
   };
   /** 일관 표본화 주파수: fs, n 점에서 목표 f에 가장 가까운 홀수(서로소) 주기 수 → {f, cycles} */
   AN.coherent = function (fs, n, fTarget) {
@@ -1187,14 +1188,14 @@
   AN.AB1 = {
     name: "AB-1", proc: "AB180", vdd: 1.8, vbat: [2.5, 3.6],
     spec: {
-      ota: { a0: 70, gbw: 20e6, pm: 60, cl: 2e-12, sr: 10e6, noise: 30e-9, offset3s: 6e-3, power: 300e-6 }, // a0 dB, gbw Hz, pm °, sr V/s, noise V/√Hz @ 1 MHz, power W
+      ota: { a0: 70, gbw: 20e6, pm: 60, cl: 2e-12, sr: 10e6, noise: 30e-9, offset3s: 5e-3, power: 300e-6 }, // a0 dB, gbw Hz, pm °, sr V/s, noise V/√Hz @ 1 MHz, power W
       sensor: { span: 10e-3, bw: 10e3, rb: 5e3 },        // 브리지 출력 ±10 mV, 대역 10 kHz, 브리지 저항 5 kΩ
       pga: { gain: 40 },                                   // 10 mV → 0.4 V
       adc: { bits: 12, fs: 1e6, vref: 1.2, enob: 10.5 },
       sd: { bits: 16, osr: 128, fs: 2.048e6, bw: 8e3 },     // 온도 채널(ΔΣ)
       bg: { vref: 1.2, tc: 20e-6 },                         // 20 ppm/°C, −40~125 °C
       ldo: { vout: 1.8, iload: 10e-3, dropout: 0.2, psrr: 40 }, // PSRR dB @ 1 MHz
-      pll: { fref: 4e6, fout: 32e6, n: 8, jitter: 10e-12 },
+      pll: { fref: 4e6, fout: 32e6, n: 8, jitter: 17e-12 },
     },
     // 9장의 2단 밀러 OTA 기본 설계(엔진으로 확인한 값은 CONTRIBUTING.md 참고)
     ota: {
